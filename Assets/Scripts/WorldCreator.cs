@@ -37,8 +37,8 @@ public class WorldCreator : MonoBehaviour
     public void InstatntiateGround()
     {
         groundList.Add(Instantiate(CastleGround, WorldStartPosition.transform.position, Quaternion.identity));
-        Collider2D groundCollider= groundList[0].GetComponent<Collider2D>();
-        Vector3 groundSize = groundCollider.bounds.size;
+        SpriteRenderer renderer = groundList[0].GetComponent<SpriteRenderer>();
+        Vector3 groundSize = renderer.bounds.size;
         float xDelta = groundSize.x;
         Vector3 pos = WorldStartPosition.position;
         for (int i = 1; i < CastleZoneSize; i++)
