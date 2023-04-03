@@ -46,23 +46,13 @@ public class GuiController : MonoBehaviour
             Debug.LogError("GuiController: Button Prefab doesn't set");
             return;
         }
-        for (int i =0; i<5; i++)
+        for (int i =0; i<DataLoader.Buildings.Count; i++)
         {
             var button = Instantiate(_buttonPrefab, Vector3.zero, Quaternion.identity, _buildingsPanel.transform);
-            button.GetComponentInChildren<TextMeshProUGUI>().SetText($"Button {i}");
+            button.GetComponentInChildren<TextMeshProUGUI>().SetText(DataLoader.Buildings[i].Name);
+            button.GetComponent<BuildingButtons>().Id = i;
             _activeButtonsCounter++;
             _buttons.Add(button);
         }   
     }
-
-    /*
-    void CreateButtons()
-    {
-        var button = Instantiate(RoomButton, Vector3.zero, Quaternion.identity, _buildingsPanel) as Button;
-        var rectTransform = button.GetComponent<RectTransform>();
-        //rectTransform.SetParent(Canvas.transform);
-        //rectTransform.offsetMin = Vector2.zero;
-        //rectTransform.offsetMax = Vector2.zero;
-        //button.onClick.AddListener(SpawnPlayer);
-    }*/
 }

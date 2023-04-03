@@ -1,0 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class BuildingButtons : MonoBehaviour
+{
+	private BuildingSpawner _buildingSpawner;
+	public int? Id { set; get; }
+	// Start is called before the first frame update
+	void Start()
+	{
+		_buildingSpawner = GameObject.Find("BuildingProcessor").GetComponent<BuildingSpawner>(); ;
+		if (Id == null)
+		{
+			Debug.LogError("BuildingButtons: Id doesn't set");
+		}
+		Button btn = this.GetComponent<Button>();
+		btn.onClick.AddListener(TaskOnClick);
+	}
+
+	void TaskOnClick()
+	{
+		if (Id == null)
+		{
+			Debug.LogError("BuildingButtons: Id doesn't set");
+			return;
+		}
+		_buildingSpawner.CreateBuildingPlacer((int)Id);
+	}
+}

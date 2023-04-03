@@ -1,0 +1,18 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<buildings>
+  <building name = "Barracks">
+    <sprite>Barracks</sprite>
+    <buildTime>30</buildTime>
+    <unfinishedSprite1>BarracksUnfinished1</unfinishedSprite1>
+    <unfinishedSprite1>BarracksUnfinished2</unfinishedSprite1>
+    <unfinishedSprite1>BarracksUnfinished3</unfinishedSprite1>
+  </building>
+  <building name = "Castle">
+    <sprite>Castle</sprite>
+    <buildTime>30</buildTime>
+    <unfinishedSprite1>CastleUnfinished1</unfinishedSprite1>
+    <unfinishedSprite1>CastleUnfinished2</unfinishedSprite1>
+    <unfinishedSprite1>CastleUnfinished3</unfinishedSprite1>
+    <buildTime>40</buildTime>
+  </building>
+</buildings>
