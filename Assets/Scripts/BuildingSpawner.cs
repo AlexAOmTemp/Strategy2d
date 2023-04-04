@@ -5,10 +5,16 @@ using UnityEngine;
 public class BuildingSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject _unconstructBuildingPrefab;
+    [SerializeField] private GameObject _buildingPrefab;
     [SerializeField] private GameObject _level;
     private Transform _buildingPlacePoint;
     public List <GameObject> BuildingsInProcess = new List<GameObject>();
     private GameObject _currentBuilding;
+    private int? _currentBuildingId;
+
+    public delegate void NewBuildingInProcess(GameObject Building);
+    public static event NewBuildingInProcess NewBuildingIsInProcess;
+
     enum BuildingState 
     {
         Idle,
@@ -30,31 +36,31 @@ public class BuildingSpawner : MonoBehaviour
             Debug.LogError("BuildingSpawner: tried to create an unexistant building");
             return;
         }
-
-        Sprite sprite = Resources.Load<Sprite>($"Sprites/Buildings/{DataLoader.Buildings[id].SpriteName}");
-        if (sprite == null)
-            Debug.LogError($"BuildingSpawner: Sprite Sprites/Buildings/{DataLoader.Buildings[id].SpriteName} doesn't exist");
-
+        _currentBuildingId = id;
         _currentBuilding = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _buildingPlacePoint);
-       
+        var param = _currentBuilding.GetComponent<BuildingParameters>();
+        param.Init(DataLoader.Buildings[id]);
         _currentBuilding.transform.position = _buildingPlacePoint.position;
-        var data = _currentBuilding.GetComponent<BuildingData>();
-        data.SetSprite(sprite);
-        var size = _currentBuilding.GetComponent<SpriteRenderer>().bounds.size;
-        Debug.Log($"Size is {size}");
-        _currentBuilding.transform.Translate(Vector3.up* size.y/2);
-        data.name = DataLoader.Buildings[id].Name;
+        _currentBuilding.transform.Translate(Vector3.up * param.Height / 2);
         _currentState = BuildingState.HeroAttached;
     }
     public void PlaceAssepted()
     {
         _currentBuilding.transform.SetParent(_level.transform);
-        foreach (Transform child in _currentBuilding.transform)
-            GameObject.Destroy(child.gameObject);
+        var building = Instantiate(_buildingPrefab, Vector3.zero, Quaternion.identity, _level.transform);
+        var param = building.GetComponent<BuildingParameters>();
+        if (_currentBuildingId!=null)
+            param.Init(DataLoader.Buildings[(int)_currentBuildingId]);
+        building.transform.position = _currentBuilding.transform.position;
         
+        GameObject.Destroy(_currentBuilding.gameObject);
+        _currentBuildingId = null;
         _currentState = BuildingState.Idle;
-        BuildingsInProcess.Add(_currentBuilding);
+        BuildingsInProcess.Add(building);
+        
         _currentBuilding = null;
+        NewBuildingIsInProcess?.Invoke(BuildingsInProcess[BuildingsInProcess.Count-1]);
+        param.StartBuilding();
     }
     public void PlaceDeclined()
     {
@@ -62,5 +68,12 @@ public class BuildingSpawner : MonoBehaviour
         Destroy(_currentBuilding);
         _currentBuilding = null;
         _currentState = BuildingState.Idle;
+    }
+    public void BuildingFinished(GameObject building)
+    {
+        if (BuildingsInProcess.Contains(building))
+            BuildingsInProcess.Remove(building);
+        else
+            Debug.LogError("BuildingSpawner: try to remove unexisting building");
     }
 }

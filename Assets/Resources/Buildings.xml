@@ -3,16 +3,11 @@
   <building name = "Barracks">
     <sprite>Barracks</sprite>
     <buildTime>30</buildTime>
-    <unfinishedSprite1>BarracksUnfinished1</unfinishedSprite1>
-    <unfinishedSprite1>BarracksUnfinished2</unfinishedSprite1>
-    <unfinishedSprite1>BarracksUnfinished3</unfinishedSprite1>
+    <spriteUnfinished>BarracksUnfinished1 BarracksUnfinished2 BarracksUnfinished3</spriteUnfinished>
   </building>
   <building name = "Castle">
     <sprite>Castle</sprite>
     <buildTime>30</buildTime>
-    <unfinishedSprite1>CastleUnfinished1</unfinishedSprite1>
-    <unfinishedSprite1>CastleUnfinished2</unfinishedSprite1>
-    <unfinishedSprite1>CastleUnfinished3</unfinishedSprite1>
-    <buildTime>40</buildTime>
+    <spriteUnfinished>CastleUnfinished1 CastleUnfinished2 CastleUnfinished3</spriteUnfinished>
   </building>
 </buildings>
