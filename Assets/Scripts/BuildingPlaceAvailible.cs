@@ -17,12 +17,9 @@ public class BuildingPlaceAvailible : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collision Enter");
-        // Add the GameObject collided with to the list.
         if (collision.gameObject.tag == "Building")
         {
             _currentCollisions.Add(collision.gameObject);
-            Debug.Log($"Collide with {collision.gameObject}");
             if (_buttonAccept != null)
                 _buttonAccept.interactable = false;
         }

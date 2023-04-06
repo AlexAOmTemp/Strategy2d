@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class BuildingParameters : MonoBehaviour
+public class BuildingController : MonoBehaviour
 {
     private bool _isFinished = false;
     private bool _buildStarted = false;
@@ -41,7 +41,7 @@ public class BuildingParameters : MonoBehaviour
         if (_workersInvolved.Contains(worker))
             _workersInvolved.Remove(worker);
         else
-            Debug.LogError("BuildingParameters: worker was't involved in building but try to leave it");
+            Debug.LogError("BuildingController: worker was't involved in building but try to leave it");
     }
     private void Update()
     {

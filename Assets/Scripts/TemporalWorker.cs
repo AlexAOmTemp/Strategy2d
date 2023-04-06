@@ -12,16 +12,16 @@ public class TemporalWorker : MonoBehaviour
         if (_buildingSpawner == null)
             Debug.LogError("TemporalWorker: buildingSpawner not finded");
         BuildingSpawner.NewBuildingIsInProcess += onNewBuildingStarted;
-        BuildingParameters.BuildingIsFinished += onBuildingFinished;
+        BuildingController.BuildingIsFinished += onBuildingFinished;
     }
     void onNewBuildingStarted(GameObject building)
     {
-        var bp = building.GetComponent<BuildingParameters>(); 
+        var bp = building.GetComponent<BuildingController>(); 
         bp.NewWorkerInvolvedInBuilding(this.gameObject);
     }
     void onBuildingFinished(GameObject building)
     {
-        var bp = building.GetComponent<BuildingParameters>();
+        var bp = building.GetComponent<BuildingController>();
         bp.WorkerLivedBuilding(this.gameObject);
         _buildingSpawner.BuildingFinished(building);
     }

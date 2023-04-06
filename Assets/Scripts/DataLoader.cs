@@ -5,72 +5,160 @@ using System.Xml;
 using System.IO;
 using UnityEditor;
 
+public struct ZoneData
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int SizeInTiles { get; set; }
+    public Sprite Sprite { get; set; }
+    public Sprite SeparatorSprite { get; set; }
+}
+public struct LevelData
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public ZoneData[] Zones { get; set; }
+    public int ZonesCount { get; set; }
+
+
+}
+
 
 public class DataLoader : MonoBehaviour
 {
-    public static List<BuildingData> Buildings { get; private set; }
-    public static List<GameObject> Units { get; private set; }
+    private const string _unitsSpritesPath = "Sprites/Units/";
+    private const string _buildingsSpritesPath = "Sprites/Buildings/";
+    private const string _levelsSpritesPath = "Sprites/Levels/";
+    public static List<LevelData> Levels { get; private set; } = new List<LevelData>();
+    public static List<BuildingData> Buildings { get; private set; } = new List<BuildingData>();
+    public static List<GameObject> Units { get; private set; } = new List<GameObject>();
     void Awake()
     {
-        Buildings = new List<BuildingData>();
-        Units = new List<GameObject>();
+        levelParser(readFile("Levels"));
+
         buildingParser(readFile("Buildings"));
+
     }
     private string readFile(string fileName)
     {
         var textFile = Resources.Load<TextAsset>(fileName);
         return textFile.text;
     }
-
+    private void levelParser(string xml)
+    {
+        XmlDocument xDoc = new XmlDocument();
+        xDoc.LoadXml(xml);
+        XmlElement xRoot = xDoc.DocumentElement;
+        if (xRoot != null)
+        {
+            int LevelId = 0;
+            foreach (XmlElement level in xRoot) //level
+            {
+                int zoneId = 0;
+                var levelData = new LevelData();
+                List<ZoneData> zones = new List<ZoneData>();            
+                levelData.Id = LevelId;
+                LevelId++;
+                XmlNode attr = level.Attributes.GetNamedItem("name");
+                levelData.Name = attr?.Value;
+                Debug.Log($"levelData.Name = {levelData.Name}");
+                foreach (XmlNode zone in level.ChildNodes)
+                {
+                    ZoneData zoneData = new ZoneData();
+                    zoneData.Id = zoneId;
+                    zoneId++;
+                    zoneData.Name= zone.Attributes.GetNamedItem("name")?.Value;
+                    foreach (XmlNode zoneParameter in zone.ChildNodes)
+                    { 
+                        if (zoneParameter.Name == "sizeInTitles")
+                        {
+                            zoneData.SizeInTiles = int.Parse(zoneParameter.InnerText);
+                            if (zoneData.SizeInTiles < 0 || zoneData.SizeInTiles > 1000)
+                                Debug.LogError($"DataLoader: levelParser incorrect zone {zoneData.Name}:{zoneData.Id} size value = {zoneData.SizeInTiles}");
+                        }
+                        if (zoneParameter.Name == "sprite")
+                        {
+                            Sprite sprite = Resources.Load<Sprite>($"{_levelsSpritesPath}{zoneParameter.InnerText}");
+                            if (sprite == null)
+                                Debug.LogError($"DataLoader: Sprite {_levelsSpritesPath}{zoneParameter.InnerText} doesn't exist");
+                            else
+                                zoneData.Sprite = sprite;
+                        }
+                        if (zoneParameter.Name == "separatorSprite")
+                        {
+                            Sprite sprite = Resources.Load<Sprite>($"{_levelsSpritesPath}{zoneParameter.InnerText}");
+                            if (sprite == null)
+                                Debug.LogError($"DataLoader: Sprite {_levelsSpritesPath}{zoneParameter.InnerText} doesn't exist");
+                            else
+                                zoneData.SeparatorSprite = sprite;
+                        }
+                    }
+                    zones.Add(zoneData);
+                }
+                levelData.Zones= zones.ToArray();
+                levelData.ZonesCount = zones.Count;
+                Levels.Add(levelData);
+            }
+        }
+    }
     private void buildingParser(string xml)
     {
         XmlDocument xDoc = new XmlDocument();
         xDoc.LoadXml(xml);
-        XmlElement? xRoot = xDoc.DocumentElement;
+        XmlElement xRoot = xDoc.DocumentElement;
         if (xRoot != null)
         {
-            foreach (XmlElement xnode in xRoot)
+            foreach (XmlElement building in xRoot)
             {
-                var buildingParameters = new BuildingData();
+                var buildingData = new BuildingData();
                 
-                XmlNode ? attr = xnode.Attributes.GetNamedItem("name");
-                Debug.Log(attr?.Value);
-                buildingParameters.Name = attr?.Value;
+                XmlNode attr = building.Attributes.GetNamedItem("name");
+                buildingData.Name = attr?.Value;
                 int id = 0;
-                foreach (XmlNode childnode in xnode.ChildNodes)
+                foreach (XmlNode buildingParameter in building.ChildNodes)
                 {
-                    buildingParameters.Id = id;
+                    buildingData.Id = id;
                     id++;
-                    if (childnode.Name == "sprite")
+                    if (buildingParameter.Name == "sprite")
                     {
-                        Sprite sprite = Resources.Load<Sprite>($"Sprites/Buildings/{childnode.InnerText}");
+                        Sprite sprite = Resources.Load<Sprite>($"{_buildingsSpritesPath}{buildingParameter.InnerText}");
                         if (sprite == null)
-                            Debug.LogError($"DataLoader: Sprite Sprites/Buildings/{childnode.InnerText} doesn't exist");
+                            Debug.LogError($"DataLoader: Sprite {_buildingsSpritesPath}{buildingParameter.InnerText} doesn't exist");
                         else
-                            buildingParameters.SpriteFinished = sprite;
+                            buildingData.SpriteFinished = sprite;
                     }
-                    if (childnode.Name == "buildTime")
-                        buildingParameters.BuildingTime = float.Parse(childnode.InnerText);
-                    if (childnode.Name == "spriteUnfinished")
+                    if (buildingParameter.Name == "buildTime")
+                        buildingData.BuildingTime = float.Parse(buildingParameter.InnerText);
+                    if (buildingParameter.Name == "spriteUnfinished")
                     {
                         List<Sprite> spr = new List<Sprite>();
-                        string[] names = childnode.InnerText.Split(" ");
+                        string[] names = buildingParameter.InnerText.Split(" ");
                         foreach (string name in names)
                         {
                            
-                            Sprite sprite = Resources.Load<Sprite>($"Sprites/Buildings/{name}");
+                            Sprite sprite = Resources.Load<Sprite>($"{_buildingsSpritesPath}{name}");
                             if (sprite == null)
-                                Debug.LogError($"DataLoader: Sprite Sprites/Buildings/{name} doesn't exist");
+                                Debug.LogError($"DataLoader: Sprite {_buildingsSpritesPath}{name} doesn't exist");
                             else
                                 spr.Add ( sprite);
                         }
-                        buildingParameters.SpritesUnfinished = spr.ToArray();
-                        buildingParameters.SpritesUnfinishedCount = spr.Count;
+                        buildingData.SpritesUnfinished = spr.ToArray();
+                        buildingData.SpritesUnfinishedCount = spr.Count;
                         
                     }
                 }             
-                Buildings.Add(buildingParameters);
+                Buildings.Add(buildingData);
             }
+        }
+    }
+
+    private void consoleLogLoadedLevelData()
+    {
+        foreach (LevelData level in Levels)
+        {
+            Debug.Log($"Name = {level.Name} Id = {level.Id} Zones = {level.ZonesCount}");
+            foreach (ZoneData zData in level.Zones)
+                Debug.Log($"zoneData.id = {zData.Id} zoneData.name = {zData.Name} zoneData.size = {zData.SizeInTiles} zoneData.Sprite = {zData.Sprite} zoneData.SeparatorSprite  {zData.SeparatorSprite}");
         }
     }
 }

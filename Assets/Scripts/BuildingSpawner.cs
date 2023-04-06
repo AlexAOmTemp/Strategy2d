@@ -6,8 +6,8 @@ public class BuildingSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject _unconstructBuildingPrefab;
     [SerializeField] private GameObject _buildingPrefab;
-    [SerializeField] private GameObject _level;
-    private Transform _buildingPlacePoint;
+    [SerializeField] private Transform _buildingPlacePoint;
+    private GameObject _level;
     public List <GameObject> BuildingsInProcess = new List<GameObject>();
     private GameObject _currentBuilding;
     private int? _currentBuildingId;
@@ -22,11 +22,11 @@ public class BuildingSpawner : MonoBehaviour
         Placed
     }
     private BuildingState _currentState = BuildingState.Idle;
-
-    private void Start()
+    private void Awake()
     {
-        _buildingPlacePoint = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0);
+        LevelController.LevelIsCreated += onLevelCreated;
     }
+  
     public void CreateBuildingPlacer(int id)
     {
         if (_currentState != BuildingState.Idle)
@@ -38,7 +38,7 @@ public class BuildingSpawner : MonoBehaviour
         }
         _currentBuildingId = id;
         _currentBuilding = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _buildingPlacePoint);
-        var param = _currentBuilding.GetComponent<BuildingParameters>();
+        var param = _currentBuilding.GetComponent<BuildingController>();
         param.Init(DataLoader.Buildings[id]);
         _currentBuilding.transform.position = _buildingPlacePoint.position;
         _currentBuilding.transform.Translate(Vector3.up * param.Height / 2);
@@ -48,7 +48,7 @@ public class BuildingSpawner : MonoBehaviour
     {
         _currentBuilding.transform.SetParent(_level.transform);
         var building = Instantiate(_buildingPrefab, Vector3.zero, Quaternion.identity, _level.transform);
-        var param = building.GetComponent<BuildingParameters>();
+        var param = building.GetComponent<BuildingController>();
         if (_currentBuildingId!=null)
             param.Init(DataLoader.Buildings[(int)_currentBuildingId]);
         building.transform.position = _currentBuilding.transform.position;
@@ -75,5 +75,9 @@ public class BuildingSpawner : MonoBehaviour
             BuildingsInProcess.Remove(building);
         else
             Debug.LogError("BuildingSpawner: try to remove unexisting building");
+    }
+    private void onLevelCreated(GameObject level)
+    {
+        _level = level;
     }
 }
