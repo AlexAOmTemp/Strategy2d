@@ -56,7 +56,7 @@ public class DataLoader : MonoBehaviour
             {
                 int zoneId = 0;
                 var levelData = new LevelData();
-                List<ZoneData> zones = new List<ZoneData>();            
+                List<ZoneData> zones = new List<ZoneData>();
                 levelData.Id = LevelId;
                 LevelId++;
                 XmlNode attr = level.Attributes.GetNamedItem("name");
@@ -67,9 +67,9 @@ public class DataLoader : MonoBehaviour
                     ZoneData zoneData = new ZoneData();
                     zoneData.Id = zoneId;
                     zoneId++;
-                    zoneData.Name= zone.Attributes.GetNamedItem("name")?.Value;
+                    zoneData.Name = zone.Attributes.GetNamedItem("name")?.Value;
                     foreach (XmlNode zoneParameter in zone.ChildNodes)
-                    { 
+                    {
                         if (zoneParameter.Name == "sizeInTitles")
                         {
                             zoneData.SizeInTiles = int.Parse(zoneParameter.InnerText);
@@ -95,7 +95,7 @@ public class DataLoader : MonoBehaviour
                     }
                     zones.Add(zoneData);
                 }
-                levelData.Zones= zones.ToArray();
+                levelData.Zones = zones.ToArray();
                 levelData.ZonesCount = zones.Count;
                 Levels.Add(levelData);
             }
@@ -108,17 +108,17 @@ public class DataLoader : MonoBehaviour
         XmlElement xRoot = xDoc.DocumentElement;
         if (xRoot != null)
         {
+            int id = 0;
             foreach (XmlElement building in xRoot)
             {
                 var buildingData = new BuildingData();
-                
+
                 XmlNode attr = building.Attributes.GetNamedItem("name");
                 buildingData.Name = attr?.Value;
-                int id = 0;
+                buildingData.Id = id;
+                id++;
                 foreach (XmlNode buildingParameter in building.ChildNodes)
                 {
-                    buildingData.Id = id;
-                    id++;
                     if (buildingParameter.Name == "sprite")
                     {
                         Sprite sprite = Resources.Load<Sprite>($"{_buildingsSpritesPath}{buildingParameter.InnerText}");
@@ -135,18 +135,29 @@ public class DataLoader : MonoBehaviour
                         string[] names = buildingParameter.InnerText.Split(" ");
                         foreach (string name in names)
                         {
-                           
+
                             Sprite sprite = Resources.Load<Sprite>($"{_buildingsSpritesPath}{name}");
                             if (sprite == null)
                                 Debug.LogError($"DataLoader: Sprite {_buildingsSpritesPath}{name} doesn't exist");
                             else
-                                spr.Add ( sprite);
+                                spr.Add(sprite);
                         }
                         buildingData.SpritesUnfinished = spr.ToArray();
                         buildingData.SpritesUnfinishedCount = spr.Count;
-                        
                     }
-                }             
+                    if (buildingParameter.Name == "buildZonesId")
+                    {
+                        List<int> zonesId = new List<int>();
+                        string[] zones = buildingParameter.InnerText.Split(" ");
+                        foreach (string num in zones)
+                            zonesId.Add(int.Parse(num));
+                        buildingData.BuildInZones = zonesId.ToArray();
+                    }
+                    if (buildingParameter.Name == "canBeBuild")
+                    {
+                        buildingData.CanBeBuild = bool.Parse(buildingParameter.InnerText);
+                    }
+                }
                 Buildings.Add(buildingData);
             }
         }
@@ -159,6 +170,18 @@ public class DataLoader : MonoBehaviour
             Debug.Log($"Name = {level.Name} Id = {level.Id} Zones = {level.ZonesCount}");
             foreach (ZoneData zData in level.Zones)
                 Debug.Log($"zoneData.id = {zData.Id} zoneData.name = {zData.Name} zoneData.size = {zData.SizeInTiles} zoneData.Sprite = {zData.Sprite} zoneData.SeparatorSprite  {zData.SeparatorSprite}");
+        }
+    }
+    private void consoleLogLoadedBuildingData()
+    {
+        foreach (BuildingData buildingData in Buildings)
+        {
+            Debug.Log($"Id = {buildingData.Id} Name = {buildingData.Name} BuildingTime = {buildingData.BuildingTime} CanBeBuild = {buildingData.CanBeBuild}");
+            Debug.Log($"SpriteFinished = {buildingData.SpriteFinished} SpritesUnfinishedCount = {buildingData.SpritesUnfinishedCount}");
+            foreach (Sprite sp in buildingData.SpritesUnfinished)
+                Debug.Log($"SpriteUnfinished {sp}");
+            foreach (int zoneId in buildingData.BuildInZones)
+                Debug.Log($"BuildInZones = {zoneId}");
         }
     }
 }

@@ -3,11 +3,36 @@
   <building name = "Barracks">
     <sprite>Barracks</sprite>
     <buildTime>30</buildTime>
+    <buildZonesId>0</buildZonesId>
+    <canBeBuild>true</canBeBuild>
     <spriteUnfinished>BarracksUnfinished1 BarracksUnfinished2 BarracksUnfinished3</spriteUnfinished>
   </building>
   <building name = "Castle">
     <sprite>Castle</sprite>
     <buildTime>30</buildTime>
+    <buildZonesId>0</buildZonesId>
+    <canBeBuild>false</canBeBuild>
     <spriteUnfinished>CastleUnfinished1 CastleUnfinished2 CastleUnfinished3</spriteUnfinished>
+  </building>
+  <building name = "Lumber Mill">
+    <sprite>LumberMill</sprite>
+    <buildTime>25</buildTime>
+    <buildZonesId>2</buildZonesId>
+    <canBeBuild>true</canBeBuild>
+    <spriteUnfinished>LumberMillUnfinished1</spriteUnfinished>
+  </building>
+  <building name = "House">
+    <sprite>House</sprite>
+    <buildTime>20</buildTime>
+    <buildZonesId>1 2 3</buildZonesId>
+    <canBeBuild>true</canBeBuild>
+    <spriteUnfinished>HouseUnfinished1 HouseUnfinished2 HouseUnfinished3 HouseUnfinished4</spriteUnfinished>
+  </building>
+  <building name = "Blacksmith">
+    <sprite>Blacksmith</sprite>
+    <buildTime>30</buildTime>
+    <buildZonesId>0 1</buildZonesId>
+    <canBeBuild>true</canBeBuild>
+    <spriteUnfinished>BlacksmithUnfinished1</spriteUnfinished>
   </building>
 </buildings>

@@ -25,7 +25,6 @@ public class BuildingController : MonoBehaviour
     public void Init(BuildingData buildingData)
     {
         _data = buildingData;
-        Debug.Log($"{_data.Id}, {_data.BuildingTime}");
         _spriteRenderer = this.GetComponent<SpriteRenderer>();
         _spriteRenderer.sprite = _data.SpriteFinished;
         var size = _spriteRenderer.sprite.bounds.size;

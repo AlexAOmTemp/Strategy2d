@@ -26,6 +26,7 @@ public class BuildingButtons : MonoBehaviour
 			Debug.LogError("BuildingButtons: Id doesn't set");
 			return;
 		}
+		Debug.Log($"Button {Id} clicked");
 		_buildingSpawner.CreateBuildingPlacer((int)Id);
 	}
 }

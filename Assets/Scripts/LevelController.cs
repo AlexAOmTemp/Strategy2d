@@ -13,6 +13,10 @@ public class LevelController : MonoBehaviour
     private List<GameObject> _groundList = new List<GameObject>();
     private List<GameObject> _LevelList = new List<GameObject>();
     private GameObject _level;
+    public GameObject CurrentLevel {
+        get {   return _level;}
+        private set { _level = value;} }
+    public int CurrentLevelZonesCount { get; private set; } 
 
     public delegate void LevelCreated(GameObject Level);
     public static event LevelCreated LevelIsCreated;
@@ -32,6 +36,7 @@ public class LevelController : MonoBehaviour
         Vector3 groundSize = calculateGroundTileSize();
         Vector3 position = WorldStartPosition;
         _level = Instantiate(_levelPrefab, Vector3.zero, Quaternion.identity);
+        CurrentLevelZonesCount = DataLoader.Levels[levelId].ZonesCount;
 
         foreach (ZoneData zone in DataLoader.Levels[levelId].Zones)
         {

@@ -11,7 +11,6 @@ public class BuildingPlaceAvailible : MonoBehaviour
     private void Start()
     {
         _buttonAccept = this.transform.Find("Canvas").transform.Find("Accept").GetComponent<Button>();
-        Debug.Log($"{this} accept finded");
         if (_buttonAccept == null)
             Debug.LogError("BuildingPlaceAvailible: There is no Accept button");
     }

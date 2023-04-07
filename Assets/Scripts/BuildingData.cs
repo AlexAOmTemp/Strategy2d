@@ -9,8 +9,10 @@ public struct BuildingData
     public float BuildingTime { get; set; }
     public Sprite[] SpritesUnfinished { get; set; }
     public int SpritesUnfinishedCount { get; set; }
-
     public Sprite SpriteFinished { get; set; }
+    public int[] BuildInZones { get; set; }
+    public bool CanBeBuild { get; set; }
+
 }
 
 

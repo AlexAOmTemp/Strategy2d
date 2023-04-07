@@ -6,6 +6,10 @@ public class ZoneSeparatorController : MonoBehaviour
 {
     public int ZoneId { get; set; }
     public static int CurrentZone { get; private set; } = 0;
+
+    public delegate void ZoneChangedTo(int currentZoneId);
+    public static event ZoneChangedTo ZoneIsChangedTo;
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
@@ -14,6 +18,7 @@ public class ZoneSeparatorController : MonoBehaviour
                 CurrentZone = ZoneId + 1;
             else
                 CurrentZone = ZoneId;
+            ZoneIsChangedTo?.Invoke(CurrentZone);
         }
     }
     private void OnGUI()
