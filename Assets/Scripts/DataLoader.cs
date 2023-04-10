@@ -1,28 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml;
-using System.IO;
-using UnityEditor;
-
-public struct ZoneData
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public int SizeInTiles { get; set; }
-    public Sprite Sprite { get; set; }
-    public Sprite SeparatorSprite { get; set; }
-}
-public struct LevelData
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public ZoneData[] Zones { get; set; }
-    public int ZonesCount { get; set; }
-
-
-}
-
 
 public class DataLoader : MonoBehaviour
 {
@@ -35,9 +13,7 @@ public class DataLoader : MonoBehaviour
     void Awake()
     {
         levelParser(readFile("Levels"));
-
         buildingParser(readFile("Buildings"));
-
     }
     private string readFile(string fileName)
     {
@@ -112,6 +88,7 @@ public class DataLoader : MonoBehaviour
             foreach (XmlElement building in xRoot)
             {
                 var buildingData = new BuildingData();
+                ConstructionData constructionData = new ConstructionData();
 
                 XmlNode attr = building.Attributes.GetNamedItem("name");
                 buildingData.Name = attr?.Value;
@@ -119,16 +96,17 @@ public class DataLoader : MonoBehaviour
                 id++;
                 foreach (XmlNode buildingParameter in building.ChildNodes)
                 {
+                    
                     if (buildingParameter.Name == "sprite")
                     {
                         Sprite sprite = Resources.Load<Sprite>($"{_buildingsSpritesPath}{buildingParameter.InnerText}");
                         if (sprite == null)
                             Debug.LogError($"DataLoader: Sprite {_buildingsSpritesPath}{buildingParameter.InnerText} doesn't exist");
                         else
-                            buildingData.SpriteFinished = sprite;
+                            constructionData.SpriteFinished = sprite;
                     }
                     if (buildingParameter.Name == "buildTime")
-                        buildingData.BuildingTime = float.Parse(buildingParameter.InnerText);
+                        constructionData.BuildingTime = float.Parse(buildingParameter.InnerText);
                     if (buildingParameter.Name == "spriteUnfinished")
                     {
                         List<Sprite> spr = new List<Sprite>();
@@ -142,8 +120,8 @@ public class DataLoader : MonoBehaviour
                             else
                                 spr.Add(sprite);
                         }
-                        buildingData.SpritesUnfinished = spr.ToArray();
-                        buildingData.SpritesUnfinishedCount = spr.Count;
+                        constructionData.SpritesUnfinished = spr.ToArray();
+                        constructionData.SpritesUnfinishedCount = spr.Count;
                     }
                     if (buildingParameter.Name == "buildZonesId")
                     {
@@ -151,13 +129,18 @@ public class DataLoader : MonoBehaviour
                         string[] zones = buildingParameter.InnerText.Split(" ");
                         foreach (string num in zones)
                             zonesId.Add(int.Parse(num));
-                        buildingData.BuildInZones = zonesId.ToArray();
+                        constructionData.BuildInZones = zonesId.ToArray();
                     }
                     if (buildingParameter.Name == "canBeBuild")
                     {
-                        buildingData.CanBeBuild = bool.Parse(buildingParameter.InnerText);
+                        constructionData.CanBeBuild = bool.Parse(buildingParameter.InnerText);
+                    }
+                    if (buildingParameter.Name == "description")
+                    {
+                        constructionData.Description = buildingParameter.InnerText;
                     }
                 }
+                buildingData.ConstructionData = constructionData;
                 Buildings.Add(buildingData);
             }
         }
@@ -176,11 +159,11 @@ public class DataLoader : MonoBehaviour
     {
         foreach (BuildingData buildingData in Buildings)
         {
-            Debug.Log($"Id = {buildingData.Id} Name = {buildingData.Name} BuildingTime = {buildingData.BuildingTime} CanBeBuild = {buildingData.CanBeBuild}");
-            Debug.Log($"SpriteFinished = {buildingData.SpriteFinished} SpritesUnfinishedCount = {buildingData.SpritesUnfinishedCount}");
-            foreach (Sprite sp in buildingData.SpritesUnfinished)
+            Debug.Log($"Id = {buildingData.Id} Name = {buildingData.Name} BuildingTime = {buildingData.ConstructionData.BuildingTime} CanBeBuild = {buildingData.ConstructionData.CanBeBuild}");
+            Debug.Log($"SpriteFinished = {buildingData.ConstructionData.SpriteFinished} SpritesUnfinishedCount = {buildingData.ConstructionData.SpritesUnfinishedCount}");
+            foreach (Sprite sp in buildingData.ConstructionData.SpritesUnfinished)
                 Debug.Log($"SpriteUnfinished {sp}");
-            foreach (int zoneId in buildingData.BuildInZones)
+            foreach (int zoneId in buildingData.ConstructionData.BuildInZones)
                 Debug.Log($"BuildInZones = {zoneId}");
         }
     }

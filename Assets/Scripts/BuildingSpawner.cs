@@ -38,8 +38,8 @@ public class BuildingSpawner : MonoBehaviour
         }
         _currentBuildingId = id;
         _currentBuilding = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _buildingPlacePoint);
-        var param = _currentBuilding.GetComponent<BuildingController>();
-        param.Init(DataLoader.Buildings[id]);
+        var param = _currentBuilding.GetComponent<ConstructionController>();
+        param.Init(DataLoader.Buildings[id].Name,DataLoader.Buildings[id].ConstructionData);
         _currentBuilding.transform.position = _buildingPlacePoint.position;
         _currentBuilding.transform.Translate(Vector3.up * param.Height / 2);
         _currentState = BuildingState.HeroAttached;
@@ -47,20 +47,22 @@ public class BuildingSpawner : MonoBehaviour
     public void PlaceAssepted()
     {
         _currentBuilding.transform.SetParent(_level.transform);
-        var building = Instantiate(_buildingPrefab, Vector3.zero, Quaternion.identity, _level.transform);
-        var param = building.GetComponent<BuildingController>();
+   
+        var building = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _level.transform);
+        var param = building.GetComponent<ConstructionController>();
         if (_currentBuildingId!=null)
-            param.Init(DataLoader.Buildings[(int)_currentBuildingId]);
+            param.Init(DataLoader.Buildings[(int)_currentBuildingId].Name,DataLoader.Buildings[(int)_currentBuildingId].ConstructionData);
         building.transform.position = _currentBuilding.transform.position;
-        
+        building.GetComponentInChildren<Canvas>().sortingLayerName = "Buildings";
         GameObject.Destroy(_currentBuilding.gameObject);
         _currentBuildingId = null;
         _currentState = BuildingState.Idle;
-        BuildingsInProcess.Add(building);
         
         _currentBuilding = null;
+        BuildingsInProcess.Add(building);
+        
         NewBuildingIsInProcess?.Invoke(BuildingsInProcess[BuildingsInProcess.Count-1]);
-        param.StartBuilding();
+        building.GetComponent<ConstructionController>().StartConstruction();
     }
     public void PlaceDeclined()
     {

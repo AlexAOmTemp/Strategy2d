@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 538135640770026044}
   - component: {fileID: 6861699895540940091}
   - component: {fileID: 8136227445995505321}
-  - component: {fileID: 4830979139867965653}
   m_Layer: 0
   m_Name: Building
   m_TagString: Building
@@ -134,16 +133,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4830979139867965653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2203017188923749362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7916a4047d2012e40a6a59ab9264e01d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: {fileID: 0}

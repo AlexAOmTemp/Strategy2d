@@ -36,13 +36,13 @@ public class GuiController : MonoBehaviour
         }
         foreach (BuildingData building in DataLoader.Buildings)
         {
-            if (building.CanBeBuild == false)
+            if (building.ConstructionData.CanBeBuild == false)
                 continue;
             var button = Instantiate(_buttonPrefab, Vector3.zero, Quaternion.identity, _buildingsPanel.transform);
             button.GetComponentInChildren<TextMeshProUGUI>().SetText(building.Name);
             button.GetComponent<BuildingButtons>().Id = building.Id;
          
-            foreach (int zoneId in building.BuildInZones)
+            foreach (int zoneId in building.ConstructionData.BuildInZones)
             {
                 while (zoneId > _buttonsSets.Count-1)
                     _buttonsSets.Add(new List<GameObject>());
@@ -64,7 +64,8 @@ public class GuiController : MonoBehaviour
     {
         foreach (var button in _buttons)
             button.SetActive(false);
-        foreach (var button in _buttonsSets[currentZone])
-            button.SetActive(true);
+        if (currentZone < _buttonsSets.Count)
+            foreach (var button in _buttonsSets[currentZone])
+                button.SetActive(true);
     }
 }
