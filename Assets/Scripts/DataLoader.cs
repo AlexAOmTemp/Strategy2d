@@ -4,21 +4,19 @@ using System.Xml;
 
 public class DataLoader : MonoBehaviour
 {
-    private const string _unitsSpritesPath = "Sprites/Units/";
-    private const string _buildingsSpritesPath = "Sprites/Buildings/";
-    private const string _levelsSpritesPath = "Sprites/Levels/";
+    [SerializeField] private DataFilesLoader _dataFilesLoader;
+    private const string _unitsSpritesFolder = "Units";
+    private const string _buildingsSpritesFolder = "Buildings";
+    private const string _levelsSpritesFolder = "Levels";
     public static List<LevelData> Levels { get; private set; } = new List<LevelData>();
     public static List<BuildingData> Buildings { get; private set; } = new List<BuildingData>();
     public static List<GameObject> Units { get; private set; } = new List<GameObject>();
+    
+
     void Awake()
-    {
-        levelParser(readFile("Levels"));
-        buildingParser(readFile("Buildings"));
-    }
-    private string readFile(string fileName)
-    {
-        var textFile = Resources.Load<TextAsset>(fileName);
-        return textFile.text;
+    { 
+        levelParser(_dataFilesLoader.LoadedXMLFiles["Levels"]);
+        buildingParser(_dataFilesLoader.LoadedXMLFiles["Buildings"] );
     }
     private void levelParser(string xml)
     {
@@ -38,43 +36,64 @@ public class DataLoader : MonoBehaviour
                 XmlNode attr = level.Attributes.GetNamedItem("name");
                 levelData.Name = attr?.Value;
                 Debug.Log($"levelData.Name = {levelData.Name}");
-                foreach (XmlNode zone in level.ChildNodes)
+                foreach (XmlNode levelParameter in level.ChildNodes)
                 {
-                    ZoneData zoneData = new ZoneData();
-                    zoneData.Id = zoneId;
-                    zoneId++;
-                    zoneData.Name = zone.Attributes.GetNamedItem("name")?.Value;
-                    foreach (XmlNode zoneParameter in zone.ChildNodes)
+                    if (levelParameter.Name == "background")
                     {
-                        if (zoneParameter.Name == "sizeInTitles")
+                        Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_levelsSpritesFolder].Find(i => i.name == levelParameter.InnerText));
+                        if (sprite == null)
+                            Debug.LogError($"DataLoader: Sprite {_levelsSpritesFolder}{name} doesn't exist");
+                        else
                         {
-                            zoneData.SizeInTiles = int.Parse(zoneParameter.InnerText);
-                            if (zoneData.SizeInTiles < 0 || zoneData.SizeInTiles > 1000)
-                                Debug.LogError($"DataLoader: levelParser incorrect zone {zoneData.Name}:{zoneData.Id} size value = {zoneData.SizeInTiles}");
-                        }
-                        if (zoneParameter.Name == "sprite")
-                        {
-                            Sprite sprite = Resources.Load<Sprite>($"{_levelsSpritesPath}{zoneParameter.InnerText}");
-                            if (sprite == null)
-                                Debug.LogError($"DataLoader: Sprite {_levelsSpritesPath}{zoneParameter.InnerText} doesn't exist");
-                            else
-                                zoneData.Sprite = sprite;
-                        }
-                        if (zoneParameter.Name == "separatorSprite")
-                        {
-                            Sprite sprite = Resources.Load<Sprite>($"{_levelsSpritesPath}{zoneParameter.InnerText}");
-                            if (sprite == null)
-                                Debug.LogError($"DataLoader: Sprite {_levelsSpritesPath}{zoneParameter.InnerText} doesn't exist");
-                            else
-                                zoneData.SeparatorSprite = sprite;
+                            Texture2D texture = sprite.texture;
+                            texture.wrapMode = TextureWrapMode.Repeat;
+                            levelData.Background = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f,0, SpriteMeshType.FullRect); 
                         }
                     }
-                    zones.Add(zoneData);
+                    if (levelParameter.Name == "zone")
+                    {
+                        ZoneData zoneData = new ZoneData();
+                        zoneData.Id = zoneId;
+                        zoneId++;
+                        zoneData.Name = levelParameter.Attributes.GetNamedItem("name")?.Value;
+                        foreach (XmlNode zoneParameter in levelParameter.ChildNodes)
+                        {
+                            if (zoneParameter.Name == "sizeInTitles")
+                            {
+                                zoneData.SizeInTiles = int.Parse(zoneParameter.InnerText);
+                                if (zoneData.SizeInTiles < 0 || zoneData.SizeInTiles > 1000)
+                                    Debug.LogError($"DataLoader: levelParser incorrect zone {zoneData.Name}:{zoneData.Id} size value = {zoneData.SizeInTiles}");
+                            }
+                            if (zoneParameter.Name == "sprite")
+                            {
+                                foreach (var sprite in _dataFilesLoader.LoadedSpriteFiles[_levelsSpritesFolder])
+                                    if (sprite.name == zoneParameter.InnerText)
+                                    {
+                                        zoneData.Sprite = sprite;
+                                        break;
+                                    }
+
+                                if (zoneData.Sprite == null)
+                                    Debug.LogError($"DataLoader: Sprite {_levelsSpritesFolder}{zoneParameter.InnerText} doesn't exist");
+                            }
+                            if (zoneParameter.Name == "separatorSprite")
+                            {
+                                Sprite sprite = Resources.Load<Sprite>($"{_levelsSpritesFolder}{zoneParameter.InnerText}");
+                                if (sprite == null)
+                                    Debug.LogError($"DataLoader: Sprite {_levelsSpritesFolder}{zoneParameter.InnerText} doesn't exist");
+                                else
+                                    zoneData.SeparatorSprite = sprite;
+                            }
+                        }
+                        zones.Add(zoneData);
+                    }
+                    
                 }
                 levelData.Zones = zones.ToArray();
                 levelData.ZonesCount = zones.Count;
                 Levels.Add(levelData);
             }
+            consoleLogLoadedLevelData();
         }
     }
     private void buildingParser(string xml)
@@ -99,11 +118,14 @@ public class DataLoader : MonoBehaviour
                     
                     if (buildingParameter.Name == "sprite")
                     {
-                        Sprite sprite = Resources.Load<Sprite>($"{_buildingsSpritesPath}{buildingParameter.InnerText}");
-                        if (sprite == null)
-                            Debug.LogError($"DataLoader: Sprite {_buildingsSpritesPath}{buildingParameter.InnerText} doesn't exist");
-                        else
-                            constructionData.SpriteFinished = sprite;
+                        foreach (var sprite in _dataFilesLoader.LoadedSpriteFiles[_buildingsSpritesFolder])
+                            if (sprite.name == buildingParameter.InnerText)
+                            {
+                                constructionData.SpriteFinished = sprite;
+                                break;
+                            }
+                        if (constructionData.SpriteFinished == null)
+                            Debug.LogError($"DataLoader: Sprite {_levelsSpritesFolder}{buildingParameter.InnerText} doesn't exist");
                     }
                     if (buildingParameter.Name == "buildTime")
                         constructionData.BuildingTime = float.Parse(buildingParameter.InnerText);
@@ -113,10 +135,9 @@ public class DataLoader : MonoBehaviour
                         string[] names = buildingParameter.InnerText.Split(" ");
                         foreach (string name in names)
                         {
-
-                            Sprite sprite = Resources.Load<Sprite>($"{_buildingsSpritesPath}{name}");
+                            Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_buildingsSpritesFolder].Find(i => i.name == name));
                             if (sprite == null)
-                                Debug.LogError($"DataLoader: Sprite {_buildingsSpritesPath}{name} doesn't exist");
+                                Debug.LogError($"DataLoader: Sprite {_buildingsSpritesFolder}{name} doesn't exist");
                             else
                                 spr.Add(sprite);
                         }

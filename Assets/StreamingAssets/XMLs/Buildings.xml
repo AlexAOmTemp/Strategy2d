@@ -1,0 +1,80 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<buildings>
+  <building name = "Barracks">
+    <sprite>Barracks</sprite>
+    <canBeBuild>true</canBeBuild>
+    <buildTime>30</buildTime>
+    <buildZonesId>0</buildZonesId>
+    <description>Allows to recruit units</description>
+      <spriteUnfinished>BarracksUnfinished1 BarracksUnfinished2 BarracksUnfinished3</spriteUnfinished>
+  </building>
+  <building name = "Castle">
+    <sprite>Castle</sprite>
+    <canBeBuild>false</canBeBuild>
+    <spriteUnfinished>CastleUnfinished1 CastleUnfinished2 CastleUnfinished3</spriteUnfinished>
+  </building>
+  <building name = "Lumber Mill">
+    <canBeBuild>true</canBeBuild>
+    <sprite>LumberMill</sprite>
+    <buildTime>25</buildTime>
+    <buildZonesId>2</buildZonesId>
+    <description>Workers can gather Lumber here</description>
+    <spriteUnfinished>LumberMillUnfinished1</spriteUnfinished>
+  </building>
+  <building name = "House">
+    <canBeBuild>true</canBeBuild>
+    <sprite>House</sprite>
+    <buildTime>20</buildTime>
+    <buildZonesId>1 2 3</buildZonesId>
+    <description>Increase population limit</description>
+    <spriteUnfinished>HouseUnfinished1 HouseUnfinished2 HouseUnfinished3 HouseUnfinished4</spriteUnfinished>
+  </building>
+  <building name = "Blacksmith">
+    <canBeBuild>true</canBeBuild>
+    <sprite>Blacksmith</sprite>
+    <buildTime>30</buildTime>
+    <buildZonesId>0 1</buildZonesId>
+    <description>Improves units equip</description>
+    <spriteUnfinished>BlacksmithUnfinished1</spriteUnfinished>
+  </building>
+  <building name = "256">
+    <canBeBuild>true</canBeBuild>
+    <sprite>256</sprite>
+    <buildTime>10</buildTime>
+    <buildZonesId>0 1</buildZonesId>
+    <description>256</description>
+    <spriteUnfinished>256</spriteUnfinished>
+  </building>
+  <building name = "512">
+    <canBeBuild>true</canBeBuild>
+    <sprite>512</sprite>
+    <buildTime>10</buildTime>
+    <buildZonesId>0 1</buildZonesId>
+    <description>512</description>
+    <spriteUnfinished>512</spriteUnfinished>
+  </building>
+  <building name = "a256">
+    <canBeBuild>true</canBeBuild>
+    <sprite>a256</sprite>
+    <buildTime>10</buildTime>
+    <buildZonesId>0 1</buildZonesId>
+    <description>a256</description>
+    <spriteUnfinished>a256</spriteUnfinished>
+  </building>
+  <building name = "b256">
+    <canBeBuild>true</canBeBuild>
+    <sprite>b256</sprite>
+    <buildTime>10</buildTime>
+    <buildZonesId>0 1</buildZonesId>
+    <description>b256</description>
+    <spriteUnfinished>b256</spriteUnfinished>
+  </building>
+  <building name = "b512">
+    <canBeBuild>true</canBeBuild>
+    <sprite>b512</sprite>
+    <buildTime>10</buildTime>
+    <buildZonesId>0 1</buildZonesId>
+    <description>b512</description>
+    <spriteUnfinished>b512</spriteUnfinished>
+  </building>
+</buildings>

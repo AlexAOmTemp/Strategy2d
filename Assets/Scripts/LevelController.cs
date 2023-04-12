@@ -10,6 +10,8 @@ public class LevelController : MonoBehaviour
 
     public const float GroundLevel = -4.158f;
     public Vector3 WorldStartPosition { get; private set; }
+    public Vector3 WorldFinishPosition { get; private set; }
+
     private List<GameObject> _groundList = new List<GameObject>();
     private List<GameObject> _LevelList = new List<GameObject>();
     private GameObject _level;
@@ -55,6 +57,12 @@ public class LevelController : MonoBehaviour
             var separator = Instantiate(_separatorPrefab, separatorPosition, Quaternion.identity, newZone.transform);
             separator.GetComponent<ZoneSeparatorController>().ZoneId = zone.Id;
         }
+        WorldFinishPosition = new Vector3(position.x, WorldStartPosition.y, 0);
+        var backgroundSpriteRenderer = _level.GetComponentInChildren<SpriteRenderer>();
+        backgroundSpriteRenderer.sprite = DataLoader.Levels[levelId].Background;
+        //backgroundSpriteRenderer.bounds.
+        var background = _level.transform.GetChild(0);
+        background.position = new Vector3((WorldFinishPosition.x - WorldStartPosition.x) / 2, 0, 0);
         _LevelList.Add(_level);
         LevelIsCreated?.Invoke(_level);
     }
