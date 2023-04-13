@@ -2,6 +2,8 @@
 <levels>
   <level name = "StandartLevel1">
 	<background>Background</background>
+	<groundLevel>-4,158</groundLevel>
+	<drowningInGround>0,1</drowningInGround>
     <zone name = "CastleZone" >
       <sizeInTitles>20</sizeInTitles>
       <sprite>GroundCastle</sprite>

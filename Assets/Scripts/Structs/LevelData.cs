@@ -15,6 +15,8 @@ public struct LevelData
     public int Id { get; set; }
     public string Name { get; set; }
     public Sprite Background { get; set; }
+    public float GroundLevel { get; set; }
+    public float DrowningInGround { get; set; }
     public ZoneData[] Zones { get; set; }
     public int ZonesCount { get; set; }
 }

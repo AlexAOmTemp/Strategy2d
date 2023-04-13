@@ -7,8 +7,6 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject _groundPrefab;
     [SerializeField] private GameObject _levelPrefab;
     [SerializeField] private GameObject _separatorPrefab;
-
-    public const float GroundLevel = -4.158f;
     public Vector3 WorldStartPosition { get; private set; }
     public Vector3 WorldFinishPosition { get; private set; }
 
@@ -34,7 +32,7 @@ public class LevelController : MonoBehaviour
             Debug.LogError("LevelController: trying to create unexisted level");
             return;
         }
-        WorldStartPosition = new Vector3(0, GroundLevel, 0);
+        WorldStartPosition = new Vector3(0, DataLoader.Levels[levelId].GroundLevel, 0);
         Vector3 groundSize = calculateGroundTileSize();
         Vector3 position = WorldStartPosition;
         _level = Instantiate(_levelPrefab, Vector3.zero, Quaternion.identity);
@@ -48,7 +46,10 @@ public class LevelController : MonoBehaviour
             {
                 var ground = Instantiate(_groundPrefab, position, Quaternion.identity, newZone.transform);
                 ground.GetComponent<SpriteRenderer>().sprite = zone.Sprite;
-                ground.GetComponent<BoxCollider2D>().size = groundSize;
+                var collderHeight = groundSize.y * (1 - DataLoader.Levels[levelId].DrowningInGround);
+                var boxCollider = ground.GetComponent<BoxCollider2D>();
+                boxCollider.size = new Vector2 (groundSize.x, collderHeight);
+                boxCollider.offset = new Vector2(0,-((groundSize.y - collderHeight) / 2));
                 position.x += groundSize.x;
                 _groundList.Add(ground);
             }
@@ -60,6 +61,8 @@ public class LevelController : MonoBehaviour
         WorldFinishPosition = new Vector3(position.x, WorldStartPosition.y, 0);
         var backgroundSpriteRenderer = _level.GetComponentInChildren<SpriteRenderer>();
         backgroundSpriteRenderer.sprite = DataLoader.Levels[levelId].Background;
+        backgroundSpriteRenderer.drawMode = SpriteDrawMode.Tiled;
+        backgroundSpriteRenderer.size = new Vector2( (WorldFinishPosition.x - WorldStartPosition.x)*1.6f, 12.64f);
         //backgroundSpriteRenderer.bounds.
         var background = _level.transform.GetChild(0);
         background.position = new Vector3((WorldFinishPosition.x - WorldStartPosition.x) / 2, 0, 0);

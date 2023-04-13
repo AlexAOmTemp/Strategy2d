@@ -38,6 +38,15 @@ public class DataLoader : MonoBehaviour
                 Debug.Log($"levelData.Name = {levelData.Name}");
                 foreach (XmlNode levelParameter in level.ChildNodes)
                 {
+                    if (levelParameter.Name == "groundLevel")
+                    {
+                        Debug.Log(levelParameter.InnerText);
+                        levelData.GroundLevel = float.Parse(levelParameter.InnerText);
+                    }
+                    if (levelParameter.Name == "drowningInGround")
+                    {
+                        levelData.DrowningInGround = float.Parse(levelParameter.InnerText);
+                    }
                     if (levelParameter.Name == "background")
                     {
                         Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_levelsSpritesFolder].Find(i => i.name == levelParameter.InnerText));
@@ -171,7 +180,7 @@ public class DataLoader : MonoBehaviour
     {
         foreach (LevelData level in Levels)
         {
-            Debug.Log($"Name = {level.Name} Id = {level.Id} Zones = {level.ZonesCount}");
+            Debug.Log($"Name = {level.Name} Id = {level.Id} GroundLevel = {level.GroundLevel} DrowningInGround = {level.DrowningInGround} Zones = {level.ZonesCount}");
             foreach (ZoneData zData in level.Zones)
                 Debug.Log($"zoneData.id = {zData.Id} zoneData.name = {zData.Name} zoneData.size = {zData.SizeInTiles} zoneData.Sprite = {zData.Sprite} zoneData.SeparatorSprite  {zData.SeparatorSprite}");
         }
