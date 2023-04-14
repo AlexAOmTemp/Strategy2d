@@ -1,0 +1,12 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<units>
+  <unit name = "Worker">
+    <race>Human</race>
+    <runSpeed>3,0</runSpeed>
+    <canFly>false</canFly>
+    <behaviorModel>Worker</behaviorModel>
+    <constructionEfficiency>1,0</constructionEfficiency>
+    <spriteAlive>WorkerAlive</spriteAlive>
+    <spriteDead>WorkerDead</spriteDead>
+  </unit>
+</units>

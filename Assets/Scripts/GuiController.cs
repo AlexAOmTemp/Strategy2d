@@ -9,7 +9,7 @@ public class GuiController : MonoBehaviour
     [SerializeField] private GameObject _buttonPrefab;
     //[SerializeField] private float _buttonHeight = 30;
     [SerializeField] private GameObject _buildingsPanel;
-    [SerializeField] private GameObject _zoneSeparatorController;
+    //[SerializeField] private GameObject _zoneSeparatorController;
 
     private List<GameObject> _buttons = new List<GameObject>();
     private List<List<GameObject>> _buttonsSets = new List<List<GameObject>>();

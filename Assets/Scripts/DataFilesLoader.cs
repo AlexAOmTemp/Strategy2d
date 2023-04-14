@@ -35,7 +35,7 @@ public class DataFilesLoader : MonoBehaviour
                 sprites.Add(fileToSprite(file));
             LoadedSpriteFiles.Add(dirInfo.Name, sprites);
         }
-        consoleLogLoadedFiles();
+        //consoleLogLoadedFiles();
     }
     private string fileToString(FileInfo file)
     {
