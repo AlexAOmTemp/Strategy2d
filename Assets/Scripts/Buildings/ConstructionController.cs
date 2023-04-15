@@ -18,7 +18,7 @@ public class ConstructionController : MonoBehaviour
     private int _currentConstructionPhase;
     private SpriteRenderer _spriteRenderer;
     private List<GameObject> _workersInvolved = new List<GameObject>();
-    private ConstructionData _data;
+    private BuildingData _data;
 
    
     public delegate void ConstructionFinished(GameObject Building);
@@ -26,7 +26,7 @@ public class ConstructionController : MonoBehaviour
 
     public float Height { get; private set; }
   
-    public void Init(string Name, ConstructionData buildingData)
+    public void Init(string Name, BuildingData buildingData)
     {
         _data = buildingData;
         _spriteRenderer = this.GetComponent<SpriteRenderer>();
@@ -34,6 +34,7 @@ public class ConstructionController : MonoBehaviour
         var size = _spriteRenderer.sprite.bounds.size;
         this.GetComponent<BoxCollider2D>().size = size;
         Height = size.y;
+        this.name = Name;
         _panelUnplaced.transform.Find("NameText").GetComponent<TextMeshProUGUI>().SetText(Name);
         _panelUnplaced.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().SetText(buildingData.Description);
         _panelUnplaced.transform.Find("TimeLeft").GetComponent<TextMeshProUGUI>().SetText(buildingData.BuildingTime.ToString());

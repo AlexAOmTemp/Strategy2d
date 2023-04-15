@@ -39,7 +39,7 @@ public class BuildingSpawner : MonoBehaviour
         _currentBuildingId = id;
         _currentBuilding = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _buildingPlacePoint);
         var param = _currentBuilding.GetComponent<ConstructionController>();
-        param.Init(DataLoader.Buildings[id].Name,DataLoader.Buildings[id].ConstructionData);
+        param.Init(DataLoader.Buildings[id].Name,DataLoader.Buildings[id]);
         _currentBuilding.transform.position = _buildingPlacePoint.position;
         _currentBuilding.transform.Translate(Vector3.up * param.Height / 2);
         _currentState = BuildingState.HeroAttached;
@@ -51,7 +51,7 @@ public class BuildingSpawner : MonoBehaviour
         var building = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _level.transform);
         var param = building.GetComponent<ConstructionController>();
         if (_currentBuildingId!=null)
-            param.Init(DataLoader.Buildings[(int)_currentBuildingId].Name,DataLoader.Buildings[(int)_currentBuildingId].ConstructionData);
+            param.Init(DataLoader.Buildings[(int)_currentBuildingId].Name,DataLoader.Buildings[(int)_currentBuildingId]);
         building.transform.position = _currentBuilding.transform.position;
         building.GetComponentInChildren<Canvas>().sortingLayerName = "Buildings";
         GameObject.Destroy(_currentBuilding.gameObject);
@@ -74,12 +74,21 @@ public class BuildingSpawner : MonoBehaviour
     public void BuildingFinished(GameObject building)
     {
         if (BuildingsInProcess.Contains(building))
+        {
+            onBuildingFinished(building);
             BuildingsInProcess.Remove(building);
+        }
         else
             Debug.LogError("BuildingSpawner: try to remove unexisting building");
     }
     private void onLevelCreated(GameObject level)
     {
         _level = level;
+    }
+    private void onBuildingFinished(GameObject building)
+    {
+        Destroy(building.GetComponent<BuildingPlaceAvailible>());
+        Destroy(building.GetComponent<ConstructionController>());
+        building.GetComponent<ProductSpawner>().enabled=true;
     }
 }

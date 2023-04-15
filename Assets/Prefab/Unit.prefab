@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 2520487959407160321}
   - component: {fileID: 2520487959407160320}
   - component: {fileID: 2520487959407160335}
-  - component: {fileID: -5657875044881306066}
+  - component: {fileID: -2759769668538951903}
   m_Layer: 0
   m_Name: Unit
-  m_TagString: Player
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,19 +134,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &-5657875044881306066
-CapsuleCollider2D:
+--- !u!114 &-2759769668538951903
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2520487959407160334}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.9, y: 0.91}
-  m_Direction: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 198c39dc85fde864e9d6f5b6fef32a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _distanceDetectorPrefab: {fileID: 7378147437286907057, guid: 414a6709685e58044bec2683ff8c6772, type: 3}

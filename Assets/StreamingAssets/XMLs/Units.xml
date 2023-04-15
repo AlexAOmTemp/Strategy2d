@@ -1,6 +1,8 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <units>
   <unit name = "Worker">
+    <productsIn>Castle</productsIn>
+    <baseSpawningTime>10</baseSpawningTime>
     <race>Human</race>
     <runSpeed>3,0</runSpeed>
     <canFly>false</canFly>
@@ -8,5 +10,27 @@
     <constructionEfficiency>1,0</constructionEfficiency>
     <spriteAlive>WorkerAlive</spriteAlive>
     <spriteDead>WorkerDead</spriteDead>
+  </unit>
+  <unit name = "Archer">
+    <productsIn>Barracks House</productsIn>
+    <baseSpawningTime>10</baseSpawningTime>
+    <race>Human</race>
+    <runSpeed>3,0</runSpeed>
+    <canFly>false</canFly>
+    <behaviorModel>RangeWarrior</behaviorModel>
+    <constructionEfficiency>1,0</constructionEfficiency>
+    <spriteAlive>Archer</spriteAlive>
+    <spriteDead>Archer</spriteDead>
+  </unit>
+  <unit name = "Warrior">
+    <productsIn>Barracks</productsIn>
+    <baseSpawningTime>10</baseSpawningTime>
+    <race>Human</race>
+    <runSpeed>3,0</runSpeed>
+    <canFly>false</canFly>
+    <behaviorModel>Warrior</behaviorModel>
+    <constructionEfficiency>1,0</constructionEfficiency>
+    <spriteAlive>Warrior</spriteAlive>
+    <spriteDead>Warrior</spriteDead>
   </unit>
 </units>

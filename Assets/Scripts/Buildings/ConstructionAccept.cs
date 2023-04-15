@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingAccept : MonoBehaviour
+public class ConstructionAccept : MonoBehaviour
 {
 	private BuildingSpawner _buildingSpawner;
 	void Start()

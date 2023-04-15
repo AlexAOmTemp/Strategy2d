@@ -3,10 +3,10 @@
   <building name = "Barracks">
     <sprite>Barracks</sprite>
     <canBeBuild>true</canBeBuild>
-    <buildTime>30</buildTime>
+    <buildTime>5</buildTime>
     <buildZonesId>0</buildZonesId>
     <description>Allows to recruit units</description>
-      <spriteUnfinished>BarracksUnfinished1 BarracksUnfinished2 BarracksUnfinished3</spriteUnfinished>
+    <spriteUnfinished>BarracksUnfinished1 BarracksUnfinished2 BarracksUnfinished3</spriteUnfinished>
   </building>
   <building name = "Castle">
     <sprite>Castle</sprite>

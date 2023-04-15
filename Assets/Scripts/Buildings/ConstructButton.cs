@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingButtons : MonoBehaviour
+public class ConstructButton : MonoBehaviour
 {
 	private BuildingSpawner _buildingSpawner;
 	public int? Id { set; get; }
@@ -13,7 +13,7 @@ public class BuildingButtons : MonoBehaviour
 		_buildingSpawner = GameObject.Find("BuildingProcessor").GetComponent<BuildingSpawner>(); ;
 		if (Id == null)
 		{
-			Debug.LogError("BuildingButtons: Id doesn't set");
+			Debug.LogError("ConstructButton: Id doesn't set");
 		}
 		Button btn = this.GetComponent<Button>();
 		btn.onClick.AddListener(TaskOnClick);
@@ -23,7 +23,7 @@ public class BuildingButtons : MonoBehaviour
 	{
 		if (Id == null)
 		{
-			Debug.LogError("BuildingButtons: Id doesn't set");
+			Debug.LogError("ConstructButton: Id doesn't set");
 			return;
 		}
 		_buildingSpawner.CreateBuildingPlacer((int)Id);

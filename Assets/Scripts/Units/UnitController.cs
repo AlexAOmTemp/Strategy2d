@@ -97,10 +97,10 @@ public class UnitController : MonoBehaviour
     }
     private void meleeAttack()
     {
-        Debug.Log($"Unit {_data.Name}:{_data.Id} attacks {_target}");
+        Debug.Log($"Unit {_data.Name}:{_data.TypeId} attacks {_target}");
     }
     private void rangeAttack()
     {
-        Debug.Log($"Unit {_data.Name}:{_data.Id} attacks {_target}");
+        Debug.Log($"Unit {_data.Name}:{_data.TypeId} attacks {_target}");
     }
 }

@@ -33,28 +33,27 @@ public class DataLoader : MonoBehaviour
             foreach (XmlElement building in xRoot)
             {
                 var buildingData = new BuildingData();
-                ConstructionData constructionData = new ConstructionData();
+                
 
                 XmlNode attr = building.Attributes.GetNamedItem("name");
                 buildingData.Name = attr?.Value;
-                buildingData.Id = id;
+                buildingData.TypeId = id;
                 id++;
                 foreach (XmlNode buildingParameter in building.ChildNodes)
                 {
-
                     if (buildingParameter.Name == "sprite")
                     {
                         foreach (var sprite in _dataFilesLoader.LoadedSpriteFiles[_buildingsSpritesFolder])
                             if (sprite.name == buildingParameter.InnerText)
                             {
-                                constructionData.SpriteFinished = sprite;
+                                buildingData.SpriteFinished = sprite;
                                 break;
                             }
-                        if (constructionData.SpriteFinished == null)
+                        if (buildingData.SpriteFinished == null)
                             Debug.LogError($"DataLoader: Sprite {_levelsSpritesFolder}{buildingParameter.InnerText} doesn't exist");
                     }
                     if (buildingParameter.Name == "buildTime")
-                        constructionData.BuildingTime = float.Parse(buildingParameter.InnerText);
+                        buildingData.BuildingTime = float.Parse(buildingParameter.InnerText);
                     if (buildingParameter.Name == "spriteUnfinished")
                     {
                         List<Sprite> spr = new List<Sprite>();
@@ -67,8 +66,8 @@ public class DataLoader : MonoBehaviour
                             else
                                 spr.Add(sprite);
                         }
-                        constructionData.SpritesUnfinished = spr.ToArray();
-                        constructionData.SpritesUnfinishedCount = spr.Count;
+                        buildingData.SpritesUnfinished = spr.ToArray();
+                        buildingData.SpritesUnfinishedCount = spr.Count;
                     }
                     if (buildingParameter.Name == "buildZonesId")
                     {
@@ -76,18 +75,17 @@ public class DataLoader : MonoBehaviour
                         string[] zones = buildingParameter.InnerText.Split(" ");
                         foreach (string num in zones)
                             zonesId.Add(int.Parse(num));
-                        constructionData.BuildInZones = zonesId.ToArray();
+                        buildingData.BuildInZones = zonesId.ToArray();
                     }
                     if (buildingParameter.Name == "canBeBuild")
                     {
-                        constructionData.CanBeBuild = bool.Parse(buildingParameter.InnerText);
+                        buildingData.CanBeBuild = bool.Parse(buildingParameter.InnerText);
                     }
                     if (buildingParameter.Name == "description")
                     {
-                        constructionData.Description = buildingParameter.InnerText;
+                        buildingData.Description = buildingParameter.InnerText;
                     }
                 }
-                buildingData.ConstructionData = constructionData;
                 Buildings.Add(buildingData);
             }
         }
@@ -196,6 +194,15 @@ public class DataLoader : MonoBehaviour
 
                 foreach (XmlNode unitParameter in unit.ChildNodes)
                 {
+
+                    if (unitParameter.Name == "baseSpawningTime")
+                    {
+                        UnitData.BaseProductionTime = float.Parse(unitParameter.InnerText);
+                    }
+                    if (unitParameter.Name == "productsIn")
+                    {
+                        UnitData.ProductsIn = unitParameter.InnerText.Split(" ");
+                    }
                     if (unitParameter.Name == "race")
                     {
                         UnitData.Race = unitParameter.InnerText;
@@ -253,11 +260,11 @@ public class DataLoader : MonoBehaviour
     {
         foreach (BuildingData buildingData in Buildings)
         {
-            Debug.Log($"Id = {buildingData.Id} Name = {buildingData.Name} BuildingTime = {buildingData.ConstructionData.BuildingTime} CanBeBuild = {buildingData.ConstructionData.CanBeBuild}");
-            Debug.Log($"SpriteFinished = {buildingData.ConstructionData.SpriteFinished} SpritesUnfinishedCount = {buildingData.ConstructionData.SpritesUnfinishedCount}");
-            foreach (Sprite sp in buildingData.ConstructionData.SpritesUnfinished)
+            Debug.Log($"Id = {buildingData.TypeId} Name = {buildingData.Name} BuildingTime = {buildingData.BuildingTime} CanBeBuild = {buildingData.CanBeBuild}");
+            Debug.Log($"SpriteFinished = {buildingData.SpriteFinished} SpritesUnfinishedCount = {buildingData.SpritesUnfinishedCount}");
+            foreach (Sprite sp in buildingData.SpritesUnfinished)
                 Debug.Log($"SpriteUnfinished {sp}");
-            foreach (int zoneId in buildingData.ConstructionData.BuildInZones)
+            foreach (int zoneId in buildingData.BuildInZones)
                 Debug.Log($"BuildInZones = {zoneId}");
         }
     }
@@ -280,24 +287,4 @@ public class DataLoader : MonoBehaviour
             Debug.Log(toLog);
         }
     }
-
-   
-    public int TypeId { get; set; }
-    public string Name { get; set; }
-    public string Race { get; set; }
-    public float RunSpeed { get; set; }
-    public string Owner { get; set; }
-    public bool CanFly { get; set; }
-    public bool CanMove { get; set; }
-    public bool CanAct { get; set; }
-    public UnitBehaviorModel BehaviorModel { get; set; }
-    public float? MeleeAttackSpeed { get; set; }
-    public float? MeleeAttackDamage { get; set; }
-    public float? MeleeAttackRange { get; set; }
-    public float? RangeAttackSpeed { get; set; }
-    public float? RangeAttackDamage { get; set; }
-    public float? RangeAttackRange { get; set; }
-    public float? ConstructionEfficiency { get; set; }
-    public Sprite SpriteAlive { get; set; }
-    public Sprite SpriteDead { get; set; }
 }

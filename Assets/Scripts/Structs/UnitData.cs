@@ -10,7 +10,8 @@ public enum UnitBehaviorModel
 }
 public struct UnitData
 {
-    public int Id { get; set; }
+    public string[] ProductsIn { get; set; }
+    public float BaseProductionTime { get; set; }
     public int TypeId { get; set; }
     public string Name { get; set; }
     public string Race { get; set; }
