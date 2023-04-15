@@ -29,6 +29,9 @@ public class HeroKnight : MonoBehaviour {
     private float               m_rollDuration = 8.0f / 14.0f;
     private float               m_rollCurrentTime;
 
+    
+
+
 
     // Use this for initialization
     void Start ()
