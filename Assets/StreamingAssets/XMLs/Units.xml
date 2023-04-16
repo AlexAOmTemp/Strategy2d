@@ -8,8 +8,10 @@
     <canFly>false</canFly>
     <behaviorModel>Worker</behaviorModel>
     <constructionEfficiency>1,0</constructionEfficiency>
-    <spriteAlive>WorkerAlive</spriteAlive>
-    <spriteDead>WorkerDead</spriteDead>
+    <spriteAlive>Worker</spriteAlive>
+    <spriteDead>Worker</spriteDead>
+    <icone>Worker</icone>
+    <description>Unwaged worker, slave</description>
   </unit>
   <unit name = "Archer">
     <productsIn>Barracks House</productsIn>
@@ -21,6 +23,8 @@
     <constructionEfficiency>1,0</constructionEfficiency>
     <spriteAlive>Archer</spriteAlive>
     <spriteDead>Archer</spriteDead>
+    <icone>Archer</icone>
+    <description>Base human range unit</description>
   </unit>
   <unit name = "Warrior">
     <productsIn>Barracks</productsIn>
@@ -32,5 +36,7 @@
     <constructionEfficiency>1,0</constructionEfficiency>
     <spriteAlive>Warrior</spriteAlive>
     <spriteDead>Warrior</spriteDead>
+    <icone>Warrior</icone>
+    <description>Base human melee unit</description>
   </unit>
 </units>

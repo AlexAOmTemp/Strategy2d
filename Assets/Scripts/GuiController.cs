@@ -13,7 +13,7 @@ public class GuiController : MonoBehaviour
     private List<List<GameObject>> _constructionButtonsSets = new List<List<GameObject>>();
     private List<List<GameObject>> _productButtonsSets = new List<List<GameObject>>();
     private int _currentZone = 0;
-
+    private int _countOfBuildingVisited;
     private RectTransform _buttonRectTransform;
     private Vector3 _basePanelPosition;
     private void Start()
@@ -61,7 +61,6 @@ public class GuiController : MonoBehaviour
         foreach (UnitData unit in DataLoader.Units)
         {
             var button = Instantiate(_buttonPrefab, Vector3.zero, Quaternion.identity, _buildingsPanel.transform);
-            button.GetComponentInChildren<TextMeshProUGUI>().SetText(unit.Name);
             var productButton = button.AddComponent<ProductButton>();
             productButton.Init(unit);
             foreach (string buildingName in unit.ProductsIn)
@@ -89,8 +88,10 @@ public class GuiController : MonoBehaviour
     }
     public void BuildingEntered(ProductSpawner spawner)
     {
+        _countOfBuildingVisited++;
         foreach (var button in _activeButtonsSet)
             button.SetActive(false);
+        Debug.Log($"GuiController: building type ID = {spawner.BuildingTypeId}");
         if (spawner.BuildingTypeId < _productButtonsSets.Count)
         {
             _activeButtonsSet = _productButtonsSets[spawner.BuildingTypeId];
@@ -103,6 +104,8 @@ public class GuiController : MonoBehaviour
     }
     public void BuildingExited()
     {
-        onZoneChanged(_currentZone);
+        _countOfBuildingVisited--;
+        if (_countOfBuildingVisited==0)
+            onZoneChanged(_currentZone);
     }
 }

@@ -1077,6 +1077,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 94593654204397725, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 169062111119292275, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -1121,9 +1125,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 832191243529632931, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1495261263501976955, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1732624308411493505, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2402705685859351332, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}
       propertyPath: m_Name
       value: HeroKnight
+      objectReference: {fileID: 0}
+    - target: {fileID: 2402705685859351332, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8581455767059971767, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1d0b4f8bca4bf6428f6097aaf0f8649, type: 3}

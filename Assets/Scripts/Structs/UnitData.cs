@@ -30,4 +30,6 @@ public struct UnitData
     public float? ConstructionEfficiency { get; set; }
     public Sprite SpriteAlive { get; set; }
     public Sprite SpriteDead { get; set; }
+    public Sprite Icone { get; set; }
+    public string Description { get; set; }
 }

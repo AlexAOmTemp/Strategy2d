@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 2520487959407160320}
   - component: {fileID: 2520487959407160335}
   - component: {fileID: -2759769668538951903}
-  m_Layer: 0
+  - component: {fileID: 7010337361136900219}
+  m_Layer: 7
   m_Name: Unit
   m_TagString: Unit
   m_Icon: {fileID: 0}
@@ -133,7 +134,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &-2759769668538951903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,3 +148,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _distanceDetectorPrefab: {fileID: 7378147437286907057, guid: 414a6709685e58044bec2683ff8c6772, type: 3}
+--- !u!114 &7010337361136900219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520487959407160334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c07a8f955eac6c4a826d90f80e8725d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -36,7 +36,6 @@ public class DistanceCollisionController : MonoBehaviour
         {
             DistanceCollisionDetectors.Remove(detector);
             Destroy(detector);
-            Debug.Log("Detector removed!!!!!!!!!!!!!!!!!!!");
         }
         else
             Debug.LogError("DistanceCollisionController: trying to remove unexisted collision detector");    
@@ -44,10 +43,10 @@ public class DistanceCollisionController : MonoBehaviour
 
     public void onDistance(GameObject sender, Collider2D collider)
     {
-        Debug.Log($"Game Object {collider.name} on the {sender.name} distance");
+       // Debug.Log($"Game Object {collider.name} on the {sender.name} distance");
     }
     public void onDistanceExit(GameObject sender, Collider2D collider)
     {
-        Debug.Log($"Game Object {collider.name} has left the {sender.name} distance");
+       // Debug.Log($"Game Object {collider.name} has left the {sender.name} distance");
     }
 }

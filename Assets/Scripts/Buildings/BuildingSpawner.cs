@@ -11,7 +11,6 @@ public class BuildingSpawner : MonoBehaviour
     public List <GameObject> BuildingsInProcess = new List<GameObject>();
     private GameObject _currentBuilding;
     private int? _currentBuildingId;
-
     public delegate void NewBuildingInProcess(GameObject Building);
     public static event NewBuildingInProcess NewBuildingIsInProcess;
 
@@ -50,8 +49,14 @@ public class BuildingSpawner : MonoBehaviour
    
         var building = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _level.transform);
         var param = building.GetComponent<ConstructionController>();
+        building.GetComponentInChildren<Canvas>().sortingOrder = 2;
         if (_currentBuildingId!=null)
+        {
             param.Init(DataLoader.Buildings[(int)_currentBuildingId].Name,DataLoader.Buildings[(int)_currentBuildingId]);
+            var spawner = building.GetComponent<ProductSpawner>();
+            spawner.Init((int)_currentBuildingId);
+        }
+
         building.transform.position = _currentBuilding.transform.position;
         building.GetComponentInChildren<Canvas>().sortingLayerName = "Buildings";
         GameObject.Destroy(_currentBuilding.gameObject);
@@ -90,5 +95,7 @@ public class BuildingSpawner : MonoBehaviour
         Destroy(building.GetComponent<BuildingPlaceAvailible>());
         Destroy(building.GetComponent<ConstructionController>());
         building.GetComponent<ProductSpawner>().enabled=true;
+        building.GetComponent<SpriteRenderer>().sortingOrder = 0;
+        
     }
 }

@@ -38,6 +38,7 @@ public class DataLoader : MonoBehaviour
                 XmlNode attr = building.Attributes.GetNamedItem("name");
                 buildingData.Name = attr?.Value;
                 buildingData.TypeId = id;
+                buildingData.BuildInZones = new int[0];
                 id++;
                 foreach (XmlNode buildingParameter in building.ChildNodes)
                 {
@@ -88,6 +89,7 @@ public class DataLoader : MonoBehaviour
                 }
                 Buildings.Add(buildingData);
             }
+            consoleLogLoadedBuildingData();
         }
     }
     private void levelParser(string xml)
@@ -240,7 +242,18 @@ public class DataLoader : MonoBehaviour
                         else
                             UnitData.SpriteDead = sprite;
                     }
-
+                    if (unitParameter.Name == "icone")
+                    {
+                        Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_unitsSpritesFolder].Find(i => i.name == unitParameter.InnerText));
+                        if (sprite == null)
+                            Debug.LogError($"DataLoader: Sprite {_unitsSpritesFolder}/{unitParameter.InnerText} doesn't exist");
+                        else
+                            UnitData.Icone = sprite;
+                    }
+                    if (unitParameter.Name == "description")
+                    {
+                        UnitData.Description = unitParameter.InnerText;
+                    }
                 }
                 Units.Add(UnitData);
             }
@@ -264,8 +277,9 @@ public class DataLoader : MonoBehaviour
             Debug.Log($"SpriteFinished = {buildingData.SpriteFinished} SpritesUnfinishedCount = {buildingData.SpritesUnfinishedCount}");
             foreach (Sprite sp in buildingData.SpritesUnfinished)
                 Debug.Log($"SpriteUnfinished {sp}");
-            foreach (int zoneId in buildingData.BuildInZones)
-                Debug.Log($"BuildInZones = {zoneId}");
+            if (buildingData.BuildInZones.Length>0)
+                foreach (int zoneId in buildingData.BuildInZones)
+                    Debug.Log($"BuildInZones = {zoneId}");
         }
     }
     private void consoleLogLoadedUnitData()
