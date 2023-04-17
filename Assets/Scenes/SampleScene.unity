@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 243949883}
   - component: {fileID: 243949882}
   m_Layer: 0
-  m_Name: LevelController
+  m_Name: LevelSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -196,9 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326012c7b0f1a884f9cf6095647cf680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundPrefab: {fileID: 3875400260138112478, guid: 6bc759d34c544cc42b7790e64cfe3c34, type: 3}
   _levelPrefab: {fileID: 584086161815323447, guid: f3e92c39e3008ce438056f455c7bcccf, type: 3}
-  _separatorPrefab: {fileID: 26436379981305511, guid: cf5d030cd564300488cc40d936c60e67, type: 3}
 --- !u!4 &243949883
 Transform:
   m_ObjectHideFlags: 0
@@ -744,6 +742,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999751469}
   m_CullTransparentMesh: 1
+--- !u!1 &1165081174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1165081175}
+  m_Layer: 0
+  m_Name: PathPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1165081175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165081174}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.1581736, y: -0.20860004, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1433618446
 GameObject:
   m_ObjectHideFlags: 0

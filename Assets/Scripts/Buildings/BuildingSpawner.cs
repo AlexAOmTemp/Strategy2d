@@ -23,7 +23,7 @@ public class BuildingSpawner : MonoBehaviour
     private BuildingState _currentState = BuildingState.Idle;
     private void Awake()
     {
-        LevelController.LevelIsCreated += onLevelCreated;
+        LevelSpawner.LevelIsCreated += onLevelCreated;
     }
   
     public void CreateBuildingPlacer(int id)

@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class ZoneSeparatorController : MonoBehaviour
 {
-    public int ZoneId { get; set; }
+    public float PathPointLeftY { get; private set;}
+    public float PathPointRightY { get; private set; }
+    public int ZoneId { get; private set; }
+    public int Id { get; private set; }
     public static int CurrentZone { get; private set; } = 0;
 
     public delegate void ZoneChangedTo(int currentZoneId);
@@ -21,8 +24,22 @@ public class ZoneSeparatorController : MonoBehaviour
             ZoneIsChangedTo?.Invoke(CurrentZone);
         }
     }
-    private void OnGUI()
+    public void Init(int zoneId, int separatorId, float pointLeftY, float pointRightY)
     {
-        GUI.Label(new Rect(10, 10, 128, 32), $"Zone = {CurrentZone} ");
+        ZoneId = zoneId;
+        Id = separatorId;
+        PathPointLeftY = pointLeftY;
+        PathPointRightY = pointRightY;
     }
+    public void MoveBack()
+    { 
+    }
+    public void MoveLeftPoint()
+    { }
+    public void MoveRightPoint()
+    { }
+    public void MoveForward()
+    { 
+    }
+
 }
