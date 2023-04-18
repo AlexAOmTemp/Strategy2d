@@ -10,9 +10,12 @@ public class ZoneSeparatorController : MonoBehaviour
     public int Id { get; private set; }
     public static int CurrentZone { get; private set; } = 0;
 
-    public delegate void ZoneChangedTo(int currentZoneId);
-    public static event ZoneChangedTo ZoneIsChangedTo;
+    private GuiController _guiController;
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        _guiController.SeparatorEntered(this.gameObject);
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
@@ -21,11 +24,12 @@ public class ZoneSeparatorController : MonoBehaviour
                 CurrentZone = ZoneId + 1;
             else
                 CurrentZone = ZoneId;
-            ZoneIsChangedTo?.Invoke(CurrentZone);
+            _guiController.SeparatorExited(ZoneId);
         }
     }
     public void Init(int zoneId, int separatorId, float pointLeftY, float pointRightY)
     {
+        _guiController = GameObject.Find("ButtonController").GetComponent<GuiController>();
         ZoneId = zoneId;
         Id = separatorId;
         PathPointLeftY = pointLeftY;

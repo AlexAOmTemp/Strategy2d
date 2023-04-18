@@ -7,7 +7,7 @@ public class LevelSpawner : MonoBehaviour
     [SerializeField] private GameObject _levelPrefab;
    
     private List<GameObject> _LevelList = new List<GameObject>();
-    private GameObject _level;
+    public GameObject CurrentLevel { get; private set; }
     public delegate void LevelCreated(GameObject Level);
     public static event LevelCreated LevelIsCreated;
 
@@ -17,9 +17,9 @@ public class LevelSpawner : MonoBehaviour
     }
     void CreateLevel(int levelId)
     {
-        _level = Instantiate(_levelPrefab, Vector3.zero, Quaternion.identity);
-        _level.GetComponent<LevelController>().Init(DataLoader.Levels[levelId]);
-        _LevelList.Add(_level);
-        LevelIsCreated?.Invoke(_level);
+        CurrentLevel = Instantiate(_levelPrefab, Vector3.zero, Quaternion.identity);
+        CurrentLevel.GetComponent<LevelController>().Init(DataLoader.Levels[levelId]);
+        _LevelList.Add(CurrentLevel);
+        LevelIsCreated?.Invoke(CurrentLevel);
     }
 }

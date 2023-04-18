@@ -1,9 +1,13 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <levels>
   <level name = "StandartLevel1">
-	<background>Background</background>
-	<groundLevel>-4,158</groundLevel>
-	<drowningInGround>0,1</drowningInGround>
+	  <background>Background</background>
+	  <groundLevel>-4,158</groundLevel>
+    <commandBackIcon>BackIcon</commandBackIcon>
+    <commandBehindWallIcon>BehindIcon</commandBehindWallIcon>
+    <commandProtectWallIcon>FrontIcon</commandProtectWallIcon>
+    <commandForwardIcon>FrowardIcon</commandForwardIcon>
+    <drowningInGround>0,1</drowningInGround>
     <zone name = "CastleZone" >
       <sizeInTitles>20</sizeInTitles>
       <sprite>GroundCastle</sprite>

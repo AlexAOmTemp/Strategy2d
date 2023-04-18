@@ -132,6 +132,22 @@ public class DataLoader : MonoBehaviour
                             levelData.Background = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f, 0, SpriteMeshType.FullRect);
                         }
                     }
+                    if (levelParameter.Name == "commandBackIcon")
+                    {
+                        levelData.SeparatorCommandBackIcon = findSprite(levelParameter.InnerText);
+                    }
+                    if (levelParameter.Name == "commandBehindWallIcon")
+                    {
+                        levelData.SeparatorCommandBehindWallIcon = findSprite(levelParameter.InnerText);
+                    }
+                    if (levelParameter.Name == "commandProtectWallIcon")
+                    {
+                        levelData.SeparatorCommandProtectWallIcon = findSprite(levelParameter.InnerText);
+                    }
+                    if (levelParameter.Name == "commandForwardIcon")
+                    {
+                        levelData.SeparatorCommandForwardIcon = findSprite(levelParameter.InnerText);
+                    }
                     if (levelParameter.Name == "zone")
                     {
                         ZoneData zoneData = new ZoneData();
@@ -300,5 +316,12 @@ public class DataLoader : MonoBehaviour
             }
             Debug.Log(toLog);
         }
+    }
+    private Sprite findSprite(string spriteName)
+    {
+        Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_levelsSpritesFolder].Find(i => i.name == spriteName));
+        if (sprite == null)
+            Debug.LogError($"DataLoader: Sprite {_levelsSpritesFolder}/{spriteName} doesn't exist");
+        return sprite;
     }
 }
