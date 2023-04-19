@@ -2,7 +2,7 @@
 <units>
   <unit name = "Worker">
     <productsIn>Castle</productsIn>
-    <baseSpawningTime>10</baseSpawningTime>
+    <baseSpawningTime>1</baseSpawningTime>
     <race>Human</race>
     <runSpeed>3,0</runSpeed>
     <canFly>false</canFly>
@@ -15,7 +15,7 @@
   </unit>
   <unit name = "Archer">
     <productsIn>Barracks House</productsIn>
-    <baseSpawningTime>10</baseSpawningTime>
+    <baseSpawningTime>1</baseSpawningTime>
     <race>Human</race>
     <runSpeed>3,0</runSpeed>
     <canFly>false</canFly>
@@ -28,7 +28,7 @@
   </unit>
   <unit name = "Warrior">
     <productsIn>Barracks</productsIn>
-    <baseSpawningTime>10</baseSpawningTime>
+    <baseSpawningTime>1</baseSpawningTime>
     <race>Human</race>
     <runSpeed>3,0</runSpeed>
     <canFly>false</canFly>

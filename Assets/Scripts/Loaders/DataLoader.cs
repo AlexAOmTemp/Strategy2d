@@ -89,7 +89,7 @@ public class DataLoader : MonoBehaviour
                 }
                 Buildings.Add(buildingData);
             }
-            consoleLogLoadedBuildingData();
+            //consoleLogLoadedBuildingData();
         }
     }
     private void levelParser(string xml)
@@ -109,7 +109,6 @@ public class DataLoader : MonoBehaviour
                 LevelId++;
                 XmlNode attr = level.Attributes.GetNamedItem("name");
                 levelData.Name = attr?.Value;
-                Debug.Log($"levelData.Name = {levelData.Name}");
                 foreach (XmlNode levelParameter in level.ChildNodes)
                 {
                     if (levelParameter.Name == "groundLevel")
@@ -273,7 +272,7 @@ public class DataLoader : MonoBehaviour
                 }
                 Units.Add(UnitData);
             }
-            consoleLogLoadedUnitData();
+            //consoleLogLoadedUnitData();
         }
     }
     private void consoleLogLoadedLevelData()

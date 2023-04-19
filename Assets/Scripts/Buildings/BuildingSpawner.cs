@@ -5,7 +5,6 @@ using UnityEngine;
 public class BuildingSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject _unconstructBuildingPrefab;
-    [SerializeField] private GameObject _buildingPrefab;
     [SerializeField] private Transform _buildingPlacePoint;
     private GameObject _level;
     public List <GameObject> BuildingsInProcess = new List<GameObject>();

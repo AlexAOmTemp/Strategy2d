@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class GuiController : MonoBehaviour
@@ -15,7 +14,6 @@ public class GuiController : MonoBehaviour
     private List<GameObject> _separatorButtonsSet = new List<GameObject>();
     private int _currentZone = 0;
     private int _countOfBuildingVisited;
-    private RectTransform _buttonRectTransform;
     private Vector3 _basePanelPosition;
     private void Start()
     {
@@ -31,6 +29,7 @@ public class GuiController : MonoBehaviour
         }
         createConstructionButtons();
         createUnitButtons();
+        createSeparatorButtons();
         _activeButtonsSet = _constructionButtonsSets[0];
         SeparatorExited(_currentZone);
     }

@@ -8,15 +8,14 @@ public class DistanceCollisionController : MonoBehaviour
     [SerializeField] private GameObject _distanceDetectorPrefab;
     public List<GameObject> DistanceCollisionDetectors { get; private set; } = new List<GameObject>();
 
-    private int _idCounter = 0;
-    GameObject id;
+    //private int _idCounter = 0;
+    //GameObject id;
     private void Awake()
     {
         AddDistanceDetector("Vision", 6, onDistance, null);
         AddDistanceDetector("Range Attack", 5, null, onDistanceExit);
         AddDistanceDetector("Melee Attack", 2, onDistance, onDistanceExit);
         AddDistanceDetector("Aura", 4, onDistance, onDistanceExit);
-        id= AddDistanceDetector("Aura", 10, onDistance, onDistanceExit);
     }
    
     public GameObject AddDistanceDetector(string name, float range, DistanceCollisionDetector.TriggerEnter triggerEnter, DistanceCollisionDetector.TriggerExit triggerExit)

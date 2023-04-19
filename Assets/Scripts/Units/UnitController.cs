@@ -6,7 +6,7 @@ using UnityEngine;
 public class UnitController : MonoBehaviour
 {
     private UnitData _data;
-    private State _currentState=State.Idle;
+    public State CurrentState {get; set;}
     private float _timeFromLastAttack;
     private GameObject _target;
     public enum State{
@@ -20,53 +20,16 @@ public class UnitController : MonoBehaviour
         RangeAttack,
         Build
     }
-    public State GetState()
+    public void Init(UnitData data)
     {
-        return _currentState;
+        _data=data;
+        Debug.Log("UnitController: unit initialized");
     }
-    public void Idle()
-    {
-        _currentState = State.Idle;
-    }
-    public void MoveLeft()
-    {
-        _currentState = State.MoveLeft;
-    }
-    public void RunLeft()
-    {
-        _currentState = State.RunLeft;
-    }
-    public void MoveRight()
-    {
-        _currentState = State.MoveRight;
-    }
-    public void RunRight()
-    {
-        _currentState = State.RunRight;
-    }
-    public bool TryMeleeAttack(GameObject target)
-    {
-        _target = target;
-        _currentState = State.MeleeAttack;
-        return true; 
-    }
-    public bool TryRangeAttack(GameObject target)
-    {
-        _target = target;
-        _currentState = State.RangeAttack;
-        return true;
-    }
-    public bool TryBuild(GameObject target)
-    {
-        _target = target;
-        _currentState = State.Build;
-        return true;
-    }
-    // Update is called once per frame
+
     void Update()
     {
         _timeFromLastAttack += Time.deltaTime;
-        switch (_currentState)
+        switch (CurrentState)
         {
             case State.MoveLeft: 
                 transform.Translate(Vector3.left * _data.RunSpeed / 2 * Time.deltaTime);

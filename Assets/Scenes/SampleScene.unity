@@ -617,7 +617,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unconstructBuildingPrefab: {fileID: 2203017188923749362, guid: 7c39eac7c51a7224a9cc00d9d100f6d7, type: 3}
-  _buildingPrefab: {fileID: 2203017188923749362, guid: 534debdc10a8fb746a722df08b95b74f, type: 3}
   _buildingPlacePoint: {fileID: 222832029}
   BuildingsInProcess: []
 --- !u!1 &999751469
