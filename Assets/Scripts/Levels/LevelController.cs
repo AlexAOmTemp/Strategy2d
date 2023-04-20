@@ -23,18 +23,21 @@ public class LevelController : MonoBehaviour
 
         foreach (ZoneData zone in Data.Zones)
         {
-            var zoneHierarchyFolder = new GameObject(zone.Name);
+             var zoneHierarchyFolder = new GameObject(zone.Name);
             zoneHierarchyFolder.transform.SetParent(this.transform);
+
+            var separatorPosition = position;
+            separatorPosition.y += groundSize.y - groundSize.y * Data.DrowningInGround;
+            ZoneSeparators.Add(instantiateSeparator(separatorPosition, zoneHierarchyFolder.transform, zone, groundSize));
+            _pathPointsController.AddPoint(separatorPosition.x - groundSize.x * 1.5f);
+            _pathPointsController.AddPoint(separatorPosition.x + groundSize.x * 1.5f);
+
             for (int i = 0; i < zone.SizeInTiles; i++)
             {
                 _groundList.Add(instantiateGroundTile(position, zoneHierarchyFolder.transform, zone, groundSize));
                 position.x += groundSize.x;
             }
-            var separatorPosition = position;
-            separatorPosition.x -= groundSize.x / 2;
-            ZoneSeparators.Add(instantiateSeparator(separatorPosition, zoneHierarchyFolder.transform, zone, groundSize));
-            _pathPointsController.AddPoint(separatorPosition.x - groundSize.x * 1.5f);
-            _pathPointsController.AddPoint(separatorPosition.x + groundSize.x * 1.5f);
+            
         }
         if (ZoneSeparators.Count > 2)
             _pathPointsController.ChangeCurrentPathPoint(ZoneSeparators.Count - 2, 2);
@@ -73,7 +76,7 @@ public class LevelController : MonoBehaviour
     private GameObject instantiateSeparator(Vector3 position, Transform parent, ZoneData zone, Vector3 groundSize)
     {
         var separator = Instantiate(_separatorPrefab, position, Quaternion.identity, parent);
-        separator.GetComponent<ZoneSeparatorController>().Init(zone.Id, ZoneSeparators.Count);
+        separator.GetComponent<ZoneSeparatorController>().Init(zone.Id, ZoneSeparators.Count, zone.SeparatorSprite);
         return separator;
     }
 }

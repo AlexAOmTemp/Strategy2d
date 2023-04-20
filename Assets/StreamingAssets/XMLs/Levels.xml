@@ -11,22 +11,22 @@
     <zone name = "CastleZone" >
       <sizeInTitles>20</sizeInTitles>
       <sprite>GroundCastle</sprite>
-      <separatorSprite>StoneWall</separatorSprite>
+      <separatorSprite>Separator</separatorSprite>
     </zone>
     <zone name = "InnerZone1" >
       <sizeInTitles>20</sizeInTitles>
       <sprite>GroundInner1</sprite>
-      <separatorSprite>WoodenWall</separatorSprite>
+      <separatorSprite>Separator</separatorSprite>
     </zone>
     <zone name = "InnerZone2" >
       <sizeInTitles>20</sizeInTitles>
       <sprite>GroundInner2</sprite>
-      <separatorSprite>WoodenWall</separatorSprite>
+      <separatorSprite>Separator</separatorSprite>
     </zone>
     <zone name = "ExternalZone" >
       <sizeInTitles>20</sizeInTitles>
       <sprite>GroundExternal</sprite>
-      <separatorSprite>WoodenWall</separatorSprite>
+      <separatorSprite>Separator</separatorSprite>
     </zone>
   </level>
 </levels>

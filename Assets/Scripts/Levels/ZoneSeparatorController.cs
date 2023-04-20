@@ -26,10 +26,14 @@ public class ZoneSeparatorController : MonoBehaviour
             _guiController.SeparatorExited(ZoneId);
         }
     }
-    public void Init(int zoneId, int separatorId)
+    public void Init(int zoneId, int separatorId, Sprite image)
     {
         _guiController = GameObject.Find("ButtonController").GetComponent<GuiController>();
         ZoneId = zoneId;
         Id = separatorId;
+        var renderer = this.GetComponent<SpriteRenderer>();
+        renderer.sprite = image;
+        var boxCollider = this.GetComponent<BoxCollider2D>();
+        boxCollider.size = new Vector2 (renderer.bounds.size.x,  30f);
     }
 }
