@@ -52,6 +52,7 @@ MonoBehaviour:
   _groundPrefab: {fileID: 3875400260138112478, guid: 6bc759d34c544cc42b7790e64cfe3c34, type: 3}
   _separatorPrefab: {fileID: 26436379981305511, guid: cf5d030cd564300488cc40d936c60e67, type: 3}
   _buildingSpawner: {fileID: 5157866102853231082}
+  _blockerPrefab: {fileID: 5082871424298904957, guid: bd7976db1aec22143928ca6f5bcca23c, type: 3}
 --- !u!114 &7484037629049813649
 MonoBehaviour:
   m_ObjectHideFlags: 0

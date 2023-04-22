@@ -7,6 +7,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject _groundPrefab;
     [SerializeField] private GameObject _separatorPrefab;
     [SerializeField] private BuildingSpawner _buildingSpawner;
+    [SerializeField] private GameObject _blockerPrefab;
     public float PlacementLevel{get; private set;}
     public Transform BuildingPlacer {get; private set;}
     public List<GameObject> ZoneSeparators { get; private set; } = new List<GameObject>();
@@ -22,13 +23,16 @@ public class LevelController : MonoBehaviour
         this.name = Data.Name;
         WorldStartPosition = new Vector3(0, Data.GroundLevel, 0);
         Vector3 groundSize = calculateGroundTileSize();
-        Vector3 position = WorldStartPosition;
+        Vector3 position = new Vector3 (WorldStartPosition.x + groundSize.x/2, WorldStartPosition.y, 0 );
+        PlacementLevel = Data.GroundLevel + groundSize.y/2 - groundSize.y * Data.DrowningInGround;
 
+        var blockerLeft = Instantiate(_blockerPrefab, new Vector3 (WorldStartPosition.x, PlacementLevel,0), Quaternion.identity, this.transform);
+        blockerLeft.transform.Translate (Vector3.left * blockerLeft.GetComponent<BoxCollider2D>().size.x/2f);
         foreach (ZoneData zone in Data.Zones)
         {
             var zoneHierarchyFolder = new GameObject(zone.Name);
             zoneHierarchyFolder.transform.SetParent(this.transform);
-            PlacementLevel = Data.GroundLevel + groundSize.y/2 - groundSize.y * Data.DrowningInGround;
+            
             var separatorPosition = position;
             separatorPosition.y = PlacementLevel;
             ZoneSeparators.Add(instantiateSeparator(separatorPosition, zoneHierarchyFolder.transform, zone, groundSize));
@@ -48,16 +52,16 @@ public class LevelController : MonoBehaviour
         }
         if (ZoneSeparators.Count > 2)
             _pathPointsController.ChangeCurrentPathPoint(ZoneSeparators.Count - 2, 2);
-        WorldFinishPosition = new Vector3(position.x, WorldStartPosition.y, 0);
+        WorldFinishPosition = new Vector3(position.x - groundSize.x/2, WorldStartPosition.y, 0);
+        var blockerRight = Instantiate(_blockerPrefab, new Vector3 (WorldFinishPosition.x, PlacementLevel,0), Quaternion.identity, this.transform);
+        blockerRight.transform.Translate (Vector3.right * blockerRight.GetComponent<BoxCollider2D>().size.x/2f);
+
+       
         BuildingPlacer = this.transform.Find("BuildingPlacer");
         BuildingPlacer.position = new Vector3 (BuildingPlacer.position.x, PlacementLevel, 0);
         
         var castlePosition = new Vector3 (WorldStartPosition.x + groundSize.x*5, PlacementLevel, 0 );
         placeBuilding (Data.MainBuilding,castlePosition);
-        //BuildingData? mainBuilding = DataLoader.Buildings.Find(i => i.Name == Data.MainBuilding);
-        //if (mainBuilding == null)
-        //    Debug.LogError("LevelController: Main building not found");
-       // _buildingSpawner.InstantBuild(castlePosition, (BuildingData)mainBuilding);
 
         backgroundSet();
     }
