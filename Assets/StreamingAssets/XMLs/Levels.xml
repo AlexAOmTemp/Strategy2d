@@ -8,10 +8,12 @@
     <commandProtectWallIcon>FrontIcon</commandProtectWallIcon>
     <commandForwardIcon>FrowardIcon</commandForwardIcon>
     <drowningInGround>0,1</drowningInGround>
+    <mainBuilding>Castle</mainBuilding>
     <zone name = "CastleZone" >
       <sizeInTitles>20</sizeInTitles>
       <sprite>GroundCastle</sprite>
-      <separatorSprite>Separator</separatorSprite>
+      <separatorSprite>Exit</separatorSprite>
+      <zoneEndBuilding>StoneTower</zoneEndBuilding>
     </zone>
     <zone name = "InnerZone1" >
       <sizeInTitles>20</sizeInTitles>
@@ -27,6 +29,11 @@
       <sizeInTitles>20</sizeInTitles>
       <sprite>GroundExternal</sprite>
       <separatorSprite>Separator</separatorSprite>
+    </zone>
+    <zone name = "PortalZone" >
+      <sizeInTitles>1</sizeInTitles>
+      <sprite>GroundPortal</sprite>
+      <separatorSprite>Portal</separatorSprite>
     </zone>
   </level>
 </levels>

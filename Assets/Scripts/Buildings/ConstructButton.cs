@@ -7,10 +7,12 @@ public class ConstructButton : MonoBehaviour
 {
 	private BuildingSpawner _buildingSpawner;
 	public int? Id { set; get; }
-	// Start is called before the first frame update
 	void Start()
 	{
-		_buildingSpawner = GameObject.Find("BuildingProcessor").GetComponent<BuildingSpawner>(); ;
+		var level = GameObject.Find("LevelSpawner").GetComponent<LevelSpawner>().CurrentLevel;
+		if (level == null)
+			Debug.LogError("ConstructButton: level not found"); 
+		_buildingSpawner = level.GetComponent<BuildingSpawner>();
 		if (Id == null)
 		{
 			Debug.LogError("ConstructButton: Id doesn't set");

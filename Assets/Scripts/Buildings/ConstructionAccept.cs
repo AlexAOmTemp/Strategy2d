@@ -8,7 +8,11 @@ public class ConstructionAccept : MonoBehaviour
 	private BuildingSpawner _buildingSpawner;
 	void Start()
 	{
-		_buildingSpawner = GameObject.Find("BuildingProcessor").GetComponent<BuildingSpawner>(); 
+		var level = GameObject.Find("LevelSpawner").GetComponent<LevelSpawner>().CurrentLevel;
+		if (level == null)
+			Debug.LogError("ConstructButton: level not found"); 
+		_buildingSpawner = level.GetComponent<BuildingSpawner>();
+		
 		Button btn = this.GetComponent<Button>();
 		btn.onClick.AddListener(TaskOnClick);
 	}

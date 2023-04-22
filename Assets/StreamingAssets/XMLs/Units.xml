@@ -23,7 +23,7 @@
     <constructionEfficiency>1,0</constructionEfficiency>
     <spriteAlive>Archer</spriteAlive>
     <spriteDead>Archer</spriteDead>
-    <icone>Archer</icone>
+    <icone>ArcherIcon</icone>
     <description>Base human range unit</description>
   </unit>
   <unit name = "Warrior">
@@ -36,7 +36,7 @@
     <constructionEfficiency>1,0</constructionEfficiency>
     <spriteAlive>Warrior</spriteAlive>
     <spriteDead>Warrior</spriteDead>
-    <icone>Warrior</icone>
+    <icone>WarriorIcon</icone>
     <description>Base human melee unit</description>
   </unit>
 </units>

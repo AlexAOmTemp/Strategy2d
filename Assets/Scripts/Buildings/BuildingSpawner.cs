@@ -6,66 +6,57 @@ public class BuildingSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject _unconstructBuildingPrefab;
     [SerializeField] private Transform _buildingPlacePoint;
-    private GameObject _level;
-    public List <GameObject> BuildingsInProcess = new List<GameObject>();
+    public List<GameObject> BuildingsInProcess = new List<GameObject>();
     private GameObject _currentBuilding;
-    private int? _currentBuildingId;
+    private int? _currentBuildingTypeId;
     public delegate void NewBuildingInProcess(GameObject Building);
     public static event NewBuildingInProcess NewBuildingIsInProcess;
 
-    enum BuildingState 
+    enum BuildingState
     {
         Idle,
         HeroAttached,
         Placed
     }
     private BuildingState _currentState = BuildingState.Idle;
-    private void Awake()
+
+    public void Awake ()
     {
-        LevelSpawner.LevelIsCreated += onLevelCreated;
+        ConstructionController.ConstructionIsFinished += onBuildingFinished;
     }
-  
-    public void CreateBuildingPlacer(int id)
+    public void CreateBuildingPlacer(int typeId)
     {
         if (_currentState != BuildingState.Idle)
             PlaceDeclined();
-        if (id > DataLoader.Buildings.Count - 1)
+        if (typeId > DataLoader.Buildings.Count - 1)
         {
             Debug.LogError("BuildingSpawner: tried to create an unexistant building");
             return;
         }
-        _currentBuildingId = id;
+        _currentBuildingTypeId = typeId;
+        //_currentBuilding = setupBuilding(_buildingPlacePoint.position, DataLoader.Buildings[typeId], _buildingPlacePoint);
+
         _currentBuilding = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _buildingPlacePoint);
-        var param = _currentBuilding.GetComponent<ConstructionController>();
-        param.Init(DataLoader.Buildings[id].Name,DataLoader.Buildings[id]);
+        var constructionController = _currentBuilding.GetComponent<ConstructionController>();
+        constructionController.Init(DataLoader.Buildings[typeId]);
         _currentBuilding.transform.position = _buildingPlacePoint.position;
-        _currentBuilding.transform.Translate(Vector3.up * param.Height / 2);
+        _currentBuilding.transform.Translate(Vector3.up * constructionController.Height / 2);
         _currentState = BuildingState.HeroAttached;
     }
     public void PlaceAssepted()
     {
-        _currentBuilding.transform.SetParent(_level.transform);
-   
-        var building = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _level.transform);
-        var param = building.GetComponent<ConstructionController>();
-        building.GetComponentInChildren<Canvas>().sortingOrder = 2;
-        if (_currentBuildingId!=null)
-        {
-            param.Init(DataLoader.Buildings[(int)_currentBuildingId].Name,DataLoader.Buildings[(int)_currentBuildingId]);
-            var spawner = building.GetComponent<ProductSpawner>();
-            spawner.Init((int)_currentBuildingId);
-        }
+        _currentBuilding.transform.SetParent(this.transform);
 
-        building.transform.position = _currentBuilding.transform.position;
-        building.GetComponentInChildren<Canvas>().sortingLayerName = "Buildings";
+        var building = setupBuilding(_currentBuilding.transform.position, DataLoader.Buildings[(int)_currentBuildingTypeId], this.transform);
+
         GameObject.Destroy(_currentBuilding.gameObject);
-        _currentBuildingId = null;
+        _currentBuildingTypeId = null;
         _currentState = BuildingState.Idle;
-        
+
         _currentBuilding = null;
         BuildingsInProcess.Add(building);
-        
-        NewBuildingIsInProcess?.Invoke(BuildingsInProcess[BuildingsInProcess.Count-1]);
+
+        NewBuildingIsInProcess?.Invoke(BuildingsInProcess[BuildingsInProcess.Count - 1]);
         building.GetComponent<ConstructionController>().StartConstruction();
     }
     public void PlaceDeclined()
@@ -75,26 +66,37 @@ public class BuildingSpawner : MonoBehaviour
         _currentBuilding = null;
         _currentState = BuildingState.Idle;
     }
-    public void BuildingFinished(GameObject building)
+
+    private void onBuildingFinished(GameObject building)
     {
         if (BuildingsInProcess.Contains(building))
         {
-            onBuildingFinished(building);
+            Destroy(building.GetComponent<BuildingPlaceAvailible>());
+            Destroy(building.GetComponent<ConstructionController>());
+            building.GetComponent<ProductSpawner>().enabled = true;
+            building.GetComponent<SpriteRenderer>().sortingOrder = 0;
             BuildingsInProcess.Remove(building);
         }
         else
             Debug.LogError("BuildingSpawner: try to remove unexisting building");
     }
-    private void onLevelCreated(GameObject level)
+    private GameObject setupBuilding(Vector3 position, BuildingData buildingData, Transform parent)
     {
-        _level = level;
+        var building = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, parent);
+        building.GetComponentInChildren<Canvas>().sortingOrder = 2;
+        building.GetComponent<ProductSpawner>().Init(buildingData.TypeId);
+        var constructionController = building.GetComponent<ConstructionController>();
+        building.transform.position = position;
+        constructionController.Init(buildingData);
+        //constructionController.transform.position = new Vector3 (position.x, position.y+constructionController.Height / 2,0);
+        return building;
     }
-    private void onBuildingFinished(GameObject building)
+    public void InstantBuild(Vector3 position, BuildingData buildingData)
     {
-        Destroy(building.GetComponent<BuildingPlaceAvailible>());
-        Destroy(building.GetComponent<ConstructionController>());
-        building.GetComponent<ProductSpawner>().enabled=true;
-        building.GetComponent<SpriteRenderer>().sortingOrder = 0;
-        
+        var building = setupBuilding(position, buildingData, this.transform);
+        var constructionController = building.GetComponent<ConstructionController>();
+        building.transform.Translate(Vector3.up * constructionController.Height / 2);
+        BuildingsInProcess.Add(building);
+        constructionController.InstantConstruction();
     }
 }

@@ -31,7 +31,7 @@ public class GuiController : MonoBehaviour
         createUnitButtons();
         createSeparatorButtons();
         _activeButtonsSet = _constructionButtonsSets[0];
-        SeparatorExited(_currentZone);
+        allBuildingsExited();
     }
     private void createConstructionButtons()
     {
@@ -86,6 +86,7 @@ public class GuiController : MonoBehaviour
     }
     public void SeparatorEntered(GameObject separator)
     {
+        _countOfBuildingVisited++;
         foreach (var button in _activeButtonsSet)
             button.SetActive(false);
         _activeButtonsSet = _separatorButtonsSet;
@@ -97,16 +98,10 @@ public class GuiController : MonoBehaviour
     }
     public void SeparatorExited(int currentZone)
     {
+        _countOfBuildingVisited--;
         _currentZone = currentZone;
-        foreach (var button in _activeButtonsSet)
-            button.SetActive(false);
-
-        if (currentZone < _constructionButtonsSets.Count)
-        {
-            _activeButtonsSet = _constructionButtonsSets[currentZone];
-            foreach (var button in _activeButtonsSet)
-                button.SetActive(true);
-        }
+        if (_countOfBuildingVisited==0)
+            allBuildingsExited();
     }
     public void BuildingEntered(ProductSpawner spawner)
     {
@@ -127,6 +122,18 @@ public class GuiController : MonoBehaviour
     {
         _countOfBuildingVisited--;
         if (_countOfBuildingVisited==0)
-            SeparatorExited(_currentZone);
+            allBuildingsExited();
+    }
+    private void allBuildingsExited()
+    {
+        foreach (var button in _activeButtonsSet)
+            button.SetActive(false);
+
+        if (_currentZone < _constructionButtonsSets.Count)
+        {
+            _activeButtonsSet = _constructionButtonsSets[_currentZone];
+            foreach (var button in _activeButtonsSet)
+                button.SetActive(true);
+        }
     }
 }

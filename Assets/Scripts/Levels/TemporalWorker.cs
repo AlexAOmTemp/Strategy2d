@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class TemporalWorker : MonoBehaviour
 {
-    private BuildingSpawner _buildingSpawner;
+    [SerializeField] private BuildingSpawner _buildingSpawner;
      
     void Start()
     {
-        _buildingSpawner = GameObject.Find("BuildingProcessor").GetComponent< BuildingSpawner>();
-        if (_buildingSpawner == null)
-            Debug.LogError("TemporalWorker: buildingSpawner not finded");
         BuildingSpawner.NewBuildingIsInProcess += onNewBuildingStarted;
         ConstructionController.ConstructionIsFinished += onBuildingFinished;
     }
@@ -23,7 +20,6 @@ public class TemporalWorker : MonoBehaviour
     {
         var bp = building.GetComponent<ConstructionController>();
         bp.WorkerLeftConstruction(this.gameObject);
-        _buildingSpawner.BuildingFinished(building);
     }
 
 }

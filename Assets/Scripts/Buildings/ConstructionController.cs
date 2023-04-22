@@ -20,13 +20,13 @@ public class ConstructionController : MonoBehaviour
     private List<GameObject> _workersInvolved = new List<GameObject>();
     private BuildingData _data;
 
-   
+
     public delegate void ConstructionFinished(GameObject Building);
     public static event ConstructionFinished ConstructionIsFinished;
 
     public float Height { get; private set; }
-  
-    public void Init(string Name, BuildingData buildingData)
+
+    public void Init(BuildingData buildingData)
     {
         _data = buildingData;
         _spriteRenderer = this.GetComponent<SpriteRenderer>();
@@ -34,8 +34,8 @@ public class ConstructionController : MonoBehaviour
         var size = _spriteRenderer.sprite.bounds.size;
         this.GetComponent<BoxCollider2D>().size = size;
         Height = size.y;
-        this.name = Name;
-        _panelUnplaced.transform.Find("NameText").GetComponent<TextMeshProUGUI>().SetText(Name);
+        this.name = _data.Name;
+        _panelUnplaced.transform.Find("NameText").GetComponent<TextMeshProUGUI>().SetText(_data.Name);
         _panelUnplaced.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().SetText(buildingData.Description);
         _panelUnplaced.transform.Find("TimeLeft").GetComponent<TextMeshProUGUI>().SetText(buildingData.BuildingTime.ToString());
         _timeLeftText = _panelPlaced.transform.Find("TimeLeft").GetComponent<TextMeshProUGUI>();
@@ -85,11 +85,20 @@ public class ConstructionController : MonoBehaviour
         if (_constructionPhasesQuantity > 0)
         {
             _spriteRenderer.sprite = _data.SpritesUnfinished[0];
-            _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b,1);
+            _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1);
             _panelUnplaced.SetActive(false);
-            _panelPlaced.SetActive (true);
+            _panelPlaced.SetActive(true);
         }
         _constructionStarted = true;
     }
- 
+    public void InstantConstruction()
+    {
+        _panelUnplaced.SetActive(false);
+        _constructionStarted = false;
+        _constructionFinished = true;
+         _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1);
+        _spriteRenderer.sprite = _data.SpriteFinished;
+        _panelPlaced.SetActive(false);
+        ConstructionIsFinished?.Invoke(this.gameObject);
+    }
 }

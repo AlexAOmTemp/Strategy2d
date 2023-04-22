@@ -6,6 +6,9 @@ public class LevelController : MonoBehaviour
 {
     [SerializeField] private GameObject _groundPrefab;
     [SerializeField] private GameObject _separatorPrefab;
+    [SerializeField] private BuildingSpawner _buildingSpawner;
+    public float PlacementLevel{get; private set;}
+    public Transform BuildingPlacer {get; private set;}
     public List<GameObject> ZoneSeparators { get; private set; } = new List<GameObject>();
     public LevelData Data { get; private set; }
     public Vector3 WorldStartPosition { get; private set; }
@@ -16,18 +19,18 @@ public class LevelController : MonoBehaviour
     {
         _pathPointsController = this.transform.GetComponent<PathPointsController>();
         Data = levelData;
-
+        this.name = Data.Name;
         WorldStartPosition = new Vector3(0, Data.GroundLevel, 0);
         Vector3 groundSize = calculateGroundTileSize();
         Vector3 position = WorldStartPosition;
 
         foreach (ZoneData zone in Data.Zones)
         {
-             var zoneHierarchyFolder = new GameObject(zone.Name);
+            var zoneHierarchyFolder = new GameObject(zone.Name);
             zoneHierarchyFolder.transform.SetParent(this.transform);
-
+            PlacementLevel = Data.GroundLevel + groundSize.y/2 - groundSize.y * Data.DrowningInGround;
             var separatorPosition = position;
-            separatorPosition.y += groundSize.y - groundSize.y * Data.DrowningInGround;
+            separatorPosition.y = PlacementLevel;
             ZoneSeparators.Add(instantiateSeparator(separatorPosition, zoneHierarchyFolder.transform, zone, groundSize));
             _pathPointsController.AddPoint(separatorPosition.x - groundSize.x * 1.5f);
             _pathPointsController.AddPoint(separatorPosition.x + groundSize.x * 1.5f);
@@ -37,11 +40,25 @@ public class LevelController : MonoBehaviour
                 _groundList.Add(instantiateGroundTile(position, zoneHierarchyFolder.transform, zone, groundSize));
                 position.x += groundSize.x;
             }
-            
+            if (zone.EndBuilding != null)
+            {
+                Vector3 endBuildingPosition = new Vector3(position.x - groundSize.x, PlacementLevel, 0);
+                placeBuilding (zone.EndBuilding,endBuildingPosition);
+            }
         }
         if (ZoneSeparators.Count > 2)
             _pathPointsController.ChangeCurrentPathPoint(ZoneSeparators.Count - 2, 2);
         WorldFinishPosition = new Vector3(position.x, WorldStartPosition.y, 0);
+        BuildingPlacer = this.transform.Find("BuildingPlacer");
+        BuildingPlacer.position = new Vector3 (BuildingPlacer.position.x, PlacementLevel, 0);
+        
+        var castlePosition = new Vector3 (WorldStartPosition.x + groundSize.x*5, PlacementLevel, 0 );
+        placeBuilding (Data.MainBuilding,castlePosition);
+        //BuildingData? mainBuilding = DataLoader.Buildings.Find(i => i.Name == Data.MainBuilding);
+        //if (mainBuilding == null)
+        //    Debug.LogError("LevelController: Main building not found");
+       // _buildingSpawner.InstantBuild(castlePosition, (BuildingData)mainBuilding);
+
         backgroundSet();
     }
     private Vector3 calculateGroundTileSize() //temporal, need rework
@@ -77,6 +94,15 @@ public class LevelController : MonoBehaviour
     {
         var separator = Instantiate(_separatorPrefab, position, Quaternion.identity, parent);
         separator.GetComponent<ZoneSeparatorController>().Init(zone.Id, ZoneSeparators.Count, zone.SeparatorSprite);
+        float height = separator.GetComponent<SpriteRenderer>().size.y;
+        separator.transform.Translate(Vector3.up*height/2);
         return separator;
+    }
+    private void placeBuilding (string buildingName, Vector3 position)
+    {
+        BuildingData? building = DataLoader.Buildings.Find(i => i.Name == buildingName);
+        if (building == null)
+            Debug.LogError("LevelController: Main building not found");
+        _buildingSpawner.InstantBuild(position, (BuildingData)building);
     }
 }

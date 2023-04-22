@@ -37,44 +37,9 @@
     <description>Improves units equip</description>
     <spriteUnfinished>BlacksmithUnfinished1</spriteUnfinished>
   </building>
-  <building name = "256">
-    <canBeBuild>true</canBeBuild>
-    <sprite>256</sprite>
-    <buildTime>10</buildTime>
-    <buildZonesId>0 1</buildZonesId>
-    <description>256</description>
-    <spriteUnfinished>256</spriteUnfinished>
-  </building>
-  <building name = "512">
-    <canBeBuild>true</canBeBuild>
-    <sprite>512</sprite>
-    <buildTime>10</buildTime>
-    <buildZonesId>0 1</buildZonesId>
-    <description>512</description>
-    <spriteUnfinished>512</spriteUnfinished>
-  </building>
-  <building name = "a256">
-    <canBeBuild>true</canBeBuild>
-    <sprite>a256</sprite>
-    <buildTime>10</buildTime>
-    <buildZonesId>0 1</buildZonesId>
-    <description>a256</description>
-    <spriteUnfinished>a256</spriteUnfinished>
-  </building>
-  <building name = "b256">
-    <canBeBuild>true</canBeBuild>
-    <sprite>b256</sprite>
-    <buildTime>10</buildTime>
-    <buildZonesId>0 1</buildZonesId>
-    <description>b256</description>
-    <spriteUnfinished>b256</spriteUnfinished>
-  </building>
-  <building name = "b512">
-    <canBeBuild>true</canBeBuild>
-    <sprite>b512</sprite>
-    <buildTime>10</buildTime>
-    <buildZonesId>0 1</buildZonesId>
-    <description>b512</description>
-    <spriteUnfinished>b512</spriteUnfinished>
+  <building name = "StoneTower">
+    <canBeBuild>false</canBeBuild>
+    <sprite>StoneTower</sprite>
+    <spriteUnfinished>StoneTower</spriteUnfinished>
   </building>
 </buildings>

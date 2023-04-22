@@ -6,7 +6,8 @@ public class ConstructionPlaserCancel : MonoBehaviour
 	private BuildingSpawner _buildingSpawner;
 	private void Start()
 	{
-		_buildingSpawner = GameObject.Find("BuildingProcessor").GetComponent<BuildingSpawner>(); 
+		var level = GameObject.Find("LevelSpawner").GetComponent<LevelSpawner>().CurrentLevel;
+		_buildingSpawner = level.GetComponentInChildren<BuildingSpawner>(); 
 		Button btn = this.GetComponent<Button>();
 		btn.onClick.AddListener(TaskOnClick);
 	}

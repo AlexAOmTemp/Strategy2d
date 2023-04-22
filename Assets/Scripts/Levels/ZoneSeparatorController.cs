@@ -12,12 +12,12 @@ public class ZoneSeparatorController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-         if (collision.gameObject.tag == "Player")
+         if (collision.gameObject.CompareTag("PlayerInBuilding") )
             _guiController.SeparatorEntered(this.gameObject);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("PlayerInBuilding") )
         {
             if (collision.gameObject.transform.position.x > transform.position.x)
                 CurrentZone = ZoneId + 1;

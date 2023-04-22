@@ -100,7 +100,7 @@ public class DataLoader : MonoBehaviour
         if (xRoot != null)
         {
             int LevelId = 0;
-            foreach (XmlElement level in xRoot) //level
+            foreach (XmlElement level in xRoot) 
             {
                 int zoneId = 0;
                 var levelData = new LevelData();
@@ -130,6 +130,10 @@ public class DataLoader : MonoBehaviour
                             texture.wrapMode = TextureWrapMode.Repeat;
                             levelData.Background = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f, 0, SpriteMeshType.FullRect);
                         }
+                    }
+                    if (levelParameter.Name == "mainBuilding")
+                    {
+                        levelData.MainBuilding =levelParameter.InnerText;
                     }
                     if (levelParameter.Name == "commandBackIcon")
                     {
@@ -181,6 +185,8 @@ public class DataLoader : MonoBehaviour
                                 else
                                     zoneData.SeparatorSprite = sprite;
                             }
+                            if (zoneParameter.Name == "zoneEndBuilding")
+                                zoneData.EndBuilding = zoneParameter.InnerText;
                         }
                         zones.Add(zoneData);
                     }
