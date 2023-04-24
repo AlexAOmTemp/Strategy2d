@@ -78,7 +78,7 @@ public class ProductSpawner : MonoBehaviour
             {
                 productReady(ProductionQueue[0]);
                 ProductionQueue.RemoveAt(0);
-                Destroy (_cancelButtons[0]);
+                Destroy(_cancelButtons[0]);
                 _cancelButtons.RemoveAt(0);
                 if (ProductionQueue.Count > 0)
                 {
@@ -92,21 +92,26 @@ public class ProductSpawner : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("PlayerInBuilding"))
+        if (collision.CompareTag("Player"))
         {
-            _canvas.enabled = true;
-            if (this.isActiveAndEnabled)
-                _guiController.BuildingEntered(this);
-            else
+            Debug.Log($"{collision.gameObject.GetComponent<Team>()}, {this.GetComponent<Team>()}");
+            if (collision.gameObject.GetComponent<Team>().Number == this.GetComponent<Team>().Number)
             {
-                _playerIn = true;
-                _collision = collision;
+                _canvas.enabled = true;
+                if (this.isActiveAndEnabled)
+                    _guiController.BuildingEntered(this);
+                else
+                {
+                    _playerIn = true;
+                    _collision = collision;
+                }
             }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("PlayerInBuilding"))
+        if (collision.CompareTag("Player") &&
+            collision.GetComponent<Team>().Number == this.GetComponent<Team>().Number)
         {
             _canvas.enabled = false;
             _playerIn = false;
@@ -120,6 +125,7 @@ public class ProductSpawner : MonoBehaviour
         unit.transform.position = this.transform.position;
         unit.GetComponent<UnitMain>().Init(unitData);
         unit.GetComponent<UnitBehavior>().SetCurrentPathPoint(PathPointsController.CurrentPathPoint);
+        unit.GetComponent<Team>().Number = this.GetComponent<Team>().Number;
     }
     private void createCancelButton(UnitData unitData)
     {
@@ -140,6 +146,6 @@ public class ProductSpawner : MonoBehaviour
     {
         _currentProductName.SetText(unitData.Name);
         _currentProductTimeLeft.SetText(_currentProductionTime.ToString("F1"));
-        _currentProductDescription.SetText(unitData.Description); 
+        _currentProductDescription.SetText(unitData.Description);
     }
 }

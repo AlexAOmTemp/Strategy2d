@@ -36,4 +36,25 @@
       <separatorSprite>Portal</separatorSprite>
     </zone>
   </level>
+  <level name = "MonsterBaseLevel">
+	  <background>Background</background>
+	  <groundLevel>-4,158</groundLevel>
+    <commandBackIcon>BackIcon</commandBackIcon>
+    <commandBehindWallIcon>BehindIcon</commandBehindWallIcon>
+    <commandProtectWallIcon>FrontIcon</commandProtectWallIcon>
+    <commandForwardIcon>FrowardIcon</commandForwardIcon>
+    <drowningInGround>0,1</drowningInGround>
+    <mainBuilding>Lair</mainBuilding>
+    <zone name = "LairZone" >
+      <sizeInTitles>20</sizeInTitles>
+      <sprite>GroundCastle</sprite>
+      <separatorSprite>Exit</separatorSprite>
+      <zoneEndBuilding>StoneTower</zoneEndBuilding>
+    </zone>
+    <zone name = "PortalZone" >
+      <sizeInTitles>1</sizeInTitles>
+      <sprite>GroundPortal</sprite>
+      <separatorSprite>Portal</separatorSprite>
+    </zone>
+  </level>
 </levels>

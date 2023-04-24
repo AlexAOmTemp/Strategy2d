@@ -11,7 +11,8 @@ public class BuildingSpawner : MonoBehaviour
     private int? _currentBuildingTypeId;
     public delegate void NewBuildingInProcess(GameObject Building);
     public static event NewBuildingInProcess NewBuildingIsInProcess;
-
+    private int _teamTag;
+    
     enum BuildingState
     {
         Idle,
@@ -20,8 +21,9 @@ public class BuildingSpawner : MonoBehaviour
     }
     private BuildingState _currentState = BuildingState.Idle;
 
-    public void Awake ()
+    public void Init (int team)
     {
+        _teamTag=team;
         ConstructionController.ConstructionIsFinished += onBuildingFinished;
     }
     public void CreateBuildingPlacer(int typeId)
@@ -39,6 +41,7 @@ public class BuildingSpawner : MonoBehaviour
         _currentBuilding = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, _buildingPlacePoint);
         var constructionController = _currentBuilding.GetComponent<ConstructionController>();
         constructionController.Init(DataLoader.Buildings[typeId]);
+         _currentBuilding.GetComponent<Team>().Number=_teamTag;
         _currentBuilding.transform.position = _buildingPlacePoint.position;
         _currentBuilding.transform.Translate(Vector3.up * constructionController.Height / 2);
         _currentState = BuildingState.HeroAttached;
@@ -85,6 +88,7 @@ public class BuildingSpawner : MonoBehaviour
         var building = Instantiate(_unconstructBuildingPrefab, Vector3.zero, Quaternion.identity, parent);
         building.GetComponentInChildren<Canvas>().sortingOrder = 2;
         building.GetComponent<ProductSpawner>().Init(buildingData.TypeId);
+        building.GetComponent<Team>().Number=_teamTag;
         var constructionController = building.GetComponent<ConstructionController>();
         building.transform.position = position;
         constructionController.Init(buildingData);

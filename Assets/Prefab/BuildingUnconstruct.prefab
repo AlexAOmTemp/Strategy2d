@@ -659,6 +659,7 @@ GameObject:
   - component: {fileID: 2960190305446062901}
   - component: {fileID: -8188836997901613846}
   - component: {fileID: 2695992042623482363}
+  - component: {fileID: 1328359629856575099}
   m_Layer: 0
   m_Name: BuildingUnconstruct
   m_TagString: Building
@@ -829,6 +830,18 @@ MonoBehaviour:
   _panelProduction: {fileID: 5501650966854940298}
   _buttonPrefab: {fileID: 2474893920175536732, guid: b3a9c7e0d696ef74797ab3041a7cfad9, type: 3}
   _canvas: {fileID: 8821594317690667518}
+--- !u!114 &1328359629856575099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2203017188923749362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6814e87db93234cb9beb1d9b2a14e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2240431243584174343
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Team : MonoBehaviour
+{
+    public int? Number{get; set;} = null;
+}

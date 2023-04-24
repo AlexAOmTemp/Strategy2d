@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class BuildingPlacerController : MonoBehaviour
 {
-    private GameObject _player;
-    void Start()
-    {
-        _player = GameObject.FindGameObjectWithTag("Player");
-    }
+    private GameObject _player=null;
 
-    // Update is called once per frame
+    public void setPlayer(GameObject player)
+    {
+        _player = player;
+    }
     void Update()
     {
-        transform.position = new Vector3(_player.transform.position.x, transform.position.y, 0);
+        if (_player!=null)
+            transform.position = new Vector3(_player.transform.position.x, transform.position.y, 0);
     }
 }

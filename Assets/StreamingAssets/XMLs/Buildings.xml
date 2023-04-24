@@ -42,4 +42,9 @@
     <SpriteFinished>StoneTower</SpriteFinished>
     <SpriteUnfinishedNames>StoneTower</SpriteUnfinishedNames>
   </building>
+    <building name = "Lair">
+    <SpriteFinished>Lair</SpriteFinished>
+    <CanBeBuild>false</CanBeBuild>
+    <SpriteUnfinishedNames>Lair</SpriteUnfinishedNames>
+  </building>
 </buildings>

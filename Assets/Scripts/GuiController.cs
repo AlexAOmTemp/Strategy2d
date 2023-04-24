@@ -57,7 +57,7 @@ public class GuiController : MonoBehaviour
     private void createSeparatorButtons()
     {
         _separatorButtonsSet.Clear();
-        for (int i=0; i<4; i++) 
+        for (int i = 0; i < 4; i++)
         {
             var button = Instantiate(_buttonPrefab, Vector3.zero, Quaternion.identity, _buildingsPanel.transform);
             var separatorButton = button.AddComponent<SeparatorButton>();
@@ -77,9 +77,15 @@ public class GuiController : MonoBehaviour
             foreach (string buildingName in unit.ProductsIn)
             {
                 BuildingData building = DataLoader.Buildings.Find(i => i.Name == buildingName);
-                while (building.TypeId > _productButtonsSets.Count - 1)
-                    _productButtonsSets.Add(new List<GameObject>());
-                _productButtonsSets[building.TypeId].Add(button);
+                if (building.Name == buildingName)
+                {
+                    Debug.Log($"Search {buildingName} found {building.Name}");
+                    while (building.TypeId > _productButtonsSets.Count - 1)
+                        _productButtonsSets.Add(new List<GameObject>());
+                    _productButtonsSets[building.TypeId].Add(button);
+                }
+                else
+                    Debug.LogError($"GuiController: building {buildingName} doesn't exist");
             }
             button.SetActive(false);
         }
@@ -92,7 +98,7 @@ public class GuiController : MonoBehaviour
         _activeButtonsSet = _separatorButtonsSet;
         foreach (var button in _activeButtonsSet)
         {
-            button.GetComponent<SeparatorButton>().SetSeparator(separator.GetComponent<ZoneSeparatorController>());
+            button.GetComponent<SeparatorButton>().SetSeparator(separator.GetComponent<SeparatorController>());
             button.SetActive(true);
         }
     }
@@ -100,7 +106,7 @@ public class GuiController : MonoBehaviour
     {
         _countOfBuildingVisited--;
         _currentZone = currentZone;
-        if (_countOfBuildingVisited==0)
+        if (_countOfBuildingVisited == 0)
             allBuildingsExited();
     }
     public void BuildingEntered(ProductSpawner spawner)
@@ -121,7 +127,7 @@ public class GuiController : MonoBehaviour
     public void BuildingExited()
     {
         _countOfBuildingVisited--;
-        if (_countOfBuildingVisited==0)
+        if (_countOfBuildingVisited == 0)
             allBuildingsExited();
     }
     private void allBuildingsExited()

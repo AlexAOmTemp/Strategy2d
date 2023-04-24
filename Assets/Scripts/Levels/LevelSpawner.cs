@@ -10,16 +10,12 @@ public class LevelSpawner : MonoBehaviour
     public GameObject CurrentLevel { get; private set; }
     public delegate void LevelCreated(GameObject Level);
     public static event LevelCreated LevelIsCreated;
-
-    private void Start()
-    {
-        CreateLevel(0);
-    }
-    public void CreateLevel(int levelId)
+    public GameObject CreateLevel(int levelId, bool reverse)
     {
         CurrentLevel = Instantiate(_levelPrefab, Vector3.zero, Quaternion.identity);
-        CurrentLevel.GetComponent<LevelController>().Init(DataLoader.Levels[levelId]);
+        CurrentLevel.GetComponent<LevelController>().Init (0, DataLoader.Levels[levelId],reverse,levelId);
         _LevelList.Add(CurrentLevel);
         LevelIsCreated?.Invoke(CurrentLevel);
+        return CurrentLevel;
     }
 }

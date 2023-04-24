@@ -35,7 +35,7 @@
     <Description>Base human melee unit</Description>
   </unit>
   <unit name = "Enemy">
-    <ProductsIn>EnemySpawner</ProductsIn>
+    <ProductsIn>Lair</ProductsIn>
     <ProductionTime>10</ProductionTime>
     <Race>Monster</Race>
     <RunSpeed>3.0</RunSpeed>
@@ -49,7 +49,7 @@
     <MeleeAttackDistance>0,5</MeleeAttackDistance>
   </unit>
   <unit name = "Range enemy">
-    <ProductsIn>EnemySpawner</ProductsIn>
+    <ProductsIn>Lair</ProductsIn>
     <ProductionTime>12</ProductionTime>
     <Race>Monster</Race>
     <RunSpeed>3.0</RunSpeed>

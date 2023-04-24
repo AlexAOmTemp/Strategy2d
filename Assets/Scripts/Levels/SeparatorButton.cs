@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class SeparatorButton : MonoBehaviour
 {
 	private PathPointsController _pointsController;
-	private ZoneSeparatorController _separatorController;
+	private SeparatorController _separatorController;
 	private int _buttonNumber; //0<- 1.| 2|. 3->
 	
 	public void Init(int buttonNumber)
@@ -39,7 +39,7 @@ public class SeparatorButton : MonoBehaviour
 		var rectTransform = this.GetComponent<RectTransform>();
 		rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.y, rectTransform.sizeDelta.y);
 	}
-	public void SetSeparator(ZoneSeparatorController separatorController)
+	public void SetSeparator(SeparatorController separatorController)
 	{
 		_separatorController = separatorController;
 		_pointsController = separatorController.transform.GetComponentInParent<PathPointsController>();

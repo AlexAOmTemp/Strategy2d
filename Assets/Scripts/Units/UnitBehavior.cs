@@ -28,7 +28,7 @@ public class UnitBehavior : MonoBehaviour
     {
         if (Math.Abs(transform.position.x - _currentPathPoint) > 0.5)
         {
-            Debug.Log($"Unit move to point {_currentPathPoint}");
+            //Debug.Log($"Unit move to point {_currentPathPoint}");
             _isDone = false;
             if (transform.position.x < _currentPathPoint)
                 _unitController.CurrentState = UnitController.State.RunRight;
@@ -37,7 +37,7 @@ public class UnitBehavior : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Unit has riched point {_currentPathPoint}");
+            //Debug.Log($"Unit has riched point {_currentPathPoint}");
             if (_isDone == false)
             {
                 _isDone = true;
