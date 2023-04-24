@@ -47,7 +47,7 @@ public class ProductSpawner : MonoBehaviour
     {
         if (ProductionQueue.Count == 0)
         {
-            _currentProductionTime = unitData.BaseProductionTime;
+            _currentProductionTime = unitData.ProductionTime;
             _panelProduction.SetActive(true);
             settingProductPanel(unitData);
         }
@@ -62,7 +62,7 @@ public class ProductSpawner : MonoBehaviour
         _cancelButtons.RemoveAt(index);
         if (index == 0 && ProductionQueue.Count > 0)
         {
-            _currentProductionTime = ProductionQueue[0].BaseProductionTime;
+            _currentProductionTime = ProductionQueue[0].ProductionTime;
             settingProductPanel(ProductionQueue[0]);
         }
         if (ProductionQueue.Count == 0)
@@ -83,9 +83,8 @@ public class ProductSpawner : MonoBehaviour
                 if (ProductionQueue.Count > 0)
                 {
                     settingProductPanel(ProductionQueue[0]);
-                    _currentProductionTime = ProductionQueue[0].BaseProductionTime;
+                    _currentProductionTime = ProductionQueue[0].ProductionTime;
                 }
-                   
                 else
                     queueFinished();
             }
@@ -120,6 +119,7 @@ public class ProductSpawner : MonoBehaviour
         var unit = Instantiate(_unitPrefab, Vector3.zero, Quaternion.identity, _unitsPlaced.transform);
         unit.transform.position = this.transform.position;
         unit.GetComponent<UnitMain>().Init(unitData);
+        unit.GetComponent<UnitBehavior>().SetCurrentPathPoint(PathPointsController.CurrentPathPoint);
     }
     private void createCancelButton(UnitData unitData)
     {

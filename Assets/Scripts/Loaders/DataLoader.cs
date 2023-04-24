@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Xml;
 using System;
 using System.Reflection;
+using System.Globalization;
 
 public class DataLoader : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class DataLoader : MonoBehaviour
     public static List<LevelData> Levels { get; private set; } = new List<LevelData>();
     public static List<BuildingData> Buildings { get; private set; } = new List<BuildingData>();
     public static List<UnitData> Units { get; private set; } = new List<UnitData>();
-
 
     void Awake()
     {
@@ -33,60 +33,19 @@ public class DataLoader : MonoBehaviour
             foreach (XmlElement building in xRoot)
             {
                 var buildingData = new BuildingData();
-                
+                object unitDataObj = buildingData;
+                buildingData = (BuildingData)(loadParameters(unitDataObj, building.ChildNodes, _buildingsSpritesFolder));
 
                 XmlNode attr = building.Attributes.GetNamedItem("name");
                 buildingData.Name = attr?.Value;
-                buildingData.TypeId = id;
-                buildingData.BuildInZones = new int[0];
-                id++;
-                foreach (XmlNode buildingParameter in building.ChildNodes)
-                {
-                    if (buildingParameter.Name == "sprite")
-                    {
-                        foreach (var sprite in _dataFilesLoader.LoadedSpriteFiles[_buildingsSpritesFolder])
-                            if (sprite.name == buildingParameter.InnerText)
-                            {
-                                buildingData.SpriteFinished = sprite;
-                                break;
-                            }
-                        if (buildingData.SpriteFinished == null)
-                            Debug.LogError($"DataLoader: Sprite {_levelsSpritesFolder}{buildingParameter.InnerText} doesn't exist");
-                    }
-                    if (buildingParameter.Name == "buildTime")
-                        buildingData.BuildingTime = float.Parse(buildingParameter.InnerText);
-                    if (buildingParameter.Name == "spriteUnfinished")
-                    {
-                        List<Sprite> spr = new List<Sprite>();
-                        string[] names = buildingParameter.InnerText.Split(" ");
-                        foreach (string name in names)
-                        {
-                            Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_buildingsSpritesFolder].Find(i => i.name == name));
-                            if (sprite == null)
-                                Debug.LogError($"DataLoader: Sprite {_buildingsSpritesFolder}{name} doesn't exist");
-                            else
-                                spr.Add(sprite);
-                        }
-                        buildingData.SpritesUnfinished = spr.ToArray();
-                        buildingData.SpritesUnfinishedCount = spr.Count;
-                    }
-                    if (buildingParameter.Name == "buildZonesId")
-                    {
-                        List<int> zonesId = new List<int>();
-                        string[] zones = buildingParameter.InnerText.Split(" ");
-                        foreach (string num in zones)
-                            zonesId.Add(int.Parse(num));
-                        buildingData.BuildInZones = zonesId.ToArray();
-                    }
-                    if (buildingParameter.Name == "canBeBuild")
-                    {
-                        buildingData.CanBeBuild = bool.Parse(buildingParameter.InnerText);
-                    }
-                    if (buildingParameter.Name == "description")
-                    {
-                        buildingData.Description = buildingParameter.InnerText;
-                    }
-                }
+                buildingData.TypeId = id++;
+
+                List<Sprite> spr = new List<Sprite>();
+                foreach (string name in buildingData.SpriteUnfinishedNames)
+                    spr.Add(findSprite(_buildingsSpritesFolder, name));
+                buildingData.SpritesUnfinished = spr.ToArray();
+                buildingData.SpritesUnfinishedCount = spr.Count;
+
                 Buildings.Add(buildingData);
             }
             //consoleLogLoadedBuildingData();
@@ -100,7 +59,7 @@ public class DataLoader : MonoBehaviour
         if (xRoot != null)
         {
             int LevelId = 0;
-            foreach (XmlElement level in xRoot) 
+            foreach (XmlElement level in xRoot)
             {
                 int zoneId = 0;
                 var levelData = new LevelData();
@@ -133,23 +92,23 @@ public class DataLoader : MonoBehaviour
                     }
                     if (levelParameter.Name == "mainBuilding")
                     {
-                        levelData.MainBuilding =levelParameter.InnerText;
+                        levelData.MainBuilding = levelParameter.InnerText;
                     }
                     if (levelParameter.Name == "commandBackIcon")
                     {
-                        levelData.SeparatorCommandBackIcon = findSprite(levelParameter.InnerText);
+                        levelData.SeparatorCommandBackIcon = findSprite(_levelsSpritesFolder, levelParameter.InnerText);
                     }
                     if (levelParameter.Name == "commandBehindWallIcon")
                     {
-                        levelData.SeparatorCommandBehindWallIcon = findSprite(levelParameter.InnerText);
+                        levelData.SeparatorCommandBehindWallIcon = findSprite(_levelsSpritesFolder, levelParameter.InnerText);
                     }
                     if (levelParameter.Name == "commandProtectWallIcon")
                     {
-                        levelData.SeparatorCommandProtectWallIcon = findSprite(levelParameter.InnerText);
+                        levelData.SeparatorCommandProtectWallIcon = findSprite(_levelsSpritesFolder, levelParameter.InnerText);
                     }
                     if (levelParameter.Name == "commandForwardIcon")
                     {
-                        levelData.SeparatorCommandForwardIcon = findSprite(levelParameter.InnerText);
+                        levelData.SeparatorCommandForwardIcon = findSprite(_levelsSpritesFolder, levelParameter.InnerText);
                     }
                     if (levelParameter.Name == "zone")
                     {
@@ -207,80 +166,21 @@ public class DataLoader : MonoBehaviour
         if (xRoot != null)
         {
             int UnitTypeId = 0;
-            foreach (XmlElement unit in xRoot) //level
+            foreach (XmlElement unit in xRoot)
             {
-                var UnitData = new UnitData();
-                UnitData.TypeId = UnitTypeId;
+                var unitData = new UnitData();
+                object unitDataObj = unitData;
+                unitData = (UnitData)(loadParameters(unitDataObj, unit.ChildNodes, _unitsSpritesFolder));
+                unitData.TypeId = UnitTypeId;
                 UnitTypeId++;
                 XmlNode attr = unit.Attributes.GetNamedItem("name");
-                UnitData.Name = attr?.Value;
-
-                foreach (XmlNode unitParameter in unit.ChildNodes)
-                {
-
-                    if (unitParameter.Name == "baseSpawningTime")
-                    {
-                        UnitData.BaseProductionTime = float.Parse(unitParameter.InnerText);
-                    }
-                    if (unitParameter.Name == "productsIn")
-                    {
-                        UnitData.ProductsIn = unitParameter.InnerText.Split(" ");
-                    }
-                    if (unitParameter.Name == "race")
-                    {
-                        UnitData.Race = unitParameter.InnerText;
-                    }
-                    if (unitParameter.Name == "runSpeed")
-                    {
-                        UnitData.RunSpeed = float.Parse(unitParameter.InnerText);
-                    }
-
-                    if (unitParameter.Name == "canFly")
-                    {
-                        UnitData.CanFly = bool.Parse(unitParameter.InnerText);
-                    }
-                    if (unitParameter.Name == "behaviorModel")
-                    {
-                        UnitData.BehaviorModel = Enum.Parse<UnitBehaviorModel>(unitParameter.InnerText);
-                    }
-                    if (unitParameter.Name == "constructionEfficiency")
-                    {
-                        UnitData.ConstructionEfficiency = float.Parse(unitParameter.InnerText);
-                    }
-                    if (unitParameter.Name == "spriteAlive")
-                    {
-                        Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_unitsSpritesFolder].Find(i => i.name == unitParameter.InnerText));
-                        if (sprite == null)
-                            Debug.LogError($"DataLoader: Sprite {_unitsSpritesFolder}/{unitParameter.InnerText} doesn't exist");
-                        else
-                            UnitData.SpriteAlive = sprite;
-                    }
-                    if (unitParameter.Name == "spriteDead")
-                    {
-                        Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_unitsSpritesFolder].Find(i => i.name == unitParameter.InnerText));
-                        if (sprite == null)
-                            Debug.LogError($"DataLoader: Sprite {_unitsSpritesFolder}/{unitParameter.InnerText} doesn't exist");
-                        else
-                            UnitData.SpriteDead = sprite;
-                    }
-                    if (unitParameter.Name == "icone")
-                    {
-                        Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_unitsSpritesFolder].Find(i => i.name == unitParameter.InnerText));
-                        if (sprite == null)
-                            Debug.LogError($"DataLoader: Sprite {_unitsSpritesFolder}/{unitParameter.InnerText} doesn't exist");
-                        else
-                            UnitData.Icone = sprite;
-                    }
-                    if (unitParameter.Name == "description")
-                    {
-                        UnitData.Description = unitParameter.InnerText;
-                    }
-                }
-                Units.Add(UnitData);
+                unitData.Name = attr?.Value;
+                Units.Add(unitData);
             }
             //consoleLogLoadedUnitData();
         }
     }
+    
     private void consoleLogLoadedLevelData()
     {
         foreach (LevelData level in Levels)
@@ -290,43 +190,99 @@ public class DataLoader : MonoBehaviour
                 Debug.Log($"zoneData.id = {zData.Id} zoneData.name = {zData.Name} zoneData.size = {zData.SizeInTiles} zoneData.Sprite = {zData.Sprite} zoneData.SeparatorSprite  {zData.SeparatorSprite}");
         }
     }
-    private void consoleLogLoadedBuildingData()
+    private void consoleLogLoadedData(List<object> dataSet)
     {
-        foreach (BuildingData buildingData in Buildings)
-        {
-            Debug.Log($"Id = {buildingData.TypeId} Name = {buildingData.Name} BuildingTime = {buildingData.BuildingTime} CanBeBuild = {buildingData.CanBeBuild}");
-            Debug.Log($"SpriteFinished = {buildingData.SpriteFinished} SpritesUnfinishedCount = {buildingData.SpritesUnfinishedCount}");
-            foreach (Sprite sp in buildingData.SpritesUnfinished)
-                Debug.Log($"SpriteUnfinished {sp}");
-            if (buildingData.BuildInZones.Length>0)
-                foreach (int zoneId in buildingData.BuildInZones)
-                    Debug.Log($"BuildInZones = {zoneId}");
-        }
-    }
-    private void consoleLogLoadedUnitData()
-    {
-        Type myType = typeof(UnitData);
+        Type myType = dataSet[0].GetType();
         FieldInfo[] fields = myType.GetFields();
         PropertyInfo[] Properties = myType.GetProperties();
-        foreach (UnitData unitData in Units)
+        foreach (object data in dataSet)
         {
-            string toLog="";
+            string toLog = "";
             foreach (var field in fields)
-            {
-                toLog += $"{field.Name} = { unitData.GetType().GetField(field.Name).GetValue(unitData)}; ";
-            }
+                toLog += $"{field.Name} = {data.GetType().GetField(field.Name).GetValue(data)}; ";
             foreach (var property in Properties)
             {
-                toLog += $"{property.Name} = { unitData.GetType().GetProperty(property.Name).GetValue(unitData,null)}; ";
+                if (property.PropertyType.IsArray)
+                {
+                    string logString = $"{property.Name} = "; 
+                    Array array = (Array)property.GetValue(data);
+                    if (array!=null)
+                        foreach (var value in array)
+                            logString += $" {value} ";
+                    logString += ";";
+                    toLog +=logString;
+                }
+                else
+                    toLog += $"{property.Name} = {property.GetValue(data, null)}; ";
             }
             Debug.Log(toLog);
         }
     }
-    private Sprite findSprite(string spriteName)
+    private void consoleLogLoadedBuildingData()
     {
-        Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[_levelsSpritesFolder].Find(i => i.name == spriteName));
+        List<object> objects = new List<object>();
+        foreach (var unit in Buildings)
+            objects.Add(unit);
+        consoleLogLoadedData(objects);
+    }
+    private void consoleLogLoadedUnitData()
+    {
+        List<object> objects = new List<object>();
+        foreach (var unit in Units)
+            objects.Add(unit);
+        consoleLogLoadedData(objects);
+    }
+    
+    private Sprite findSprite(string folderName, string spriteName)
+    {
+        Sprite sprite = (_dataFilesLoader.LoadedSpriteFiles[folderName].Find(i => i.name.ToLower() == spriteName.ToLower()));
         if (sprite == null)
-            Debug.LogError($"DataLoader: Sprite {_levelsSpritesFolder}/{spriteName} doesn't exist");
+            Debug.LogError($"DataLoader: Sprite {folderName}/{spriteName} doesn't exist");
         return sprite;
     }
+    private object loadParameters(object dataObj, XmlNodeList parameters, string spriteFolder)
+    {
+        Type myType = dataObj.GetType();
+        List<PropertyInfo> Properties = new List<PropertyInfo>(myType.GetProperties());
+        foreach (XmlNode parameter in parameters)
+        {
+            object val = null;
+            var property = Properties.Find(i => i.Name == parameter.Name);
+            if (property == null)
+                Debug.Log($"There is no property {parameter.Name}");
+            else
+            {
+                Type propertyType = property.PropertyType;
+                if (propertyType == typeof(string))
+                    val = parameter.InnerText;
+                else if (propertyType == typeof(string[]))
+                    val = parameter.InnerText.Split(" ");
+                else if (propertyType == typeof(float?) || propertyType == typeof(float))
+                {
+                    string number = parameter.InnerText.Replace(",", ".");
+                    val = float.Parse(number, CultureInfo.InvariantCulture);
+                }
+                else if (propertyType == typeof(int))
+                    val = int.Parse(parameter.InnerText);
+                else if (propertyType == typeof(int[]))
+                {
+                    List<int> ints = new List<int>();
+                    string[] strings = parameter.InnerText.Split(" ");
+                    foreach (string num in strings)
+                        ints.Add(int.Parse(num));
+                    val = ints.ToArray();
+                }
+                else if (propertyType == typeof(bool))
+                    val = bool.Parse(parameter.InnerText);
+                else if (propertyType == typeof(Sprite))
+                    val = findSprite(spriteFolder, parameter.InnerText);
+                else
+                    Debug.Log($"No parser for type {propertyType}");
+                //if (val != null)
+                property.SetValue(dataObj, val);
+            }
+        }
+        return dataObj;
+    }
+
 }

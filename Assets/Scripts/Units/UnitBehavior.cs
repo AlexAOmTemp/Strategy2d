@@ -1,7 +1,5 @@
 using UnityEngine;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 
 public class UnitBehavior : MonoBehaviour
 {
@@ -10,32 +8,39 @@ public class UnitBehavior : MonoBehaviour
     public delegate void UnitInPoint();
     public event UnitInPoint UnitIsInPOint;
     private bool _isDone = false;
+    private float _currentPathPoint;
     void Start()
     {
         var currentLevel = GameObject.Find("LevelSpawner").GetComponent<LevelSpawner>().CurrentLevel;
-        _pathPointsController = currentLevel.GetComponent<PathPointsController>();
         _unitController = this.GetComponent<UnitController>();
+       // _currentPathPoint = PathPointsController.CurrentPathPoint;
     }
     void Update()
     {
-        if (Math.Abs(transform.position.x - _pathPointsController.CurrentPathPoint) > 0.5)
+        moveToPoint();
+    }
+    public void SetCurrentPathPoint(float pathPoint)
+    {
+        Debug.Log($"Path point reset to {pathPoint}");
+        _currentPathPoint = pathPoint;
+    }
+    void moveToPoint()
+    {
+        if (Math.Abs(transform.position.x - _currentPathPoint) > 0.5)
         {
+            Debug.Log($"Unit move to point {_currentPathPoint}");
             _isDone = false;
-            if (transform.position.x < _pathPointsController.CurrentPathPoint)
-            {
+            if (transform.position.x < _currentPathPoint)
                 _unitController.CurrentState = UnitController.State.RunRight;
-            }
-            else if (transform.position.x > _pathPointsController.CurrentPathPoint)
-            {
+            else
                 _unitController.CurrentState = UnitController.State.RunLeft;
-            }
         }
         else
         {
+            Debug.Log($"Unit has riched point {_currentPathPoint}");
             if (_isDone == false)
             {
                 _isDone = true;
-                Debug.Log("Unit reach point");
                 _unitController.CurrentState = UnitController.State.Idle;
                 UnitIsInPOint?.Invoke();
             }

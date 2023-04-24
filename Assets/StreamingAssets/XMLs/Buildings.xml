@@ -1,45 +1,45 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <buildings>
   <building name = "Barracks">
-    <sprite>Barracks</sprite>
-    <canBeBuild>true</canBeBuild>
-    <buildTime>2</buildTime>
-    <buildZonesId>0</buildZonesId>
-    <description>Allows to recruit units</description>
-    <spriteUnfinished>BarracksUnfinished1 BarracksUnfinished2 BarracksUnfinished3</spriteUnfinished>
+    <SpriteFinished>Barracks</SpriteFinished>
+    <CanBeBuild>true</CanBeBuild>
+    <BuildingTime>2</BuildingTime>
+    <BuildInZonesWithId>0</BuildInZonesWithId>
+    <Description>Allows to recruit units</Description>
+    <SpriteUnfinishedNames>BarracksUnfinished1 BarracksUnfinished2 BarracksUnfinished3</SpriteUnfinishedNames>
   </building>
   <building name = "Castle">
-    <sprite>Castle</sprite>
-    <canBeBuild>false</canBeBuild>
-    <spriteUnfinished>CastleUnfinished1 CastleUnfinished2 CastleUnfinished3</spriteUnfinished>
+    <SpriteFinished>Castle</SpriteFinished>
+    <CanBeBuild>false</CanBeBuild>
+    <SpriteUnfinishedNames>CastleUnfinished1 CastleUnfinished2 CastleUnfinished3</SpriteUnfinishedNames>
   </building>
   <building name = "Lumber Mill">
-    <canBeBuild>true</canBeBuild>
-    <sprite>LumberMill</sprite>
-    <buildTime>25</buildTime>
-    <buildZonesId>2</buildZonesId>
-    <description>Workers can gather Lumber here</description>
-    <spriteUnfinished>LumberMillUnfinished1</spriteUnfinished>
+    <CanBeBuild>true</CanBeBuild>
+    <SpriteFinished>LumberMill</SpriteFinished>
+    <BuildingTime>25</BuildingTime>
+    <BuildInZonesWithId>2</BuildInZonesWithId>
+    <Description>Workers can gather Lumber here</Description>
+    <SpriteUnfinishedNames>LumberMillUnfinished1</SpriteUnfinishedNames>
   </building>
   <building name = "House">
-    <canBeBuild>true</canBeBuild>
-    <sprite>House</sprite>
-    <buildTime>20</buildTime>
-    <buildZonesId>1 2 3</buildZonesId>
-    <description>Increase population limit</description>
-    <spriteUnfinished>HouseUnfinished1 HouseUnfinished2 HouseUnfinished3 HouseUnfinished4</spriteUnfinished>
+    <CanBeBuild>true</CanBeBuild>
+    <SpriteFinished>House</SpriteFinished>
+    <BuildingTime>20</BuildingTime>
+    <BuildInZonesWithId>1 2 3</BuildInZonesWithId>
+    <Description>Increase population limit</Description>
+    <SpriteUnfinishedNames>HouseUnfinished1 HouseUnfinished2 HouseUnfinished3 HouseUnfinished4</SpriteUnfinishedNames>
   </building>
   <building name = "Blacksmith">
-    <canBeBuild>true</canBeBuild>
-    <sprite>Blacksmith</sprite>
-    <buildTime>30</buildTime>
-    <buildZonesId>0 1</buildZonesId>
-    <description>Improves units equip</description>
-    <spriteUnfinished>BlacksmithUnfinished1</spriteUnfinished>
+    <CanBeBuild>true</CanBeBuild>
+    <SpriteFinished>Blacksmith</SpriteFinished>
+    <BuildingTime>30</BuildingTime>
+    <BuildInZonesWithId>0 1</BuildInZonesWithId>
+    <Description>Improves units equip</Description>
+    <SpriteUnfinishedNames>BlacksmithUnfinished1</SpriteUnfinishedNames>
   </building>
   <building name = "StoneTower">
-    <canBeBuild>false</canBeBuild>
-    <sprite>StoneTower</sprite>
-    <spriteUnfinished>StoneTower</spriteUnfinished>
+    <CanBeBuild>false</CanBeBuild>
+    <SpriteFinished>StoneTower</SpriteFinished>
+    <SpriteUnfinishedNames>StoneTower</SpriteUnfinishedNames>
   </building>
 </buildings>

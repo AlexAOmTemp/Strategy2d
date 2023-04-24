@@ -19,7 +19,7 @@ public class UnitMain : MonoBehaviour
         this.GetComponent<BoxCollider2D>().size = spriteRenderer.size;
         this.GetComponent<UnitController>().Init(unitData);
         _unitBehavior =  this.GetComponent<UnitBehavior>();
-        _unitBehavior.UnitIsInPOint+= onUnitReachPoint;
+        //_unitBehavior.UnitIsInPOint+= onUnitReachPoint;
     }
     void onUnitReachPoint()
     {

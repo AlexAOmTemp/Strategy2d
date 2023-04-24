@@ -45,7 +45,7 @@ public class GuiController : MonoBehaviour
             button.GetComponentInChildren<TextMeshProUGUI>().SetText(building.Name);
             button.GetComponent<ConstructButton>().Id = building.TypeId;
 
-            foreach (int zoneId in building.BuildInZones)
+            foreach (int zoneId in building.BuildInZonesWithId)
             {
                 while (zoneId > _constructionButtonsSets.Count - 1)
                     _constructionButtonsSets.Add(new List<GameObject>());
@@ -128,7 +128,6 @@ public class GuiController : MonoBehaviour
     {
         foreach (var button in _activeButtonsSet)
             button.SetActive(false);
-
         if (_currentZone < _constructionButtonsSets.Count)
         {
             _activeButtonsSet = _constructionButtonsSets[_currentZone];

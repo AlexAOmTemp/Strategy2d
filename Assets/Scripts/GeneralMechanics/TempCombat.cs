@@ -9,6 +9,12 @@ public class TempCombat : MonoBehaviour
     private float _meleeDamage = 5;
     private TempCombat _target;
 
+    public void Init (float health, float rangeDamage, float meleeDamage)
+    {
+        _health = health;
+        _rangeDamage = rangeDamage;
+        _meleeDamage = meleeDamage;
+    }
     public void SetTarget(TempCombat target)
     {
         _target = target;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
+    [SerializeField] private GameObject _enemySpawnerPrefab;
     [SerializeField] private GameObject _groundPrefab;
     [SerializeField] private GameObject _separatorPrefab;
     [SerializeField] private BuildingSpawner _buildingSpawner;
@@ -55,6 +56,8 @@ public class LevelController : MonoBehaviour
         WorldFinishPosition = new Vector3(position.x - groundSize.x/2, WorldStartPosition.y, 0);
         var blockerRight = Instantiate(_blockerPrefab, new Vector3 (WorldFinishPosition.x, PlacementLevel,0), Quaternion.identity, this.transform);
         blockerRight.transform.Translate (Vector3.right * blockerRight.GetComponent<BoxCollider2D>().size.x/2f);
+         
+        Instantiate(_enemySpawnerPrefab, new Vector3 (WorldFinishPosition.x - groundSize.x/2, PlacementLevel + groundSize.y/2,0), Quaternion.identity, this.transform); 
 
        
         BuildingPlacer = this.transform.Find("BuildingPlacer");

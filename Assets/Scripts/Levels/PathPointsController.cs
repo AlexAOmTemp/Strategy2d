@@ -5,8 +5,8 @@ using UnityEngine;
 public class PathPointsController : MonoBehaviour
 {
     [SerializeField] private GameObject _markerPrefab;
-    public List<float> PathPoints { get; private set; } = new List<float>();
-    public float CurrentPathPoint { get; private set; }
+    static public List<float> PathPoints { get; private set; } = new List<float>();
+    static public float CurrentPathPoint { get; private set; }
     private GameObject _currentPointMarker;
     public void AddPoint(float point)
     {

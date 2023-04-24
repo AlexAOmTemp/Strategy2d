@@ -1,42 +1,65 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <units>
-  <unit name = "Worker">
-    <productsIn>Castle</productsIn>
-    <baseSpawningTime>1</baseSpawningTime>
-    <race>Human</race>
-    <runSpeed>3,0</runSpeed>
-    <canFly>false</canFly>
-    <behaviorModel>Worker</behaviorModel>
-    <constructionEfficiency>1,0</constructionEfficiency>
-    <spriteAlive>Worker</spriteAlive>
-    <spriteDead>Worker</spriteDead>
-    <icone>Worker</icone>
-    <description>Unwaged worker, slave</description>
+  <unit name = "Warrior">
+    <ProductsIn>Barracks</ProductsIn>
+    <ProductionTime>7</ProductionTime>
+    <Race>Human</Race>
+    <RunSpeed>3,0</RunSpeed>
+    <CanFly>false</CanFly>
+    <BehaviorModel>Warrior</BehaviorModel>
+    <ConstructionEfficiency>1,0</ConstructionEfficiency>
+    <SpriteAlive>Warrior</SpriteAlive>
+    <SpriteDead>Warrior</SpriteDead>
+    <Health>30</Health>
+    <MeleeAttackDamage>5</MeleeAttackDamage>
+    <MeleeAttackDistance>0,5</MeleeAttackDistance>
+    <RangeAttackDamage>6</RangeAttackDamage>
+    <RangeAttackDistance>2</RangeAttackDistance>
+    <Icone>WarriorIcon</Icone>
+    <Description>Base human melee unit</Description>
   </unit>
   <unit name = "Archer">
-    <productsIn>Barracks House</productsIn>
-    <baseSpawningTime>1</baseSpawningTime>
-    <race>Human</race>
-    <runSpeed>3,0</runSpeed>
-    <canFly>false</canFly>
-    <behaviorModel>RangeWarrior</behaviorModel>
-    <constructionEfficiency>1,0</constructionEfficiency>
-    <spriteAlive>Archer</spriteAlive>
-    <spriteDead>Archer</spriteDead>
-    <icone>ArcherIcon</icone>
-    <description>Base human range unit</description>
+    <ProductsIn>Barracks</ProductsIn>
+    <ProductionTime>7</ProductionTime>
+    <Race>Human</Race>
+    <RunSpeed>3.0</RunSpeed>
+    <CanFly>false</CanFly>
+    <BehaviorModel>RangeWarrior</BehaviorModel>
+    <ConstructionEfficiency>1,0</ConstructionEfficiency>
+    <SpriteAlive>Archer</SpriteAlive>
+    <SpriteDead>Archer</SpriteDead>
+    <Health>20</Health>
+    <RangeAttackDamage>5</RangeAttackDamage>
+    <RangeAttackDistance>4</RangeAttackDistance>
+    <Icone>ArcherIcon</Icone>
+    <Description>Base human melee unit</Description>
   </unit>
-  <unit name = "Warrior">
-    <productsIn>Barracks</productsIn>
-    <baseSpawningTime>1</baseSpawningTime>
-    <race>Human</race>
-    <runSpeed>3,0</runSpeed>
-    <canFly>false</canFly>
-    <behaviorModel>Warrior</behaviorModel>
-    <constructionEfficiency>1,0</constructionEfficiency>
-    <spriteAlive>Warrior</spriteAlive>
-    <spriteDead>Warrior</spriteDead>
-    <icone>WarriorIcon</icone>
-    <description>Base human melee unit</description>
+  <unit name = "Enemy">
+    <ProductsIn>EnemySpawner</ProductsIn>
+    <ProductionTime>10</ProductionTime>
+    <Race>Monster</Race>
+    <RunSpeed>3.0</RunSpeed>
+    <CanFly>false</CanFly>
+    <BehaviorModel>Warrior</BehaviorModel>
+    <ConstructionEfficiency>1,0</ConstructionEfficiency>
+    <SpriteAlive>Enemy</SpriteAlive>
+    <SpriteDead>Enemy</SpriteDead>
+    <Health>40</Health>
+    <MeleeAttackDamage>3</MeleeAttackDamage>
+    <MeleeAttackDistance>0,5</MeleeAttackDistance>
+  </unit>
+  <unit name = "Range enemy">
+    <ProductsIn>EnemySpawner</ProductsIn>
+    <ProductionTime>12</ProductionTime>
+    <Race>Monster</Race>
+    <RunSpeed>3.0</RunSpeed>
+    <CanFly>false</CanFly>
+    <BehaviorModel>RangeWarrior</BehaviorModel>
+    <ConstructionEfficiency>1,0</ConstructionEfficiency>
+    <SpriteAlive>Range enemy</SpriteAlive>
+    <SpriteDead>Range enemy</SpriteDead>
+    <Health>30</Health>
+    <RangeAttackDamage>4</RangeAttackDamage>
+    <RangeAttackDistance>2</RangeAttackDistance>
   </unit>
 </units>

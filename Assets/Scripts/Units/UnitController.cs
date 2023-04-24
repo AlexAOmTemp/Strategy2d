@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    [SerializeField] private TempCombat _tempCombat;
     private UnitData _data;
     public State CurrentState {get; set;}
     private float _timeFromLastAttack;
-    private GameObject _target;
     public enum State{
         Idle,
         MoveLeft,
@@ -23,7 +23,6 @@ public class UnitController : MonoBehaviour
     public void Init(UnitData data)
     {
         _data=data;
-        Debug.Log("UnitController: unit initialized");
     }
 
     void Update()
@@ -45,11 +44,13 @@ public class UnitController : MonoBehaviour
                 break;
             case State.MeleeAttack:
                 if (_timeFromLastAttack > 1 / _data.MeleeAttackSpeed)
-                    meleeAttack();
+                    _tempCombat.MeleeAttack();
                 break;
             case State.SpellCast:
                 break;
             case State.RangeAttack:
+                if (_timeFromLastAttack > 1 / _data.RangeAttackSpeed)
+                    _tempCombat.RangeAttack();
                 break;
             case State.Build:
                 break;
@@ -57,13 +58,5 @@ public class UnitController : MonoBehaviour
             default:
                 break;
         }
-    }
-    private void meleeAttack()
-    {
-        Debug.Log($"Unit {_data.Name}:{_data.TypeId} attacks {_target}");
-    }
-    private void rangeAttack()
-    {
-        Debug.Log($"Unit {_data.Name}:{_data.TypeId} attacks {_target}");
     }
 }

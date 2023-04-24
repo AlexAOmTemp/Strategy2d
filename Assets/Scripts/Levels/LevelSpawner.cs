@@ -15,7 +15,7 @@ public class LevelSpawner : MonoBehaviour
     {
         CreateLevel(0);
     }
-    void CreateLevel(int levelId)
+    public void CreateLevel(int levelId)
     {
         CurrentLevel = Instantiate(_levelPrefab, Vector3.zero, Quaternion.identity);
         CurrentLevel.GetComponent<LevelController>().Init(DataLoader.Levels[levelId]);

@@ -20,10 +20,10 @@ public class ZoneSeparatorController : MonoBehaviour
         if (collision.gameObject.CompareTag("PlayerInBuilding") )
         {
             if (collision.gameObject.transform.position.x > transform.position.x)
-                CurrentZone = ZoneId + 1;
+                CurrentZone = ZoneId;         
             else
-                CurrentZone = ZoneId;
-            _guiController.SeparatorExited(ZoneId);
+                CurrentZone = ZoneId-1;
+            _guiController.SeparatorExited(CurrentZone);
         }
     }
     public void Init(int zoneId, int separatorId, Sprite image)
