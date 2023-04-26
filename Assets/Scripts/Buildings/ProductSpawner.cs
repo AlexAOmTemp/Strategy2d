@@ -94,7 +94,7 @@ public class ProductSpawner : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log($"{collision.gameObject.GetComponent<Team>()}, {this.GetComponent<Team>()}");
+            //Debug.Log($"{collision.gameObject.GetComponent<Team>()}, {this.GetComponent<Team>()}");
             if (collision.gameObject.GetComponent<Team>().Number == this.GetComponent<Team>().Number)
             {
                 _canvas.enabled = true;
@@ -124,7 +124,7 @@ public class ProductSpawner : MonoBehaviour
         var unit = Instantiate(_unitPrefab, Vector3.zero, Quaternion.identity, _unitsPlaced.transform);
         unit.transform.position = this.transform.position;
         unit.GetComponent<UnitMain>().Init(unitData);
-        unit.GetComponent<UnitBehavior>().SetCurrentPathPoint(PathPointsController.CurrentPathPoint);
+        //unit.GetComponent<UnitBehavior>().SetCurrentPathPoint(PathPointsController.CurrentPathPoint);
         unit.GetComponent<Team>().Number = this.GetComponent<Team>().Number;
     }
     private void createCancelButton(UnitData unitData)

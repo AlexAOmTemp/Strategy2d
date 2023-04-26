@@ -12,9 +12,8 @@
     <SpriteDead>Warrior</SpriteDead>
     <Health>30</Health>
     <MeleeAttackDamage>5</MeleeAttackDamage>
-    <MeleeAttackDistance>0,5</MeleeAttackDistance>
-    <RangeAttackDamage>6</RangeAttackDamage>
-    <RangeAttackDistance>2</RangeAttackDistance>
+    <MeleeAttackDistance>1.0</MeleeAttackDistance>
+    <MeleeAttackSpeed>1</MeleeAttackSpeed>
     <Icone>WarriorIcon</Icone>
     <Description>Base human melee unit</Description>
   </unit>
@@ -31,6 +30,7 @@
     <Health>20</Health>
     <RangeAttackDamage>5</RangeAttackDamage>
     <RangeAttackDistance>4</RangeAttackDistance>
+    <RangeAttackSpeed>1</RangeAttackSpeed>
     <Icone>ArcherIcon</Icone>
     <Description>Base human melee unit</Description>
   </unit>
@@ -46,7 +46,8 @@
     <SpriteDead>Enemy</SpriteDead>
     <Health>40</Health>
     <MeleeAttackDamage>3</MeleeAttackDamage>
-    <MeleeAttackDistance>0,5</MeleeAttackDistance>
+    <MeleeAttackDistance>1.0</MeleeAttackDistance>
+    <MeleeAttackSpeed>1</MeleeAttackSpeed>
   </unit>
   <unit name = "Range enemy">
     <ProductsIn>Lair</ProductsIn>
@@ -61,5 +62,6 @@
     <Health>30</Health>
     <RangeAttackDamage>4</RangeAttackDamage>
     <RangeAttackDistance>2</RangeAttackDistance>
+    <RangeAttackSpeed>1</RangeAttackSpeed>
   </unit>
 </units>

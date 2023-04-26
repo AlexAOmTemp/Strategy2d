@@ -2,6 +2,7 @@
 <buildings>
   <building name = "Barracks">
     <SpriteFinished>Barracks</SpriteFinished>
+    <SpawnTypeName>Order</SpawnTypeName>
     <CanBeBuild>true</CanBeBuild>
     <BuildingTime>2</BuildingTime>
     <BuildInZonesWithId>0</BuildInZonesWithId>
@@ -10,11 +11,13 @@
   </building>
   <building name = "Castle">
     <SpriteFinished>Castle</SpriteFinished>
+    <SpawnTypeName>Order</SpawnTypeName>
     <CanBeBuild>false</CanBeBuild>
     <SpriteUnfinishedNames>CastleUnfinished1 CastleUnfinished2 CastleUnfinished3</SpriteUnfinishedNames>
   </building>
   <building name = "Lumber Mill">
     <CanBeBuild>true</CanBeBuild>
+    <SpawnTypeName>Order</SpawnTypeName>
     <SpriteFinished>LumberMill</SpriteFinished>
     <BuildingTime>25</BuildingTime>
     <BuildInZonesWithId>2</BuildInZonesWithId>
@@ -23,6 +26,7 @@
   </building>
   <building name = "House">
     <CanBeBuild>true</CanBeBuild>
+    <SpawnTypeName>Order</SpawnTypeName>
     <SpriteFinished>House</SpriteFinished>
     <BuildingTime>20</BuildingTime>
     <BuildInZonesWithId>1 2 3</BuildInZonesWithId>
@@ -31,6 +35,7 @@
   </building>
   <building name = "Blacksmith">
     <CanBeBuild>true</CanBeBuild>
+    <SpawnTypeName>Order</SpawnTypeName>
     <SpriteFinished>Blacksmith</SpriteFinished>
     <BuildingTime>30</BuildingTime>
     <BuildInZonesWithId>0 1</BuildInZonesWithId>
@@ -39,10 +44,12 @@
   </building>
   <building name = "StoneTower">
     <CanBeBuild>false</CanBeBuild>
+    <SpawnTypeName>Order</SpawnTypeName>
     <SpriteFinished>StoneTower</SpriteFinished>
     <SpriteUnfinishedNames>StoneTower</SpriteUnfinishedNames>
   </building>
     <building name = "Lair">
+    <SpawnTypeName>FreeSpawn</SpawnTypeName>
     <SpriteFinished>Lair</SpriteFinished>
     <CanBeBuild>false</CanBeBuild>
     <SpriteUnfinishedNames>Lair</SpriteUnfinishedNames>

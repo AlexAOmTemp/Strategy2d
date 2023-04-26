@@ -660,6 +660,8 @@ GameObject:
   - component: {fileID: -8188836997901613846}
   - component: {fileID: 2695992042623482363}
   - component: {fileID: 1328359629856575099}
+  - component: {fileID: -8556525835080465764}
+  - component: {fileID: 5960055660219736715}
   m_Layer: 0
   m_Name: BuildingUnconstruct
   m_TagString: Building
@@ -840,6 +842,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd6814e87db93234cb9beb1d9b2a14e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8556525835080465764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2203017188923749362}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8fd5b20d6592644a18ab562640ae0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitPrefab: {fileID: 2520487959407160334, guid: fd31dfe3d2d256f49b9d3d6c9f8e8a3e, type: 3}
+--- !u!114 &5960055660219736715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2203017188923749362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31bad625e2f999645903ce7f1ce1cade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2240431243584174343

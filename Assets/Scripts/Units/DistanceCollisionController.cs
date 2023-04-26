@@ -4,23 +4,32 @@ using UnityEngine;
 
 public class DistanceCollisionController : MonoBehaviour
 {
-
     [SerializeField] private GameObject _distanceDetectorPrefab;
     public List<GameObject> DistanceCollisionDetectors { get; private set; } = new List<GameObject>();
 
     //private int _idCounter = 0;
     //GameObject id;
-    private void Awake()
+    public delegate void UnitAtDistance(GameObject obj);
+    public event UnitAtDistance MeleeDistance;
+    public event UnitAtDistance RangeDistance;
+    public event UnitAtDistance VisionDistance;
+    public event UnitAtDistance MeleeDistanceLeft;
+    public event UnitAtDistance RangeDistanceLeft;
+    public event UnitAtDistance VisionDistanceLeft;
+
+    public void Init(float? visionDistance, float? rangeAttackDistance, float? meleeAttackDistance)
     {
-        AddDistanceDetector("Vision", 6, onDistance, null);
-        AddDistanceDetector("Range Attack", 5, null, onDistanceExit);
-        AddDistanceDetector("Melee Attack", 2, onDistance, onDistanceExit);
-        AddDistanceDetector("Aura", 4, onDistance, onDistanceExit);
+        if (visionDistance != null)
+            AddDistanceDetector("Vision", (float)visionDistance, onDistance, onDistanceExit);
+        if (rangeAttackDistance != null)
+            AddDistanceDetector("Range Attack", (float)rangeAttackDistance, onDistance, onDistanceExit);
+        if (meleeAttackDistance != null)
+            AddDistanceDetector("Melee Attack", (float)meleeAttackDistance, onDistance, onDistanceExit);
     }
-   
+
     public GameObject AddDistanceDetector(string name, float range, DistanceCollisionDetector.TriggerEnter triggerEnter, DistanceCollisionDetector.TriggerExit triggerExit)
     {
-        var detector = Instantiate(_distanceDetectorPrefab, Vector3.zero, Quaternion.identity, this.transform);
+        var detector = Instantiate(_distanceDetectorPrefab, this.transform.position, Quaternion.identity, this.transform);
         var detectorScript = detector.GetComponent<DistanceCollisionDetector>();
         detectorScript.Distance = range;
         detector.name = name;
@@ -37,15 +46,27 @@ public class DistanceCollisionController : MonoBehaviour
             Destroy(detector);
         }
         else
-            Debug.LogError("DistanceCollisionController: trying to remove unexisted collision detector");    
+            Debug.LogError("DistanceCollisionController: trying to remove unexisted collision detector");
     }
 
     public void onDistance(GameObject sender, Collider2D collider)
     {
-       // Debug.Log($"Game Object {collider.name} on the {sender.name} distance");
+        if (sender.name == "Vision")
+            VisionDistance?.Invoke(collider.gameObject);
+        if (sender.name == "Range Attack")
+            RangeDistance?.Invoke(collider.gameObject);
+        if (sender.name == "Melee Attack")
+            MeleeDistance?.Invoke(collider.gameObject);
+        Debug.Log($"DistanceCollisionController: Game Object {collider.name} on the {sender.name} distance of unit {gameObject.name}");
     }
     public void onDistanceExit(GameObject sender, Collider2D collider)
     {
-       // Debug.Log($"Game Object {collider.name} has left the {sender.name} distance");
+        if (sender.name == "Vision")
+            VisionDistanceLeft?.Invoke(collider.gameObject);
+        if (sender.name == "Range Attack")
+            RangeDistanceLeft?.Invoke(collider.gameObject);
+        if (sender.name == "Melee Attack")
+            MeleeDistanceLeft?.Invoke(collider.gameObject);
+        Debug.Log($"DistanceCollisionController: Game Object {collider.name} has left the {sender.name} distance of unit {gameObject.name}");
     }
 }

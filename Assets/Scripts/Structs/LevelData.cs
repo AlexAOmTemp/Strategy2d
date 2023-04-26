@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public struct ZoneData
@@ -8,8 +6,9 @@ public struct ZoneData
     public string Name { get; set; }
     public int SizeInTiles { get; set; }
     public string EndBuilding { get; set; }
-    public Sprite Sprite { get; set; }
+    public Sprite GroundSprite { get; set; }
     public Sprite SeparatorSprite { get; set; }
+    public Sprite Background { get; set; }
 }
 public struct LevelData
 {

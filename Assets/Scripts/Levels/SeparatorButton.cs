@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SeparatorButton : MonoBehaviour
 {
-	private PathPointsController _pointsController;
 	private SeparatorController _separatorController;
 	private int _buttonNumber; //0<- 1.| 2|. 3->
 	
@@ -15,7 +12,7 @@ public class SeparatorButton : MonoBehaviour
 		_buttonNumber = buttonNumber;
 		Destroy(this.GetComponentInChildren<TextMeshProUGUI>());
 		var levelSpawner = GameObject.Find("LevelSpawner").GetComponent<LevelSpawner>();
-		var currentLevelScript = levelSpawner.CurrentLevel.GetComponent<LevelController>();
+		var currentLevelScript = levelSpawner.PlayerLevel.GetComponent<LevelController>();
 		switch (buttonNumber)
 		{
 			case 0:
@@ -42,9 +39,6 @@ public class SeparatorButton : MonoBehaviour
 	public void SetSeparator(SeparatorController separatorController)
 	{
 		_separatorController = separatorController;
-		_pointsController = separatorController.transform.GetComponentInParent<PathPointsController>();
-		if (_pointsController == null)
-			Debug.Log("SeparatorButton: _pointsController not found");
 		if ( _buttonNumber == 0)
 		{
 			if (_separatorController.Id == 0)
@@ -61,6 +55,6 @@ public class SeparatorButton : MonoBehaviour
 
 	void TaskOnClick()
 	{
-		_pointsController.ChangeCurrentPathPoint(_separatorController.Id, _buttonNumber);
+		PathPointsController.ChangeCurrentPathPoint(0,_separatorController.Id, _buttonNumber);
 	}
 }

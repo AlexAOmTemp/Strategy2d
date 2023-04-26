@@ -5,13 +5,13 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     private Vector3 _destination;
-    static private List<Collision2D> colliders = new List<Collision2D>();
+    static private List<Collider2D> _colliders = new List<Collider2D>();
     public void Init (Vector3 destination)
     {
         _destination = destination;
         
         var size = this.GetComponentInParent<SpriteRenderer>().size;
-        Debug.Log($"{this.transform.parent.gameObject.name} {size}");
+        //Debug.Log($"{this.transform.parent.gameObject.name} {size}");
         var boxCollider = this.GetComponent<BoxCollider2D>();
         boxCollider.size = new Vector2 (size.x/2, 30);
         boxCollider.offset = new Vector2 (boxCollider.size.x/2, 0);
@@ -20,7 +20,18 @@ public class Portal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Unit") || collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.transform.position = _destination;
+            if (_colliders.Contains(collision))
+                return;
+            else
+            {
+                _colliders.Add(collision);
+                collision.gameObject.transform.position = _destination;
+            }
         }
+    }
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (_colliders.Contains(collision))
+            _colliders.Remove(collision);
     }
 }

@@ -5,20 +5,19 @@ using UnityEngine;
 public class SeparatorController : MonoBehaviour
 {
     public int ZoneId { get; private set; }
-    public int Id { get; private set; }
+    public int Id { get; set; }
     public static int CurrentZone { get; private set; } = 0;
     private bool _reverse;
-
     private GuiController _guiController;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("PlayerInBuilding"))
+        if (collision.gameObject.CompareTag("Player"))
             _guiController.SeparatorEntered(this.gameObject);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("PlayerInBuilding"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             if (_reverse == false)
             {
@@ -37,11 +36,10 @@ public class SeparatorController : MonoBehaviour
             _guiController.SeparatorExited(CurrentZone);
         }
     }
-    public void Init(int zoneId, int separatorId, Sprite image, bool reverse)
+    public void Init(int zoneId, Sprite image, bool reverse)
     {
         _guiController = GameObject.Find("ButtonController").GetComponent<GuiController>();
         ZoneId = zoneId;
-        Id = separatorId;
         _reverse = reverse;
         var renderer = this.GetComponent<SpriteRenderer>();
         renderer.sprite = image;

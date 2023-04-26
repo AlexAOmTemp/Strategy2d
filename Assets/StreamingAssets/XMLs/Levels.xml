@@ -7,32 +7,22 @@
     <commandBehindWallIcon>BehindIcon</commandBehindWallIcon>
     <commandProtectWallIcon>FrontIcon</commandProtectWallIcon>
     <commandForwardIcon>FrowardIcon</commandForwardIcon>
-    <drowningInGround>0,1</drowningInGround>
+    <drowningInGround>0,15</drowningInGround>
     <mainBuilding>Castle</mainBuilding>
     <zone name = "CastleZone" >
       <sizeInTitles>20</sizeInTitles>
-      <sprite>GroundCastle</sprite>
+      <groundSprite>GroundCastle</groundSprite>
       <separatorSprite>Exit</separatorSprite>
       <zoneEndBuilding>StoneTower</zoneEndBuilding>
     </zone>
-    <zone name = "InnerZone1" >
-      <sizeInTitles>20</sizeInTitles>
-      <sprite>GroundInner1</sprite>
-      <separatorSprite>Separator</separatorSprite>
-    </zone>
-    <zone name = "InnerZone2" >
-      <sizeInTitles>20</sizeInTitles>
-      <sprite>GroundInner2</sprite>
-      <separatorSprite>Separator</separatorSprite>
-    </zone>
     <zone name = "ExternalZone" >
       <sizeInTitles>20</sizeInTitles>
-      <sprite>GroundExternal</sprite>
+      <groundSprite>GroundExternal</groundSprite>
       <separatorSprite>Separator</separatorSprite>
     </zone>
     <zone name = "PortalZone" >
       <sizeInTitles>1</sizeInTitles>
-      <sprite>GroundPortal</sprite>
+      <groundSprite>GroundPortal</groundSprite>
       <separatorSprite>Portal</separatorSprite>
     </zone>
   </level>
@@ -47,13 +37,13 @@
     <mainBuilding>Lair</mainBuilding>
     <zone name = "LairZone" >
       <sizeInTitles>20</sizeInTitles>
-      <sprite>GroundCastle</sprite>
+      <groundSprite>GroundCastle</groundSprite>
       <separatorSprite>Exit</separatorSprite>
       <zoneEndBuilding>StoneTower</zoneEndBuilding>
     </zone>
     <zone name = "PortalZone" >
       <sizeInTitles>1</sizeInTitles>
-      <sprite>GroundPortal</sprite>
+      <groundSprite>GroundPortal</groundSprite>
       <separatorSprite>Portal</separatorSprite>
     </zone>
   </level>

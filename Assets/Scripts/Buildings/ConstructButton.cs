@@ -9,7 +9,7 @@ public class ConstructButton : MonoBehaviour
 	public int? Id { set; get; }
 	void Start()
 	{
-		var level = GameObject.Find("LevelSpawner").GetComponent<LevelSpawner>().CurrentLevel;
+		var level = GameObject.Find("LevelSpawner").GetComponent<LevelSpawner>().PlayerLevel;
 		if (level == null)
 			Debug.LogError("ConstructButton: level not found"); 
 		_buildingSpawner = level.GetComponent<BuildingSpawner>();

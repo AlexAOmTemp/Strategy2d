@@ -7,7 +7,6 @@ public class GuiController : MonoBehaviour
 {
     [SerializeField] private GameObject _buttonPrefab;
     [SerializeField] private GameObject _buildingsPanel;
-
     private List<GameObject> _activeButtonsSet;
     private List<List<GameObject>> _constructionButtonsSets = new List<List<GameObject>>();
     private List<List<GameObject>> _productButtonsSets = new List<List<GameObject>>();
@@ -79,7 +78,7 @@ public class GuiController : MonoBehaviour
                 BuildingData building = DataLoader.Buildings.Find(i => i.Name == buildingName);
                 if (building.Name == buildingName)
                 {
-                    Debug.Log($"Search {buildingName} found {building.Name}");
+                    //Debug.Log($"Search {buildingName} found {building.Name}");
                     while (building.TypeId > _productButtonsSets.Count - 1)
                         _productButtonsSets.Add(new List<GameObject>());
                     _productButtonsSets[building.TypeId].Add(button);
@@ -106,6 +105,7 @@ public class GuiController : MonoBehaviour
     {
         _countOfBuildingVisited--;
         _currentZone = currentZone;
+           Debug.Log($"{_currentZone}");
         if (_countOfBuildingVisited == 0)
             allBuildingsExited();
     }

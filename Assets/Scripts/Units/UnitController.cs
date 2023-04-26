@@ -44,13 +44,19 @@ public class UnitController : MonoBehaviour
                 break;
             case State.MeleeAttack:
                 if (_timeFromLastAttack > 1 / _data.MeleeAttackSpeed)
+                {
                     _tempCombat.MeleeAttack();
+                    _timeFromLastAttack=0;
+                }
                 break;
             case State.SpellCast:
                 break;
             case State.RangeAttack:
                 if (_timeFromLastAttack > 1 / _data.RangeAttackSpeed)
+                {
                     _tempCombat.RangeAttack();
+                    _timeFromLastAttack=0;
+                }
                 break;
             case State.Build:
                 break;

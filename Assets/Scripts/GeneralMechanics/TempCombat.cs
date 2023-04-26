@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TempCombat : MonoBehaviour
 {
-    private float _health = 100;
+    private float _health = 20;
     private float _rangeDamage = 5;
     private float _meleeDamage = 5;
     private TempCombat _target;

@@ -5,17 +5,19 @@ using UnityEngine;
 public class LevelSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject _levelPrefab;
-   
     private List<GameObject> _LevelList = new List<GameObject>();
-    public GameObject CurrentLevel { get; private set; }
+    public GameObject PlayerLevel { get; private set; }
     public delegate void LevelCreated(GameObject Level);
     public static event LevelCreated LevelIsCreated;
-    public GameObject CreateLevel(int levelId, bool reverse)
+    public GameObject CreateLevel(int levelId, bool reverse, bool player)
     {
-        CurrentLevel = Instantiate(_levelPrefab, Vector3.zero, Quaternion.identity);
-        CurrentLevel.GetComponent<LevelController>().Init (0, DataLoader.Levels[levelId],reverse,levelId);
-        _LevelList.Add(CurrentLevel);
-        LevelIsCreated?.Invoke(CurrentLevel);
-        return CurrentLevel;
+        var currentLevel = Instantiate(_levelPrefab, Vector3.zero, Quaternion.identity);
+        currentLevel.GetComponent<LevelController>().Init (0, DataLoader.Levels[levelId],reverse,levelId,player);
+        _LevelList.Add(currentLevel);
+        LevelIsCreated?.Invoke(currentLevel);
+        if (player == true)
+            PlayerLevel= currentLevel;
+        return currentLevel;
+
     }
 }

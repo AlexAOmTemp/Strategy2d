@@ -8,12 +8,13 @@ public class UnitMain : MonoBehaviour
     private UnitBehavior _unitBehavior;
     public UnitData UnitData { get; private set; }
     private SpriteRenderer spriteRenderer;
-    private DistanceCollisionController distanceCollisionController;
+    private DistanceCollisionController _distanceCollisionController;
     public void Init(UnitData unitData)
     {
         UnitData = unitData;
         spriteRenderer = this.GetComponent<SpriteRenderer>();
-        distanceCollisionController = this.GetComponent<DistanceCollisionController>();
+        _distanceCollisionController = this.GetComponent<DistanceCollisionController>();
+        _distanceCollisionController.Init(6f, unitData.RangeAttackDistance, unitData.MeleeAttackDistance);
         this.name = UnitData.Name;
         spriteRenderer.sprite = unitData.SpriteAlive;
         this.GetComponent<BoxCollider2D>().size = spriteRenderer.size;

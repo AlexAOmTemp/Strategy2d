@@ -75,13 +75,16 @@ public class BuildingSpawner : MonoBehaviour
         if (BuildingsInProcess.Contains(building))
         {
             Destroy(building.GetComponent<BuildingPlaceAvailible>());
-            Destroy(building.GetComponent<ConstructionController>());
-            building.GetComponent<ProductSpawner>().enabled = true;
+            var constructionController = building.GetComponent<ConstructionController>();
+            var spawnType = constructionController.GetSpawnType();
+            Destroy(constructionController);
+            if (spawnType == SpawnTypes.Order)
+                building.GetComponent<ProductSpawner>().enabled = true;
+            else if (spawnType == SpawnTypes.FreeSpawn)
+                building.GetComponent<TempEnemySpawner>().enabled=true;
             building.GetComponent<SpriteRenderer>().sortingOrder = 0;
             BuildingsInProcess.Remove(building);
         }
-        else
-            Debug.LogError("BuildingSpawner: try to remove unexisting building");
     }
     private GameObject setupBuilding(Vector3 position, BuildingData buildingData, Transform parent)
     {
@@ -92,12 +95,13 @@ public class BuildingSpawner : MonoBehaviour
         var constructionController = building.GetComponent<ConstructionController>();
         building.transform.position = position;
         constructionController.Init(buildingData);
-        //constructionController.transform.position = new Vector3 (position.x, position.y+constructionController.Height / 2,0);
         return building;
     }
-    public void InstantBuild(Vector3 position, BuildingData buildingData)
+    public void InstantBuild(Vector3 position, BuildingData buildingData, bool main)
     {
         var building = setupBuilding(position, buildingData, this.transform);
+        if (main == true)
+            building.AddComponent<IsMainBuilding>();
         var constructionController = building.GetComponent<ConstructionController>();
         building.transform.Translate(Vector3.up * constructionController.Height / 2);
         BuildingsInProcess.Add(building);

@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class LevelController : MonoBehaviour
 {
     [SerializeField] private BuildingPlacerController _placerPrefab;
@@ -10,24 +10,27 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject _separatorPrefab;
     [SerializeField] private BuildingSpawner _buildingSpawner;
     [SerializeField] private GameObject _blockerPrefab;
+    [SerializeField] private Transform _startPosition;
+    [SerializeField] private Transform _finishPosition;
+
     public int Id { get; private set; }
     public bool Reverse { get; private set; }
-    public List<float> PathPoints { get; private set; } = new List<float>();
     public float PlacementLevel { get; private set; }
     public Transform BuildingPlacer { get; private set; }
-    public List<GameObject> ZoneSeparators { get; private set; } = new List<GameObject>();
+
     public LevelData Data { get; private set; }
-    public Vector3 StartPosition { get; private set; }
-    public Vector3 FinishPosition { get; private set; }
     private List<GameObject> _groundList = new List<GameObject>();
     private Vector3 _groundSize;
-    public void Init(float startPositionX, LevelData levelData, bool reverse, int Id)
+    private List<GameObject> _zoneSeparators = new List<GameObject>();
+    private List<GameObject> _pathPoints = new List<GameObject>();
+
+    public void Init(float startPositionX, LevelData levelData, bool reverse, int Id, bool player)
     {
         this.Id = Id;
         Reverse = reverse;
         Data = levelData;
         this.name = Data.Name;
-        StartPosition = new Vector3(startPositionX, Data.GroundLevel, 0);
+        _startPosition.position = new Vector3(startPositionX, Data.GroundLevel, 0);
         _groundSize = calculateGroundTileSize();
         PlacementLevel = Data.GroundLevel + _groundSize.y / 2 - _groundSize.y * Data.DrowningInGround;
 
@@ -37,7 +40,7 @@ public class LevelController : MonoBehaviour
         foreach (ZoneData zone in Data.Zones)
             createZone(zone, ref currentPlacementPosition);
 
-        FinishPosition = calculateFinishPosition(currentPlacementPosition);
+        _finishPosition.position = calculateFinishPosition(currentPlacementPosition);
 
         createBlockers();
 
@@ -47,24 +50,40 @@ public class LevelController : MonoBehaviour
         Vector3 buildingPosition = placeMainBuilding();
         backgroundSet();
 
-        if (Reverse == false)
+        if (player == true)
             createPlayer(buildingPosition);
+    }
+    public List<GameObject> GetZoneSeparators()
+    {
+        return new List<GameObject>(_zoneSeparators);
+    }
+    public List<GameObject> GetPathPoints()
+    {
+        return new List<GameObject>(_pathPoints);
+    }
+    public Vector3 GetFinishPosition()
+    {
+        return _finishPosition.position;
+    }
+    public Vector3 GetStartPosition()
+    {
+        return _startPosition.position;
     }
     public Vector3 GetPortalCoords()
     {
-        return ZoneSeparators.Last().transform.position;
+        return _zoneSeparators.Last().transform.position;
     }
     public void SetupPortal(Vector3 destinationCoords)
     {
-        var portal = ZoneSeparators.Last().transform.GetChild(0).gameObject;
+        var portal = _zoneSeparators.Last().transform.GetChild(0).gameObject;
         portal.SetActive(true);
         portal.GetComponent<Portal>().Init(destinationCoords);
     }
     private Vector3 calculateGroundTileSize() //temporal, need rework
     {
-        var ground = Instantiate(_groundPrefab, StartPosition, Quaternion.identity);
+        var ground = Instantiate(_groundPrefab, _startPosition.position, Quaternion.identity);
         var groundRenderer = ground.GetComponent<SpriteRenderer>();
-        groundRenderer.sprite = DataLoader.Levels[0].Zones[0].Sprite;
+        groundRenderer.sprite = DataLoader.Levels[0].Zones[0].GroundSprite;
         var size = groundRenderer.sprite.bounds.size;
         GameObject.Destroy(ground);
         return size;
@@ -74,14 +93,14 @@ public class LevelController : MonoBehaviour
         var backgroundSpriteRenderer = this.GetComponentInChildren<SpriteRenderer>();
         backgroundSpriteRenderer.sprite = Data.Background;
         backgroundSpriteRenderer.drawMode = SpriteDrawMode.Tiled;
-        backgroundSpriteRenderer.size = new Vector2((FinishPosition.x - StartPosition.x) * 1.6f, 12.64f);
+        backgroundSpriteRenderer.size = new Vector2((Math.Abs(_finishPosition.position.x - _startPosition.position.x)) + 50, 12.64f);
         var background = this.transform.GetChild(0);
-        background.position = new Vector3((FinishPosition.x - StartPosition.x) / 2, 0, 0);
+        background.position = new Vector3((_finishPosition.position.x - _startPosition.position.x) / 2, 0, 0);
     }
     private GameObject instantiateGroundTile(Vector3 position, Transform parent, ZoneData zone, Vector3 groundSize)
     {
         var ground = Instantiate(_groundPrefab, position, Quaternion.identity, parent);
-        ground.GetComponent<SpriteRenderer>().sprite = zone.Sprite;
+        ground.GetComponent<SpriteRenderer>().sprite = zone.GroundSprite;
         var collderHeight = groundSize.y * (1 - Data.DrowningInGround);
         var boxCollider = ground.GetComponent<BoxCollider2D>();
         boxCollider.size = new Vector2(groundSize.x, collderHeight);
@@ -92,32 +111,39 @@ public class LevelController : MonoBehaviour
     private GameObject instantiateSeparator(Vector3 position, Transform parent, ZoneData zone, Vector3 groundSize)
     {
         var separator = Instantiate(_separatorPrefab, position, Quaternion.identity, parent);
-        separator.GetComponent<SeparatorController>().Init(zone.Id, ZoneSeparators.Count, zone.SeparatorSprite, Reverse);
+        separator.GetComponent<SeparatorController>().Init(zone.Id, zone.SeparatorSprite, Reverse);
         float height = separator.GetComponent<SpriteRenderer>().size.y;
         separator.transform.Translate(Vector3.up * height / 2);
         if (Reverse)
             separator.transform.localScale = new Vector3(-1, 1, 1);
         return separator;
     }
-    private void placeBuilding(string buildingName, Vector3 position)
+    private void placeBuilding(string buildingName, Vector3 position, bool main)
     {
         BuildingData? building = DataLoader.Buildings.Find(i => i.Name == buildingName);
         if (building == null)
             Debug.LogError("LevelController: Main building not found");
-        _buildingSpawner.InstantBuild(position, (BuildingData)building);
+        _buildingSpawner.InstantBuild(position, (BuildingData)building, main);
     }
     private void addPoints(float separatorPosX)
     {
         if (Reverse == false)
         {
-            PathPoints.Add(separatorPosX - _groundSize.x * 1.5f);
-            PathPoints.Add(separatorPosX + _groundSize.x * 1.5f);
+            _pathPoints.Add(createPathPoint( separatorPosX - _groundSize.x * 1.5f));
+            _pathPoints.Add(createPathPoint(separatorPosX + _groundSize.x * 1.5f));
         }
         else
         {
-            PathPoints.Add(separatorPosX + _groundSize.x * 1.5f);
-            PathPoints.Add(separatorPosX - _groundSize.x * 1.5f);
+            _pathPoints.Add(createPathPoint(separatorPosX + _groundSize.x * 1.5f));
+            _pathPoints.Add(createPathPoint( separatorPosX - _groundSize.x * 1.5f));
         }
+    }
+    private GameObject createPathPoint(float positionX)
+    {
+        var pathPoint = new GameObject();
+        pathPoint.transform.SetParent(this.transform);
+        pathPoint.transform.position = new Vector3(positionX, 0, 0);
+        return pathPoint;
     }
     private void spawnGround(ref Vector3 position, Transform parent, ZoneData zone)
     {
@@ -134,27 +160,51 @@ public class LevelController : MonoBehaviour
     {
         if (zone.EndBuilding != null)
         {
-            Vector3 endBuildingPosition; 
+            Vector3 endBuildingPosition;
             if (Reverse == false)
                 endBuildingPosition = new Vector3(positionX - _groundSize.x, PlacementLevel, 0);
             else
                 endBuildingPosition = new Vector3(positionX + _groundSize.x, PlacementLevel, 0);
-            placeBuilding(zone.EndBuilding, endBuildingPosition);
+            placeBuilding(zone.EndBuilding, endBuildingPosition, false);
         }
     }
     private void createZone(ZoneData zone, ref Vector3 position)
     {
         var zoneHierarchyFolder = new GameObject(zone.Name);
+
         zoneHierarchyFolder.transform.SetParent(this.transform);
-        ZoneSeparators.Add(instantiateSeparator(new Vector3(position.x, PlacementLevel, 0), zoneHierarchyFolder.transform, zone, _groundSize));
+        _zoneSeparators.Add(instantiateSeparator(new Vector3(position.x, PlacementLevel, 0), zoneHierarchyFolder.transform, zone, _groundSize));
+
+        var startBackGroundPosition = position.x;
         addPoints(position.x);
         spawnGround(ref position, zoneHierarchyFolder.transform, zone);
         placeEndBuilding(position.x, zone);
+
+        if (zone.Background != null)
+        {
+            var background = new GameObject("Background");
+            var backgroundRenderer = background.AddComponent<SpriteRenderer>();
+            backgroundRenderer.sprite = zone.Background;
+            backgroundRenderer.drawMode = SpriteDrawMode.Tiled;
+            backgroundRenderer.size = new Vector2((Math.Abs(startBackGroundPosition - position.x)), backgroundRenderer.size.y);
+            backgroundRenderer.sortingOrder = 1;
+            backgroundRenderer.sortingLayerName = "Background";
+            background.transform.SetParent(zoneHierarchyFolder.transform);
+
+            float backgroundPositionX;
+            if (Reverse == false)
+                backgroundPositionX = startBackGroundPosition + (position.x - startBackGroundPosition) / 2 - _groundSize.x;
+            else
+                backgroundPositionX = startBackGroundPosition + (position.x - startBackGroundPosition) / 2 + _groundSize.x;
+
+            var backgroundPositionY = PlacementLevel + backgroundRenderer.size.y / 2;
+            background.transform.position = new Vector3(backgroundPositionX, backgroundPositionY, 0);
+        }
     }
     private void createBlockers()
     {
-        var blockerStart = Instantiate(_blockerPrefab, new Vector3(StartPosition.x, PlacementLevel, 0), Quaternion.identity, this.transform);
-        var blockerFinish = Instantiate(_blockerPrefab, new Vector3(FinishPosition.x, PlacementLevel, 0), Quaternion.identity, this.transform);
+        var blockerStart = Instantiate(_blockerPrefab, new Vector3(_startPosition.position.x, PlacementLevel, 0), Quaternion.identity, this.transform);
+        var blockerFinish = Instantiate(_blockerPrefab, new Vector3(_finishPosition.position.x, PlacementLevel, 0), Quaternion.identity, this.transform);
         if (Reverse == false)
         {
             blockerStart.transform.Translate(Vector3.left * blockerStart.GetComponent<BoxCollider2D>().size.x / 2f);
@@ -170,34 +220,35 @@ public class LevelController : MonoBehaviour
     {
         Vector3 mainBuildingPosition;
         if (Reverse == false)
-            mainBuildingPosition = new Vector3(StartPosition.x + _groundSize.x * 5, PlacementLevel, 0);
+            mainBuildingPosition = new Vector3(_startPosition.position.x + _groundSize.x * 5, PlacementLevel, 0);
         else
-            mainBuildingPosition = new Vector3(StartPosition.x - _groundSize.x * 5, PlacementLevel, 0);
-        placeBuilding(Data.MainBuilding, mainBuildingPosition);
+            mainBuildingPosition = new Vector3(_startPosition.position.x - _groundSize.x * 5, PlacementLevel, 0);
+        placeBuilding(Data.MainBuilding, mainBuildingPosition, true);
+
         return mainBuildingPosition;
     }
     private Vector3 calculateFinishPosition(Vector3 position)
     {
         Vector3 result;
         if (Reverse == false)
-            result = new Vector3(position.x - _groundSize.x / 2, StartPosition.y, 0);
+            result = new Vector3(position.x - _groundSize.x / 2, _startPosition.position.y, 0);
         else
-            result = new Vector3(position.x + _groundSize.x / 2, StartPosition.y, 0);
+            result = new Vector3(position.x + _groundSize.x / 2, _startPosition.position.y, 0);
         return result;
     }
     private Vector3 calculateFirstTilePosition()
     {
         Vector3 position;
         if (Reverse == false)
-            position = new Vector3(StartPosition.x + _groundSize.x / 2, StartPosition.y, 0);
+            position = new Vector3(_startPosition.position.x + _groundSize.x / 2, _startPosition.position.y, 0);
         else
-            position = new Vector3(StartPosition.x - _groundSize.x / 2, StartPosition.y, 0);
+            position = new Vector3(_startPosition.position.x - _groundSize.x / 2, _startPosition.position.y, 0);
         return position;
     }
     private void createPlayer(Vector3 position)
     {
         var player = Instantiate(_playerPrefab, position, Quaternion.identity, this.transform);
-        player.GetComponent<Team>().Number=this.Id;
+        player.GetComponent<Team>().Number = this.Id;
         _placerPrefab.setPlayer(player);
     }
 }

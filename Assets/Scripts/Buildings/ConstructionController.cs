@@ -51,6 +51,10 @@ public class ConstructionController : MonoBehaviour
         else
             Debug.LogError("BuildingController: worker was't involved in construction but try to leave it");
     }
+    public SpawnTypes GetSpawnType()
+    {
+        return _data.SpawnType;
+    }
     private void Update()
     {
         if (_constructionStarted == true)
