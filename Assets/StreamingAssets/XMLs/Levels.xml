@@ -1,47 +1,82 @@
-<?xml version = "1.0" encoding = "utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <levels>
-  <level name = "HumanBaseLevel">
-	  <background>Background</background>
-	  <groundLevel>-4,158</groundLevel>
+  <level name="HumanBaseLevel">
+    <background>Background</background>
+    <groundLevel>-4,158</groundLevel>
     <commandBackIcon>BackIcon</commandBackIcon>
     <commandBehindWallIcon>BehindIcon</commandBehindWallIcon>
     <commandProtectWallIcon>FrontIcon</commandProtectWallIcon>
     <commandForwardIcon>FrowardIcon</commandForwardIcon>
     <drowningInGround>0,15</drowningInGround>
-    <mainBuilding>Castle</mainBuilding>
-    <zone name = "CastleZone" >
-      <sizeInTitles>20</sizeInTitles>
+    <zone name="CastleZone">
+      <sizeInTitles>5</sizeInTitles>
       <groundSprite>GroundCastle</groundSprite>
       <separatorSprite>Exit</separatorSprite>
       <zoneEndBuilding>StoneTower</zoneEndBuilding>
+      <background>GroundCastleFence</background>
     </zone>
-    <zone name = "ExternalZone" >
-      <sizeInTitles>20</sizeInTitles>
-      <groundSprite>GroundExternal</groundSprite>
+    <zone name="CastleZoneEnding">
+      <sizeInTitles>1</sizeInTitles>
+      <groundSprite>GroundCastleEnding</groundSprite>
+      <background>GroundCastleFence</background>
+    </zone>
+    <zone name="InnerZone1">
+      <sizeInTitles>3</sizeInTitles>
+      <groundSprite>GroundInner1</groundSprite>
+      <zoneEndBuilding>Tower1</zoneEndBuilding>
       <separatorSprite>Separator</separatorSprite>
+      <background>GroundInner1Fence</background>
     </zone>
-    <zone name = "PortalZone" >
+    <zone name="InnerZone1Ending">
+      <sizeInTitles>1</sizeInTitles>
+      <groundSprite>GroundInner1Ending</groundSprite>
+      <background>GroundInner2Fence</background>
+    </zone>
+    <zone name="InnerZone2">
+      <sizeInTitles>3</sizeInTitles>
+      <groundSprite>GroundInner2</groundSprite>
+      <zoneEndBuilding>Tower2</zoneEndBuilding>
+      <separatorSprite>Separator</separatorSprite>
+      <background>GroundInner2Fence</background>
+    </zone>
+    <zone name="InnerZone2Ending">
+      <sizeInTitles>1</sizeInTitles>
+      <groundSprite>GroundInner2Ending</groundSprite>
+      <background>GroundInner2Fence</background>
+    </zone>
+    <zone name="ExternalZone">
+      <sizeInTitles>3</sizeInTitles>
+      <groundSprite>GroundExternal</groundSprite>
+      <zoneEndBuilding>Tower3</zoneEndBuilding>
+      <separatorSprite>Separator</separatorSprite>
+      <background>GroundExternal2Fence</background>
+    </zone>
+    <zone name="ExternalZoneEnding">
+      <sizeInTitles>1</sizeInTitles>
+      <groundSprite>GroundExternalEnding</groundSprite>
+      <background>GroundExternal2Fence</background>
+    </zone>
+    <zone name="PortalZone">
       <sizeInTitles>1</sizeInTitles>
       <groundSprite>GroundPortal</groundSprite>
       <separatorSprite>Portal</separatorSprite>
     </zone>
   </level>
-  <level name = "MonsterBaseLevel">
-	  <background>Background</background>
-	  <groundLevel>-4,158</groundLevel>
+  <level name="MonsterBaseLevel">
+    <background>Background</background>
+    <groundLevel>-4,158</groundLevel>
     <commandBackIcon>BackIcon</commandBackIcon>
     <commandBehindWallIcon>BehindIcon</commandBehindWallIcon>
     <commandProtectWallIcon>FrontIcon</commandProtectWallIcon>
     <commandForwardIcon>FrowardIcon</commandForwardIcon>
     <drowningInGround>0,1</drowningInGround>
-    <mainBuilding>Lair</mainBuilding>
-    <zone name = "LairZone" >
+    <zone name="LairZone">
       <sizeInTitles>20</sizeInTitles>
       <groundSprite>GroundCastle</groundSprite>
       <separatorSprite>Exit</separatorSprite>
       <zoneEndBuilding>StoneTower</zoneEndBuilding>
     </zone>
-    <zone name = "PortalZone" >
+    <zone name="PortalZone">
       <sizeInTitles>1</sizeInTitles>
       <groundSprite>GroundPortal</groundSprite>
       <separatorSprite>Portal</separatorSprite>

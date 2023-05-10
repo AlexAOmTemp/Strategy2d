@@ -47,7 +47,9 @@ public class LevelController : MonoBehaviour
         BuildingPlacer = this.transform.Find("BuildingPlacer");
         BuildingPlacer.position = new Vector3(BuildingPlacer.position.x, PlacementLevel, 0);
 
-        Vector3 buildingPosition = placeMainBuilding();
+        Vector3 buildingPosition = new Vector3(5,PlacementLevel+1,0);
+        if (Data.MainBuilding!=null)
+            buildingPosition = placeMainBuilding();
         backgroundSet();
 
         if (player == true)
