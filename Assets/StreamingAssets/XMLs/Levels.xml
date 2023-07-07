@@ -8,53 +8,33 @@
     <commandProtectWallIcon>FrontIcon</commandProtectWallIcon>
     <commandForwardIcon>FrowardIcon</commandForwardIcon>
     <drowningInGround>0,15</drowningInGround>
+    <mainBuilding>Castle</mainBuilding>
     <zone name="CastleZone">
-      <sizeInTitles>5</sizeInTitles>
+      <sizeInTitles>10</sizeInTitles>
       <groundSprite>GroundCastle</groundSprite>
       <separatorSprite>Exit</separatorSprite>
       <zoneEndBuilding>StoneTower</zoneEndBuilding>
       <background>GroundCastleFence</background>
     </zone>
-    <zone name="CastleZoneEnding">
-      <sizeInTitles>1</sizeInTitles>
-      <groundSprite>GroundCastleEnding</groundSprite>
-      <background>GroundCastleFence</background>
-    </zone>
     <zone name="InnerZone1">
-      <sizeInTitles>3</sizeInTitles>
+      <sizeInTitles>10</sizeInTitles>
       <groundSprite>GroundInner1</groundSprite>
       <zoneEndBuilding>Tower1</zoneEndBuilding>
       <separatorSprite>Separator</separatorSprite>
       <background>GroundInner1Fence</background>
     </zone>
-    <zone name="InnerZone1Ending">
-      <sizeInTitles>1</sizeInTitles>
-      <groundSprite>GroundInner1Ending</groundSprite>
-      <background>GroundInner2Fence</background>
-    </zone>
     <zone name="InnerZone2">
-      <sizeInTitles>3</sizeInTitles>
+      <sizeInTitles>10</sizeInTitles>
       <groundSprite>GroundInner2</groundSprite>
       <zoneEndBuilding>Tower2</zoneEndBuilding>
       <separatorSprite>Separator</separatorSprite>
       <background>GroundInner2Fence</background>
     </zone>
-    <zone name="InnerZone2Ending">
-      <sizeInTitles>1</sizeInTitles>
-      <groundSprite>GroundInner2Ending</groundSprite>
-      <background>GroundInner2Fence</background>
-    </zone>
     <zone name="ExternalZone">
-      <sizeInTitles>3</sizeInTitles>
+      <sizeInTitles>5</sizeInTitles>
       <groundSprite>GroundExternal</groundSprite>
       <zoneEndBuilding>Tower3</zoneEndBuilding>
       <separatorSprite>Separator</separatorSprite>
-      <background>GroundExternal2Fence</background>
-    </zone>
-    <zone name="ExternalZoneEnding">
-      <sizeInTitles>1</sizeInTitles>
-      <groundSprite>GroundExternalEnding</groundSprite>
-      <background>GroundExternal2Fence</background>
     </zone>
     <zone name="PortalZone">
       <sizeInTitles>1</sizeInTitles>
@@ -70,6 +50,7 @@
     <commandProtectWallIcon>FrontIcon</commandProtectWallIcon>
     <commandForwardIcon>FrowardIcon</commandForwardIcon>
     <drowningInGround>0,1</drowningInGround>
+    <mainBuilding>Lair</mainBuilding>
     <zone name="LairZone">
       <sizeInTitles>20</sizeInTitles>
       <groundSprite>GroundCastle</groundSprite>
