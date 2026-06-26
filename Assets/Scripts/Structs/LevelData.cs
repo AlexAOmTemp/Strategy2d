@@ -10,6 +10,7 @@ public struct ZoneData
     public Sprite SeparatorSprite { get; set; }
     public Sprite Background { get; set; }
 }
+
 public struct LevelData
 {
     public int Id { get; set; }

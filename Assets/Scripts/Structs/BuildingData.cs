@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public enum SpawnTypes{
+public enum SpawnTypes
+{
     Order,
     FreeSpawn
 }
+
 public struct BuildingData
 {
     public int TypeId { get; set; }
@@ -19,6 +21,3 @@ public struct BuildingData
     public bool CanBeBuild { get; set; }
     public string Description { get; set; }
 }
-
-
-

@@ -4,18 +4,21 @@ using System.Collections.Generic;
 
 public class DataFilesLoader : MonoBehaviour
 {
-    public Dictionary<string, List<Sprite>> LoadedSpriteFiles { get; private set; } = new Dictionary<string, List<Sprite>>();
-    public Dictionary<string,string> LoadedXMLFiles { get; private set; } = new Dictionary<string, string>();
+    public Dictionary<string, List<Sprite>> LoadedSpriteFiles { get; private set; } =
+        new Dictionary<string, List<Sprite>>();
+
+    public Dictionary<string, string> LoadedXMLFiles { get; private set; } = new Dictionary<string, string>();
 
     private void Awake()
     {
         LoadFiles();
     }
-    public void LoadFiles ()
+
+    public void LoadFiles()
     {
         //Create an array of file paths from which to choose
-        string spriteFolderPath = Application.streamingAssetsPath + "/Sprites/";  //Get path of folder
-        string xmlFolderPath = Application.streamingAssetsPath + "/XMLs/";  //Get path of folder
+        string spriteFolderPath = Application.streamingAssetsPath + "/Sprites/"; //Get path of folder
+        string xmlFolderPath = Application.streamingAssetsPath + "/XMLs/"; //Get path of folder
         DirectoryInfo spritesFolder = new DirectoryInfo(spriteFolderPath);
         DirectoryInfo xmlFolder = new DirectoryInfo(xmlFolderPath);
         DirectoryInfo[] subDirs = spritesFolder.GetDirectories();
@@ -23,11 +26,11 @@ public class DataFilesLoader : MonoBehaviour
         xmlFiles = getFiles(xmlFolder, ".xml");
         foreach (FileInfo file in xmlFiles)
         {
-            LoadedXMLFiles.Add (Path.GetFileNameWithoutExtension(file.Name), fileToString(file) );
+            LoadedXMLFiles.Add(Path.GetFileNameWithoutExtension(file.Name), fileToString(file));
         }
 
 
-            foreach (DirectoryInfo dirInfo in subDirs)
+        foreach (DirectoryInfo dirInfo in subDirs)
         {
             FileInfo[] files = getFiles(dirInfo, ".png");
             List<Sprite> sprites = new List<Sprite>();
@@ -37,6 +40,7 @@ public class DataFilesLoader : MonoBehaviour
         }
         //consoleLogLoadedFiles();
     }
+
     private string fileToString(FileInfo file)
     {
         //Open file for Read\Write
@@ -53,30 +57,35 @@ public class DataFilesLoader : MonoBehaviour
         stream.Close();
         return fileContent;
     }
+
     private Sprite fileToSprite(FileInfo file)
     {
         byte[] pngBytes = System.IO.File.ReadAllBytes(file.FullName);
         Texture2D tex = new Texture2D(2, 2);
         tex.LoadImage(pngBytes);
-        Sprite fromTex = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        Sprite fromTex = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f),
+            100.0f);
         fromTex.name = Path.GetFileNameWithoutExtension(file.Name);
         return fromTex;
     }
+
     private FileInfo[] getFiles(DirectoryInfo root, string fileExtension)
     {
         FileInfo[] files = null;
         try
         {
-            files = root.GetFiles("*"+ fileExtension);
+            files = root.GetFiles("*" + fileExtension);
         }
         catch (DirectoryNotFoundException e)
         {
             Debug.LogError($"DataFilesLoader: Can't load {fileExtension} files from {root} no such directory: {e}");
         }
+
         if (files == null)
             Debug.LogError($"DataFilesLoader: Files {fileExtension} from {root} aren't loaded");
         return files;
     }
+
     private void consoleLogLoadedFiles()
     {
         Debug.Log("XML Files Loaded:");
@@ -91,5 +100,3 @@ public class DataFilesLoader : MonoBehaviour
         }
     }
 }
-
-

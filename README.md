@@ -1,17 +1,25 @@
-# Скриншоты:
-База игрока:
+**English** | [🇷🇺 Русский](README_RU.md)
+
+## Description:
+
+A prototype for a 2D strategy game, conceptually similar to Kingdom Two Crowns and the Castle Fight custom map from Warcraft 3.
+
+The game world, buildings, and units are loaded directly from XML files and can be fully configured without recompiling the project.
+
+## Screenshots:
+
+Player Base:
 ![](ScreenShots/BaseScreen.jpg)
-Сражение (модели юнитов, зданий и противников временные!):
+
+Battle (unit, building, and enemy models are placeholders!):
 ![](ScreenShots/Fight.jpg)
-Портал к базе противника:
+
+Portal to the Enemy Base:
 ![](ScreenShots/portal.jpg)
-База противника:
+
+Enemy Base:
 ![](ScreenShots/enemyBase.jpg)
 
-# PC билд: 
+## PC Build:
+
 https://drive.google.com/file/d/1Hs4CMuwHO7b4uoivLoZ9GzyCOL0Q6Qr6/view?usp=sharing
-
-# Описание:
-Заготовка под игру в жанре стратегии, по смыслу схожа с Kingdom Two Crowns и картой castle fight из Warcraft 3.
-
- Мир, здания и юниты считываются из XML файлов и могут быть настроены без перекомпиляции проекта. 

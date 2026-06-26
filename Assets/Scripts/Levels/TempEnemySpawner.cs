@@ -7,6 +7,7 @@ public class TempEnemySpawner : MonoBehaviour
     [SerializeField] private GameObject _unitPrefab;
     private List<UnitData> _unitDatas = new List<UnitData>();
     private List<float> _spawnCountdown = new List<float>();
+
     public void Awake()
     {
         foreach (UnitData data in DataLoader.Units)
@@ -16,13 +17,14 @@ public class TempEnemySpawner : MonoBehaviour
                 _unitDatas.Add(data);
             }
     }
+
     public void Start()
     {
         PathPointsController.ChangeCurrentPathPoint(1, 0, 1);
     }
-    void Update()
-    {
 
+    private void Update()
+    {
         for (int i = 0; i < _spawnCountdown.Count; i++)
         {
             _spawnCountdown[i] -= Time.deltaTime;
@@ -33,6 +35,7 @@ public class TempEnemySpawner : MonoBehaviour
             }
         }
     }
+
     private void createUnit(UnitData data)
     {
         var unit = Instantiate(_unitPrefab, Vector3.zero, Quaternion.identity, this.transform);

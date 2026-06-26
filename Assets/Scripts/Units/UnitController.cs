@@ -7,9 +7,11 @@ public class UnitController : MonoBehaviour
 {
     [SerializeField] private TempCombat _tempCombat;
     private UnitData _data;
-    public State CurrentState {get; set;}
+    public State CurrentState { get; set; }
     private float _timeFromLastAttack;
-    public enum State{
+
+    public enum State
+    {
         Idle,
         MoveLeft,
         RunLeft,
@@ -20,17 +22,18 @@ public class UnitController : MonoBehaviour
         RangeAttack,
         Build
     }
+
     public void Init(UnitData data)
     {
-        _data=data;
+        _data = data;
     }
 
-    void Update()
+    private void Update()
     {
         _timeFromLastAttack += Time.deltaTime;
         switch (CurrentState)
         {
-            case State.MoveLeft: 
+            case State.MoveLeft:
                 transform.Translate(Vector3.left * _data.RunSpeed / 2 * Time.deltaTime);
                 break;
             case State.RunLeft:
@@ -46,8 +49,9 @@ public class UnitController : MonoBehaviour
                 if (_timeFromLastAttack > 1 / _data.MeleeAttackSpeed)
                 {
                     _tempCombat.MeleeAttack();
-                    _timeFromLastAttack=0;
+                    _timeFromLastAttack = 0;
                 }
+
                 break;
             case State.SpellCast:
                 break;
@@ -55,8 +59,9 @@ public class UnitController : MonoBehaviour
                 if (_timeFromLastAttack > 1 / _data.RangeAttackSpeed)
                 {
                     _tempCombat.RangeAttack();
-                    _timeFromLastAttack=0;
+                    _timeFromLastAttack = 0;
                 }
+
                 break;
             case State.Build:
                 break;

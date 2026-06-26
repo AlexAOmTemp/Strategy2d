@@ -8,6 +8,7 @@ public enum UnitBehaviorModel
     Warrior,
     RangeWarrior
 }
+
 public struct UnitData
 {
     public string[] ProductsIn { get; set; }

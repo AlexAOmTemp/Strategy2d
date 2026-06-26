@@ -5,21 +5,22 @@ using UnityEngine;
 public class TemporalWorker : MonoBehaviour
 {
     [SerializeField] private BuildingSpawner _buildingSpawner;
-     
-    void Start()
+
+    private void Start()
     {
         BuildingSpawner.NewBuildingIsInProcess += onNewBuildingStarted;
         ConstructionController.ConstructionIsFinished += onBuildingFinished;
     }
-    void onNewBuildingStarted(GameObject building)
+
+    private void onNewBuildingStarted(GameObject building)
     {
-        var bp = building.GetComponent<ConstructionController>(); 
+        var bp = building.GetComponent<ConstructionController>();
         bp.NewWorkerInvolvedInConstruction(this.gameObject);
     }
-    void onBuildingFinished(GameObject building)
+
+    private void onBuildingFinished(GameObject building)
     {
         var bp = building.GetComponent<ConstructionController>();
         bp.WorkerLeftConstruction(this.gameObject);
     }
-
 }

@@ -1,27 +1,9 @@
-/*using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PlayerController : MonoBehaviour
-{
-    [SerializeField] private float _speed = 10;
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            transform.Translate(Vector3.left * _speed * Time.deltaTime);
-        if (Input.GetKeyDown(KeyCode.RightArrow) )
-            transform.Translate(Vector3.right * _speed * Time.deltaTime);
-
-    }
-}*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
-
 public class PlayerController : MonoBehaviour
 {
     // Move player in 2D space
@@ -39,7 +21,7 @@ public class PlayerController : MonoBehaviour
     Transform t;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         t = transform;
         r2d = GetComponent<Rigidbody2D>();
@@ -56,16 +38,17 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Movement controls
-        if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) && (isGrounded || Mathf.Abs(r2d.velocity.x) > 0.01f))
+        if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) &&
+            (isGrounded || Mathf.Abs(r2d.linearVelocity.x) > 0.01f))
         {
             moveDirection = Input.GetKey(KeyCode.A) ? -1 : 1;
         }
         else
         {
-            if (isGrounded || r2d.velocity.magnitude < 0.01f)
+            if (isGrounded || r2d.linearVelocity.magnitude < 0.01f)
             {
                 moveDirection = 0;
             }
@@ -79,6 +62,7 @@ public class PlayerController : MonoBehaviour
                 facingRight = true;
                 t.localScale = new Vector3(Mathf.Abs(t.localScale.x), t.localScale.y, transform.localScale.z);
             }
+
             if (moveDirection < 0 && facingRight)
             {
                 facingRight = false;
@@ -89,7 +73,7 @@ public class PlayerController : MonoBehaviour
         // Jumping
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
-            r2d.velocity = new Vector2(r2d.velocity.x, jumpHeight);
+            r2d.linearVelocity = new Vector2(r2d.linearVelocity.x, jumpHeight);
         }
 
         // Camera follow
@@ -99,11 +83,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         Bounds colliderBounds = mainCollider.bounds;
         float colliderRadius = mainCollider.size.x * 0.4f * Mathf.Abs(transform.localScale.x);
-        Vector3 groundCheckPos = colliderBounds.min + new Vector3(colliderBounds.size.x * 0.5f, colliderRadius * 0.9f, 0);
+        Vector3 groundCheckPos =
+            colliderBounds.min + new Vector3(colliderBounds.size.x * 0.5f, colliderRadius * 0.9f, 0);
         // Check if player is grounded
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckPos, colliderRadius);
         //Check if any of the overlapping colliders are not player collider, if so, set isGrounded to true
@@ -121,10 +106,12 @@ public class PlayerController : MonoBehaviour
         }
 
         // Apply movement velocity
-        r2d.velocity = new Vector2((moveDirection) * maxSpeed, r2d.velocity.y);
+        r2d.linearVelocity = new Vector2((moveDirection) * maxSpeed, r2d.linearVelocity.y);
 
         // Simple debug
-        Debug.DrawLine(groundCheckPos, groundCheckPos - new Vector3(0, colliderRadius, 0), isGrounded ? Color.green : Color.red);
-        Debug.DrawLine(groundCheckPos, groundCheckPos - new Vector3(colliderRadius, 0, 0), isGrounded ? Color.green : Color.red);
+        Debug.DrawLine(groundCheckPos, groundCheckPos - new Vector3(0, colliderRadius, 0),
+            isGrounded ? Color.green : Color.red);
+        Debug.DrawLine(groundCheckPos, groundCheckPos - new Vector3(colliderRadius, 0, 0),
+            isGrounded ? Color.green : Color.red);
     }
 }

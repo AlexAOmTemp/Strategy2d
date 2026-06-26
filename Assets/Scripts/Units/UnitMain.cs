@@ -9,6 +9,7 @@ public class UnitMain : MonoBehaviour
     public UnitData UnitData { get; private set; }
     private SpriteRenderer spriteRenderer;
     private DistanceCollisionController _distanceCollisionController;
+
     public void Init(UnitData unitData)
     {
         UnitData = unitData;
@@ -19,12 +20,12 @@ public class UnitMain : MonoBehaviour
         spriteRenderer.sprite = unitData.SpriteAlive;
         this.GetComponent<BoxCollider2D>().size = spriteRenderer.size;
         this.GetComponent<UnitController>().Init(unitData);
-        _unitBehavior =  this.GetComponent<UnitBehavior>();
+        _unitBehavior = this.GetComponent<UnitBehavior>();
         //_unitBehavior.UnitIsInPOint+= onUnitReachPoint;
     }
-    void onUnitReachPoint()
+
+    private void onUnitReachPoint()
     {
         Debug.Log("Yes he does!");
     }
-
 }

@@ -15,6 +15,7 @@ public class SeparatorController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
             _guiController.SeparatorEntered(this.gameObject);
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -33,9 +34,11 @@ public class SeparatorController : MonoBehaviour
                 else
                     CurrentZone = ZoneId - 1;
             }
+
             _guiController.SeparatorExited(CurrentZone);
         }
     }
+
     public void Init(int zoneId, Sprite image, bool reverse)
     {
         _guiController = GameObject.Find("ButtonController").GetComponent<GuiController>();

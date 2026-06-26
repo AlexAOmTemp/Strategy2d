@@ -7,6 +7,7 @@ public class GuiController : MonoBehaviour
 {
     [SerializeField] private GameObject _buttonPrefab;
     [SerializeField] private GameObject _buildingsPanel;
+    
     private List<GameObject> _activeButtonsSet;
     private List<List<GameObject>> _constructionButtonsSets = new List<List<GameObject>>();
     private List<List<GameObject>> _productButtonsSets = new List<List<GameObject>>();
@@ -14,11 +15,13 @@ public class GuiController : MonoBehaviour
     private int _currentZone = 0;
     private int _countOfBuildingVisited;
     private Vector3 _basePanelPosition;
+
     private void Start()
     {
         _basePanelPosition = _buildingsPanel.transform.position;
         InitGuiForLevel();
     }
+
     public void InitGuiForLevel()
     {
         if (_buttonPrefab == null)
@@ -26,12 +29,14 @@ public class GuiController : MonoBehaviour
             Debug.LogError("GuiController: Button Prefab doesn't set");
             return;
         }
+
         createConstructionButtons();
         createUnitButtons();
         createSeparatorButtons();
         _activeButtonsSet = _constructionButtonsSets[0];
         allBuildingsExited();
     }
+
     private void createConstructionButtons()
     {
         _constructionButtonsSets.Clear();
@@ -50,9 +55,11 @@ public class GuiController : MonoBehaviour
                     _constructionButtonsSets.Add(new List<GameObject>());
                 _constructionButtonsSets[zoneId].Add(button);
             }
+
             button.SetActive(false);
         }
     }
+
     private void createSeparatorButtons()
     {
         _separatorButtonsSet.Clear();
@@ -65,6 +72,7 @@ public class GuiController : MonoBehaviour
             _separatorButtonsSet.Add(button);
         }
     }
+
     private void createUnitButtons()
     {
         _productButtonsSets.Clear();
@@ -86,9 +94,11 @@ public class GuiController : MonoBehaviour
                 else
                     Debug.LogError($"GuiController: building {buildingName} doesn't exist");
             }
+
             button.SetActive(false);
         }
     }
+
     public void SeparatorEntered(GameObject separator)
     {
         _countOfBuildingVisited++;
@@ -101,14 +111,16 @@ public class GuiController : MonoBehaviour
             button.SetActive(true);
         }
     }
+
     public void SeparatorExited(int currentZone)
     {
         _countOfBuildingVisited--;
         _currentZone = currentZone;
-           Debug.Log($"{_currentZone}");
+        Debug.Log($"{_currentZone}");
         if (_countOfBuildingVisited == 0)
             allBuildingsExited();
     }
+
     public void BuildingEntered(ProductSpawner spawner)
     {
         _countOfBuildingVisited++;
@@ -124,12 +136,14 @@ public class GuiController : MonoBehaviour
             }
         }
     }
+
     public void BuildingExited()
     {
         _countOfBuildingVisited--;
         if (_countOfBuildingVisited == 0)
             allBuildingsExited();
     }
+
     private void allBuildingsExited()
     {
         foreach (var button in _activeButtonsSet)

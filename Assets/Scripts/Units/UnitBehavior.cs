@@ -7,7 +7,9 @@ public class UnitBehavior : MonoBehaviour
     [SerializeField] private TempCombat _tempCombat;
     private DistanceCollisionController _distanceController;
     private UnitController _unitController;
+
     public delegate void UnitInPoint();
+
     public event UnitInPoint UnitIsInPOint;
     private bool _isDone = false;
     private GameObject _currentPathPoint;
@@ -16,10 +18,12 @@ public class UnitBehavior : MonoBehaviour
     private List<GameObject> EnemiesAtRangeDistance = new List<GameObject>();
     private GameObject _target = null;
     private bool _targetInMelee;
-    void Start()
+    bool first = true;
+
+    private void Start()
     {
         //var currentLevel = GameObject.Find("LevelSpawner").GetComponent<LevelSpawner>().CurrentLevel;
-        _teamId = (int)this.GetComponent<Team>().Number;
+        _teamId = (int) this.GetComponent<Team>().Number;
         _unitController = this.GetComponent<UnitController>();
         _currentPathPoint = PathPointsController.GetCurrentPathPoint(_teamId);
         _distanceController = this.GetComponent<DistanceCollisionController>();
@@ -29,7 +33,8 @@ public class UnitBehavior : MonoBehaviour
         _distanceController.MeleeDistanceLeft += onLeftMeleeDistance;
         _distanceController.MeleeDistanceLeft += onLeftRangeDistance;
     }
-    bool first = true;
+
+
     void Update()
     {
         if (_target == null)
@@ -38,16 +43,18 @@ public class UnitBehavior : MonoBehaviour
         {
             if (first)
             {
-                Debug.Log ("attackState");
+                Debug.Log("attackState");
                 first = false;
             }
+
             if (_targetInMelee == true)
                 _unitController.CurrentState = UnitController.State.MeleeAttack;
             else
                 _unitController.CurrentState = UnitController.State.RangeAttack;
         }
     }
-    void moveToPoint()
+
+    private void moveToPoint()
     {
         if (Math.Abs(transform.position.x - _currentPathPoint.transform.position.x) > 0.5)
         {
@@ -69,7 +76,8 @@ public class UnitBehavior : MonoBehaviour
             }
         }
     }
-    void onRangeDistance(GameObject target)
+
+    private void onRangeDistance(GameObject target)
     {
         Debug.Log($"UnitBehavior: {target} range");
         if (target.GetComponent<Team>().Number != _teamId)
@@ -80,7 +88,8 @@ public class UnitBehavior : MonoBehaviour
                 setTarget(target, false);
         }
     }
-    void onMeleeDistance(GameObject target)
+
+    private void onMeleeDistance(GameObject target)
     {
         Debug.Log($"UnitBehavior: {target} melee");
         if (target.GetComponent<Team>().Number != _teamId)
@@ -91,7 +100,8 @@ public class UnitBehavior : MonoBehaviour
                 setTarget(target, true);
         }
     }
-    void onLeftRangeDistance(GameObject target)
+
+    private void onLeftRangeDistance(GameObject target)
     {
         if (EnemiesAtRangeDistance.Contains(target))
         {
@@ -100,7 +110,8 @@ public class UnitBehavior : MonoBehaviour
             EnemiesAtRangeDistance.Remove(target);
         }
     }
-    void onLeftMeleeDistance(GameObject target)
+
+    private void onLeftMeleeDistance(GameObject target)
     {
         if (EnemiesAtMeleeDistance.Contains(target))
         {
@@ -109,16 +120,18 @@ public class UnitBehavior : MonoBehaviour
             EnemiesAtMeleeDistance.Remove(target);
         }
     }
-    void searchNewTarget()
+
+    private void searchNewTarget()
     {
         if (EnemiesAtMeleeDistance.Count > 0)
-            setTarget(EnemiesAtMeleeDistance[0],true);
+            setTarget(EnemiesAtMeleeDistance[0], true);
         else if (EnemiesAtRangeDistance.Count > 0)
-            setTarget(EnemiesAtRangeDistance[0],false);
+            setTarget(EnemiesAtRangeDistance[0], false);
         else
             _target = null;
     }
-    void setTarget(GameObject target, bool melee)
+
+    private void setTarget(GameObject target, bool melee)
     {
         _targetInMelee = melee;
         _target = target;
