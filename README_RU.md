@@ -9,12 +9,19 @@
 # Скриншоты:
 
 База игрока:
+
 ![](ScreenShots/BaseScreen.jpg)
+
 Сражение (модели юнитов, зданий и противников временные!):
+
 ![](ScreenShots/Fight.jpg)
+
 Портал к базе противника:
+
 ![](ScreenShots/portal.jpg)
+
 База противника:
+
 ![](ScreenShots/enemyBase.jpg)
 
 # PC билд:
